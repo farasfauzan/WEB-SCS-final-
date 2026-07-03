@@ -33,9 +33,25 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local editor / OS
+/.vscode
+/.idea
+.DS_Store
+*.log
+
+# AI / chat / prompt metadata
+.ai
+*.prompt*
+*.history
+*.session
+.copilot*
+.claude*
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
