@@ -12,9 +12,171 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String?
+  password  String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  companyProfiles CompanyProfile[]
+  news            News[]
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+}
+
+model CompanyProfile {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  name        String
+  tagline     String?
+  description String?
+  logoUrl     String?
+  heroImage   String?
+  address     String?
+  phone       String?
+  email       String?
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+}
+
+model Hero {
+  id          Int      @id @default(autoincrement())
+  title       String
+  subtitle    String?
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model About {
+  id          Int      @id @default(autoincrement())
+  title       String
+  subtitle    String?
+  content     String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  icon        String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  subservices Subservice[]
+  projects    Project[]
+}
+
+model Subservice {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String?
+  serviceId   Int
+  service     Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  imageUrl      String?
+  client        String?
+  completedDate String?
+  serviceId     Int
+  service       Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Partner {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  logoUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TimelineEvent {
+  id          Int      @id @default(autoincrement())
+  year        String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  label     String
+  value     String
+  icon      String?
+  createdAt DateTime @default(now())
+}
+
+model Statistic {
+  id        Int      @id @default(autoincrement())
+  label     String
+  value     Int
+  icon      String?
+  createdAt DateTime @default(now())
+}
+
+model UniqueVisitor {
+  id        Int      @id @default(autoincrement())
+  ip        String   @unique
+  lastVisit DateTime
+}
+
+model VisitStats {
+  id             Int @id @default(autoincrement())
+  totalVisits    Int
+  uniqueVisitors Int
+}
+
+model PageContent {
+  id        Int      @id @default(autoincrement())
+  pageName  String
+  title     String
+  subtitle  String?
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model News {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  excerpt     String?
+  content     String
+  imageUrl    String?
+  publishedAt DateTime?
+  authorId    Int?
+  author      User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
