@@ -9,34 +9,31 @@ export default function StatsCarouselSection() {
     { value: "200+", label: "Tim Profesional" }
   ];
 
-  // 6 Foto yang akan bergeser berulang
+  // Menggunakan file SVG dari folder public
   const carouselImages = [
-    "https://placehold.co/410x234",
-    "https://placehold.co/422x238",
-    "https://placehold.co/383x280",
-    "https://placehold.co/435x245",
-    "https://placehold.co/410x234",
-    "https://placehold.co/422x238"
+    "/carousel1.svg",
+    "/carousel2.svg",
+    "/carousel3.svg",
+    "/carousel4.svg",
+    "/carousel5.svg",
+    "/carousel6.svg"
   ];
 
   return (
-    <section className="w-full bg-zinc-100 py-16 flex flex-col items-center overflow-hidden">
-      
-      {/* CSS untuk Animasi Marquee (Berjalan Otomatis) */}
+    <section className="w-full bg-[#F1F1F1] pt-10 pb-6 flex flex-col items-center overflow-hidden">
       <style>{`
         @keyframes infinite-scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
         .animate-infinite-scroll {
+          /* Kecepatan animasi diubah menjadi 90s sesuai request */
           animation: infinite-scroll 90s linear infinite;
           width: max-content;
         }
       `}</style>
 
-      {/* 1. Carousel Gambar */}
       <FadeUp delay={0.1} className="w-full overflow-hidden mb-12 flex">
-        {/* Render 2 kali (didalam array) agar loop mulus tanpa jeda */}
         <div className="animate-infinite-scroll flex gap-6 px-3 hover:[animation-play-state:paused] cursor-pointer">
           {[...carouselImages, ...carouselImages].map((img, idx) => (
             <div key={idx} className="w-96 h-60 bg-white rounded-xl overflow-hidden shrink-0 border border-neutral-200 shadow-sm">
@@ -46,12 +43,11 @@ export default function StatsCarouselSection() {
         </div>
       </FadeUp>
 
-      {/* 2. Kotak Statistik Biru (Persis Figma) */}
       <FadeUp delay={0.3} className="w-full max-w-[1152px] px-6">
-        <div className="w-full h-48 bg-blue-900 rounded-3xl relative overflow-hidden flex items-center justify-center shadow-xl">
-          {/* Overlay Figma */}
-          <div className="absolute inset-0 bg-sky-800/90"></div>
-
+        <div className="w-full h-48 bg-[#004282] rounded-3xl relative overflow-hidden flex items-center justify-center shadow-xl">
+          <img src="/bg-carousel.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-90" />
+          <div className="absolute inset-0 bg-[#004282]/85"></div>
+          
           <div className="relative z-10 w-full flex justify-center items-center gap-10 md:gap-20">
             {stats.map((stat, idx) => (
               <div key={idx} className="flex flex-col items-center text-center gap-3">
@@ -62,7 +58,6 @@ export default function StatsCarouselSection() {
           </div>
         </div>
       </FadeUp>
-
     </section>
   );
 }

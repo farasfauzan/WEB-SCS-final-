@@ -2,51 +2,57 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-br from-sky-950 via-sky-900 to-sky-850 text-white py-12 border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+    // Padding atas dan bawah dikurangi (pt-8, pb-4) agar footer lebih pendek
+    <footer className="w-full bg-[#004282] pt-8 pb-4 px-6 md:px-12 border-t border-white/10">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10 md:gap-6 mb-4">
         
-        {/* Kolom Kiri: Branding Perusahaan */}
-        <div className="md:col-span-5 flex flex-col gap-6">
+        <div className="flex flex-col gap-3 max-w-xs">
           <div className="flex items-center gap-3">
-            <svg className="w-8 h-8 text-yellow-400 fill-current" viewBox="0 0 24 24">
-              <path d="M12 2L2 22h20L12 2zm0 4.18L18.82 19H5.18L12 6.18z"/>
-            </svg>
-            <span className="text-xl font-extrabold font-sans">Sinar Cerah Sempurna</span>
+            <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
+            <span className="text-white text-lg font-bold font-['Plus_Jakarta_Sans']">Sinar Cerah Sempurna</span>
           </div>
-          <p className="text-zinc-200 text-base font-normal font-sans leading-relaxed max-w-sm">
+          <p className="text-white/80 text-[13px] font-['Plus_Jakarta_Sans'] leading-relaxed">
             Perusahaan konstruksi dan infrastruktur terpercaya di Indonesia dengan komitmen tinggi pada kualitas dan inovasi.
           </p>
-          {/* Container Placeholder Media Sosial (Tanpa Emotikon) */}
-          <div className="flex gap-4 items-center">
-            <div className="w-8 h-8 bg-neutral-200/20 rounded-lg hover:bg-neutral-200/40 transition-colors cursor-pointer"></div>
-            <div className="w-8 h-8 bg-neutral-200/20 rounded-lg hover:bg-neutral-200/40 transition-colors cursor-pointer"></div>
-            <div className="w-8 h-8 bg-neutral-200/20 rounded-lg hover:bg-neutral-200/40 transition-colors cursor-pointer"></div>
+          
+          {/* Ikon Menu + YouTube Footer (Berfungsi sebagai tombol link) */}
+          <div className="flex gap-4 mt-3">
+            <Link href="/youtube" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
+              <img src="/youtube-footer.svg" alt="YouTube" className="w-6 h-6 object-contain" />
+            </Link>
+            <Link href="/portal-aplikasi" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
+              <img src="/menu-aplikasi-scs.svg" alt="Portal Aplikasi" className="w-6 h-6 object-contain" />
+            </Link>
+            <Link href="/sop" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
+              <img src="/menu-sop.svg" alt="SOP" className="w-6 h-6 object-contain" />
+            </Link>
+            <Link href="/anak-perusahaan" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
+              <img src="/menu-anak-perusahaan.svg" alt="Anak Perusahaan" className="w-6 h-6 object-contain" />
+            </Link>
           </div>
         </div>
 
-        {/* Kolom Tengah: Tautan Cepat */}
-        <div className="md:col-span-3 flex flex-col gap-4">
-          <h4 className="text-xl font-extrabold font-sans leading-none text-white border-b border-white/10 pb-2">Tautan Cepat</h4>
-          <div className="flex flex-col gap-2 font-sans text-zinc-200">
-            <Link href="/" className="hover:text-yellow-400 transition-colors">Beranda</Link>
-            <Link href="/tentang-kami" className="hover:text-yellow-400 transition-colors">Tentang Kami</Link>
-            <Link href="/proyek" className="hover:text-yellow-400 transition-colors">Proyek</Link>
-            <Link href="/berita" className="hover:text-yellow-400 transition-colors">Berita</Link>
-            <Link href="/hubungi-kami" className="hover:text-yellow-400 transition-colors">Kontak</Link>
+        <div className="flex flex-col gap-3">
+          <h4 className="text-white text-base font-bold font-['Plus_Jakarta_Sans']">Tautan Cepat</h4>
+          <div className="flex flex-col gap-2 text-white/80 text-[13px] font-['Plus_Jakarta_Sans']">
+            <Link href="/" className="hover:text-white transition-colors">Beranda</Link>
+            <Link href="/tentang-kami" className="hover:text-white transition-colors">Tentang Kami</Link>
+            <Link href="/proyek" className="hover:text-white transition-colors">Proyek</Link>
+            <Link href="/berita" className="hover:text-white transition-colors">Berita</Link>
+            <Link href="/hubungi-kami" className="hover:text-white transition-colors">Kontak</Link>
           </div>
         </div>
 
-        {/* Kolom Kanan: Informasi Lokasi & Hak Cipta */}
-        <div className="md:col-span-4 flex flex-col justify-between h-full gap-8">
-          <div className="flex flex-col gap-4">
-            <h4 className="text-xl font-extrabold font-sans leading-none text-white border-b border-white/10 pb-2">Lokasi</h4>
-            <p className="text-zinc-200 text-base font-normal font-ibm leading-relaxed">
-              Jl. Karangrejo Barat No 09. RT. 02 RW. 02 (Kp. Pentul), Tinjomoyo, Semarang
+        <div className="flex flex-col gap-3 max-w-xs">
+          <h4 className="text-white text-base font-bold font-['Plus_Jakarta_Sans']">Lokasi</h4>
+          <p className="text-white/80 text-[13px] font-['Plus_Jakarta_Sans'] leading-relaxed">
+            Jl. Karangrejo Barat No 09. RT. 02 RW. 02 (Kp. Pentul), Tinjomoyo, Semarang
+          </p>
+          <div className="mt-auto pt-4">
+            <p className="text-white/60 text-[11px] font-['Plus_Jakarta_Sans']">
+              © 2026 PT. Sinar Cerah Sempurna. All rights reserved.
             </p>
           </div>
-          <p className="text-zinc-300 text-sm font-ibm">
-            &copy; 2026 PT. Sinar Cerah Sempurna. All rights reserved.
-          </p>
         </div>
 
       </div>
