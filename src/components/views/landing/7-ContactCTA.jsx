@@ -4,33 +4,32 @@ import Link from "next/link";
 
 export default function ContactCTA() {
   return (
-    // Penambahan pb-32 (padding-bottom ekstra) agar berjarak jauh dari Footer
-    <section className="w-full bg-zinc-100 pt-16 pb-32 flex justify-center px-6">
+    // Padding disesuaikan untuk Mobile dan Desktop
+    <section className="w-full bg-[#F1F1F1] pt-10 pb-20 md:pt-16 md:pb-32 flex justify-center px-4 md:px-6">
       <FadeUp delay={0.1} className="w-full max-w-[1152px]">
-        
-        <div className="w-full h-96 bg-blue-900 rounded-3xl relative overflow-hidden flex flex-col items-center justify-center shadow-xl border border-white/10">
+        {/* Tinggi tidak dikunci statis, melainkan pakai padding (py-12 md:py-16) */}
+        <div className="w-full py-12 md:py-16 bg-[#004282] rounded-[24px] md:rounded-3xl relative overflow-hidden flex flex-col items-center justify-center shadow-lg">
           
-          <div className="absolute inset-0 bg-[url('https://placehold.co/1152x384')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
-          <div className="absolute inset-0 bg-sky-800/90"></div>
-
-          <div className="relative z-10 flex flex-col items-center gap-6 px-6">
-            <h2 className="text-white text-4xl font-extrabold font-['Plus_Jakarta_Sans'] text-center leading-snug">
+          {/* mix-blend-overlay DIHAPUS agar biru murni #004282 tidak rusak. Hanya pakai opacity-10 */}
+          <img src="/bg-hubungi-kami.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-10" />
+          
+          <div className="relative z-10 flex flex-col items-center gap-4 md:gap-5 px-6">
+            <h2 className="text-white text-3xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans'] text-center leading-snug">
               Siap Mewujudkan Visi Konstruksi Anda
             </h2>
-            <p className="text-white text-base font-normal font-['Plus_Jakarta_Sans'] text-center max-w-[693px] leading-relaxed">
+            <p className="text-white text-sm md:text-[15px] font-normal font-['Plus_Jakarta_Sans'] text-center max-w-[693px] leading-relaxed">
               Apakah Anda memiliki proyek masa depan yang membutuhkan presisi dan kualitas? Hubungi kantor kami hari ini untuk solusi konstruksi yang inovatif dan terpercaya.
             </p>
             
             <Link 
               href="/hubungi-kami"
-              className="w-72 h-12 mt-4 rounded-lg flex items-center justify-center text-sky-950 text-[20px] font-bold font-['Plus_Jakarta_Sans'] bg-[linear-gradient(33deg,#d4d4d8_7%,#ffffff_29%,#d6d3d1_82%)] hover:scale-105 transition-transform shadow-md"
+              className="w-full sm:w-72 h-12 md:h-14 mt-4 rounded-full flex items-center justify-center text-[#004282] text-[15px] md:text-[17px] font-bold font-['Plus_Jakarta_Sans'] bg-[linear-gradient(33deg,#d4d4d8_7%,#ffffff_29%,#d6d3d1_82%)] hover:scale-105 transition-transform shadow-md"
             >
               Hubungi Kami
             </Link>
           </div>
-
+          
         </div>
-        
       </FadeUp>
     </section>
   );

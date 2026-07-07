@@ -6,11 +6,25 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
   body {
-    @apply bg-zinc-100 text-stone-900 overflow-x-hidden;
+    @apply bg-[#F1F1F1] text-stone-900 overflow-x-hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
   body::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@layer base {
+  /* Paksa hilangkan scrollbar di semua elemen */
+  * {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE/Edge */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none !important; /* Chrome/Safari/Opera */
+    width: 0 !important;
+    height: 0 !important;
   }
 }

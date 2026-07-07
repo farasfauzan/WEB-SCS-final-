@@ -24,7 +24,7 @@ export default function ProjectPreview() {
 
   return (
     // Padding vertikal (py) dikurangi agar sangat padat dan muat 1 layar
-    <section className="w-full h-full bg-zinc-100 py-16 flex flex-col items-center justify-center px-6">
+    <section className="w-full h-full bg-[#F1F1F1] py-6 flex flex-col items-center justify-center px-6">
       <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
         
         <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-6">

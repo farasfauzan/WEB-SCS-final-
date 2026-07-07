@@ -1,39 +1,49 @@
+"use client";
 import FadeUp from "@/components/ui/FadeUp";
 
 export default function HeroSection() {
   return (
-    // UBAH DI SINI: Ganti h-full menjadi min-h-screen dan beri sedikit padding atas/bawah
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center rounded-bl-[64px] rounded-br-[64px] overflow-hidden bg-sky-900 py-24">
-      
-      {/* Background Image & Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-50"
-        style={{ backgroundImage: `url('https://placehold.co/1444x796')` }}
-      />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_49%_63%,_var(--tw-gradient-stops))] from-sky-800/90 to-sky-900/90" />
-      
-      {/* Container Konten di Tengah */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col items-start gap-6">
-        <FadeUp delay={0.1}>
-          <span className="text-white text-xl md:text-2xl font-semibold font-['Montserrat'] tracking-wide uppercase">
-            PT SINAR CERAH SEMPURNA
-          </span>
-        </FadeUp>
+    <section className="relative w-full h-screen bg-[#004282] overflow-hidden flex items-center">
+      {/* Background & Overlay Biru Transparan */}
+      <div className="absolute inset-0 z-0">
+        <img src="/hero-bg.svg" alt="Background" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[#004282]/85"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
         
-        <FadeUp delay={0.2}>
-          <h1 className="max-w-4xl leading-tight">
-            <span className="text-yellow-400 text-5xl md:text-6xl font-bold font-['Times_New_Roman'] italic">Integrity</span>
-            <span className="text-white text-5xl md:text-6xl font-normal font-['Times_New_Roman']"> isn&apos;t just a policy—it&apos;s the standard we build by. Your </span>
-            <span className="text-yellow-400 text-5xl md:text-6xl font-bold font-['Times_New_Roman'] italic">trust</span>
-            <span className="text-white text-5xl md:text-6xl font-normal font-['Times_New_Roman']"> is our greatest structure.</span>
-          </h1>
+        {/* Kolom Kiri: Teks */}
+        <div className="flex flex-col gap-4">
+          <FadeUp delay={0.1}>
+            {/* Teks sudah dikecilkan menjadi text-xs md:text-sm */}
+            <span className="text-white text-xs md:text-sm font-semibold tracking-widest uppercase">
+              PT SINAR CERAH SEMPURNA
+            </span>
+          </FadeUp>
+          
+          <FadeUp delay={0.2}>
+            <h1 className="text-white text-5xl md:text-[64px] font-serif leading-[1.05] tracking-tight">
+              <span className="text-yellow-400 font-bold italic">Integrity</span> isn&apos;t just a policy—it&apos;s the standard we build by. Your <span className="text-yellow-400 font-bold italic">trust</span> is our greatest structure.
+            </h1>
+          </FadeUp>
+          
+          <FadeUp delay={0.3}>
+            <p className="text-white text-[15px] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed opacity-90 max-w-lg mt-2">
+              PT Sinar Cerah Sempurna adalah perusahaan konstruksi dan infrastruktur yang berpengalaman dalam pembangunan gedung, jalan, jembatan, dan berbagai proyek infrastruktur lainnya di Indonesia.
+            </p>
+          </FadeUp>
+        </div>
+
+        {/* Kolom Kanan: 2 Foto SVG */}
+        <FadeUp delay={0.4} className="hidden md:flex gap-5 h-[420px] relative">
+          <div className="w-1/2 h-[85%] mt-8 rounded-xl overflow-hidden shadow-2xl border-[3px] border-white/20">
+             <img src="/foto-hero1.svg" alt="Konstruksi 1" className="w-full h-full object-cover" />
+          </div>
+          <div className="w-1/2 h-[85%] mb-8 rounded-xl overflow-hidden shadow-2xl border-[3px] border-white/20">
+             <img src="/foto-hero2.svg" alt="Konstruksi 2" className="w-full h-full object-cover" />
+          </div>
         </FadeUp>
-        
-        <FadeUp delay={0.3}>
-          <p className="text-white text-base md:text-lg font-medium font-['Plus_Jakarta_Sans'] leading-relaxed max-w-2xl mt-2">
-            PT Sinar Cerah Sempurna adalah perusahaan konstruksi dan infrastruktur yang berpengalaman dalam pembangunan gedung, jalan, jembatan, dan berbagai proyek infrastruktur lainnya di Indonesia.
-          </p>
-        </FadeUp>
+
       </div>
     </section>
   );
