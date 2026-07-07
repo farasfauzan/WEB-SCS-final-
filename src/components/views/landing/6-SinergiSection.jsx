@@ -7,7 +7,7 @@ export default function SinergiSection() {
   });
 
   return (
-    <section className="w-full bg-zinc-100 py-24 px-6 flex flex-col items-center">
+    <section className="w-full bg-[#F1F1F1] py-12 px-6 flex flex-col items-center">
       <div className="max-w-6xl mx-auto w-full flex flex-col gap-12 items-center">
         
         <FadeUp delay={0.1} className="text-center flex flex-col gap-4 max-w-3xl">

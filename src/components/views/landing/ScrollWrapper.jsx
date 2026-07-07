@@ -10,7 +10,7 @@ import ContactCTA from "./7-ContactCTA";
 
 export default function ScrollWrapper() {
   return (
-    <div className="w-full flex flex-col overflow-x-hidden bg-zinc-100">
+    <div className="w-full flex flex-col bg-[#F1F1F1]">
       
       {/* 6 Section ini akan memaksa layar mengunci secara penuh (h-screen) */}
       <div className="snap-start snap-always h-screen w-full"><HeroSection /></div>

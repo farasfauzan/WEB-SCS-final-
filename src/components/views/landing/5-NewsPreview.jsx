@@ -11,7 +11,7 @@ export default function NewsPreview() {
   ];
 
   return (
-    <section className="w-full h-full bg-white py-16 flex flex-col items-center justify-center px-6">
+    <section className="w-full h-full bg-[#F1F1F1] pt-6 pb-12 flex flex-col items-center justify-center px-6">
       <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
         
         <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-10">

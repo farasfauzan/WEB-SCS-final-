@@ -1,72 +1,101 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import BurgerMenu from "./BurgerMenu";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFloating, setIsFloating] = useState(false);
+  const [isPastHero, setIsPastHero] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsFloating(window.scrollY > 50);
+      setIsPastHero(window.scrollY > window.innerHeight - 120);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const textColor = isPastHero ? "text-[#004282]" : "text-white";
+  const burgerLineColor = isPastHero ? "bg-[#004282]" : "bg-white";
+  const btnClasses = isPastHero 
+    ? "bg-[#004282] text-white hover:bg-blue-900 shadow-md" 
+    : "bg-white text-[#004282] hover:bg-zinc-100 shadow-sm";
+
+  let navBg = "bg-transparent border-transparent shadow-none";
+  if (isFloating && !isPastHero) {
+    navBg = "bg-white/15 backdrop-blur-xl shadow-lg border border-white/30";
+  } else if (isPastHero) {
+    navBg = "bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-white/60";
+  }
+
+  // Data Menu Dropdown menggunakan SVG dari public folder
+  const utilityMenu = [
+    { name: "YouTube", href: "/youtube", icon: "/menu-youtube.svg" },
+    { name: "Portal Aplikasi", href: "/portal-aplikasi", icon: "/menu-aplikasi-scs.svg" },
+    { name: "SOP", href: "/sop", icon: "/menu-sop.svg" },
+    { name: "Anak Perusahaan", href: "/anak-perusahaan", icon: "/menu-anak-perusahaan.svg" }
+  ];
 
   return (
-    <>
-      {/* Navbar Container */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-transparent transition-all duration-300">
+    <header className="fixed top-4 left-0 w-full z-50 flex justify-center pointer-events-none px-3 md:px-6">
+      
+      {/* Tinggi sudah diubah menjadi h-12 sesuai kustomisasimu */}
+      <nav className={`pointer-events-auto flex items-center justify-between w-full h-12 px-6 md:px-8 rounded-full transition-all duration-500 ease-in-out ${navBg}`}>
         
-        {/* w-full dan px-6 md:px-12 membuat elemen benar-benar mepet ujung layar */}
-        <div className="w-full px-6 md:px-12 h-24 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3 group shrink-0">
+          <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
+          <span className={`font-extrabold font-['Plus_Jakarta_Sans'] tracking-wide text-lg md:text-xl transition-colors duration-500 ${textColor}`}>
+            Sinar Cerah Sempurna
+          </span>
+        </Link>
+
+        <div className="flex items-center justify-end gap-5 relative shrink-0">
           
-          {/* KIRI: Logo & Nama Perusahaan */}
-          <Link href="/" className="flex items-center gap-3 group relative z-[60]">
-            <svg className="w-10 h-10 text-yellow-400 fill-current" viewBox="0 0 24 24">
-              <path d="M12 2L2 22h20L12 2zm0 4.18L18.82 19H5.18L12 6.18z"/>
-              <circle cx="12" cy="13" r="2" />
-            </svg>
-            <span className="text-white text-2xl font-extrabold font-['Plus_Jakarta_Sans'] tracking-wide drop-shadow-md">
-              Sinar Cerah Sempurna
-            </span>
+          <div className={`hidden lg:flex items-center gap-7 font-bold font-['Plus_Jakarta_Sans'] text-[14px] transition-colors duration-500 ${textColor}`}>
+            <Link href="/" className="hover:opacity-70 transition-opacity">Beranda</Link>
+            <Link href="/tentang-kami" className="hover:opacity-70 transition-opacity">Tentang</Link>
+            <Link href="/proyek" className="hover:opacity-70 transition-opacity">Proyek</Link>
+            <Link href="/berita" className="hover:opacity-70 transition-opacity">Berita</Link>
+          </div>
+
+          <Link href="/hubungi-kami" className={`hidden sm:inline-block font-bold font-['Plus_Jakarta_Sans'] px-5 py-2 rounded-full transition-colors duration-500 text-[13px] ${btnClasses}`}>
+            Hubungi Kami
           </Link>
 
-          {/* KANAN: Tombol Hubungi & Ikon Burger */}
-          <div className="flex items-center gap-6 relative">
-            
-            {/* Tombol Hubungi Kami: Akan memudar & mengecil saat isMenuOpen = true */}
-            <div className={`transition-all duration-300 origin-right ${isMenuOpen ? 'opacity-0 scale-90 pointer-events-none translate-x-4' : 'opacity-100 scale-100 translate-x-0'}`}>
-              <Link 
-                href="/hubungi-kami" 
-                className="hidden sm:inline-block bg-white text-sky-950 font-bold font-['Plus_Jakarta_Sans'] px-6 py-3 rounded-lg hover:bg-zinc-100 transition-colors shadow-md"
-              >
-                Hubungi Kami
-              </Link>
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="relative focus:outline-none z-[60] ml-1 w-6 h-4"
+            aria-label="Toggle Menu"
+          >
+            <span className={`absolute left-0 w-full h-[2px] rounded transition-all duration-300 ease-in-out ${burgerLineColor} ${isMenuOpen ? 'top-1.5 rotate-45' : 'top-0'}`}></span>
+            <span className={`absolute left-0 top-1.5 w-full h-[2px] rounded transition-all duration-300 ease-in-out ${burgerLineColor} ${isMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'}`}></span>
+            <span className={`absolute left-0 w-full h-[2px] rounded transition-all duration-300 ease-in-out ${burgerLineColor} ${isMenuOpen ? 'top-1.5 -rotate-45' : 'top-3'}`}></span>
+          </button>
+
+          <div className={`absolute top-[calc(100%+12px)] right-0 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.12)] border border-white/50 overflow-hidden transition-all duration-300 origin-top-right ${
+            isMenuOpen ? "scale-100 opacity-100 pointer-events-auto translate-y-0" : "scale-95 opacity-0 pointer-events-none -translate-y-2"
+          }`}>
+            <div className="flex flex-col p-2 gap-1">
+              {utilityMenu.map((item, idx) => (
+                <Link 
+                  key={idx} 
+                  href={item.href} 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="flex items-center gap-3 px-4 py-3 text-[#004282] text-sm font-semibold font-['Plus_Jakarta_Sans'] hover:bg-sky-50 rounded-xl transition-colors group"
+                >
+                  {/* Memanggil SVG Ikon dari folder public */}
+                  <img src={item.icon} alt={item.name} className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity object-contain" />
+                  <span className="group-hover:text-sky-700 transition-colors">{item.name}</span>
+                </Link>
+              ))}
             </div>
-
-            {/* Ikon Burger Animasi Silang (Z-index 60 agar selalu di atas menu overlay) */}
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="w-8 h-6 relative focus:outline-none z-[60] ml-auto group"
-              aria-label="Toggle Menu"
-            >
-              {/* Garis Atas */}
-              <span className={`absolute left-0 w-full h-1 bg-white rounded transition-all duration-300 ease-in-out ${
-                isMenuOpen ? 'top-2.5 rotate-45' : 'top-0 group-hover:top-0.5'
-              }`}></span>
-              
-              {/* Garis Tengah (Menghilang saat ditekan) */}
-              <span className={`absolute left-0 top-2.5 w-full h-1 bg-white rounded transition-all duration-300 ease-in-out ${
-                isMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
-              }`}></span>
-              
-              {/* Garis Bawah */}
-              <span className={`absolute left-0 w-full h-1 bg-white rounded transition-all duration-300 ease-in-out ${
-                isMenuOpen ? 'top-2.5 -rotate-45' : 'top-5 group-hover:top-4.5'
-              }`}></span>
-            </button>
-
           </div>
+
         </div>
       </nav>
-
-      {/* Komponen Menu Overlay */}
-      <BurgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-    </>
+    </header>
   );
 }
