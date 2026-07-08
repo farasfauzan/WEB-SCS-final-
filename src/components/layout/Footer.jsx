@@ -17,9 +17,9 @@ export default function Footer() {
           
           {/* Ikon Menu + YouTube Footer (Berfungsi sebagai tombol link) */}
           <div className="flex gap-4 mt-3">
-            <Link href="/youtube" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
+            <a href="https://www.youtube.com/@sinarcerahsempurna8137" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
               <img src="/youtube-footer.svg" alt="YouTube" className="w-6 h-6 object-contain" />
-            </Link>
+            </a>
             <Link href="/portal-aplikasi" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
               <img src="/menu-aplikasi-scs.svg" alt="Portal Aplikasi" className="w-6 h-6 object-contain" />
             </Link>

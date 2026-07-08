@@ -18,9 +18,9 @@ export default function BurgerMenu({ isOpen, onClose }) {
       }`}>
         <div className="flex flex-col p-8 pt-32 gap-6">
           
-          <Link href="/youtube" onClick={onClose} className="text-[#004282] text-lg font-bold font-['Plus_Jakarta_Sans'] hover:text-sky-600 transition-colors">
+          <a href="https://www.youtube.com/@sinarcerahsempurna8137" target="_blank" rel="noopener noreferrer" onClick={onClose} className="text-[#004282] text-lg font-bold font-['Plus_Jakarta_Sans'] hover:text-sky-600 transition-colors">
             YouTube
-          </Link>
+          </a>
           
           <div className="w-full h-px bg-neutral-100"></div>
           

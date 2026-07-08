@@ -33,7 +33,7 @@ export default function Navbar() {
 
   // Data Menu Dropdown menggunakan SVG dari public folder
   const utilityMenu = [
-    { name: "YouTube", href: "/youtube", icon: "/menu-youtube.svg" },
+    { name: "YouTube", href: "https://www.youtube.com/@sinarcerahsempurna8137", icon: "/menu-youtube.svg" },
     { name: "Portal Aplikasi", href: "/portal-aplikasi", icon: "/menu-aplikasi-scs.svg" },
     { name: "SOP", href: "/sop", icon: "/menu-sop.svg" },
     { name: "Anak Perusahaan", href: "/anak-perusahaan", icon: "/menu-anak-perusahaan.svg" }
@@ -51,20 +51,20 @@ export default function Navbar() {
             Sinar Cerah Sempurna
           </span>
         </Link>
-
+ 
         <div className="flex items-center justify-end gap-5 relative shrink-0">
           
           <div className={`hidden lg:flex items-center gap-7 font-bold font-['Plus_Jakarta_Sans'] text-[14px] transition-colors duration-500 ${textColor}`}>
-            <Link href="/" className="hover:opacity-70 transition-opacity">Beranda</Link>
-            <Link href="/tentang-kami" className="hover:opacity-70 transition-opacity">Tentang</Link>
-            <Link href="/proyek" className="hover:opacity-70 transition-opacity">Proyek</Link>
-            <Link href="/berita" className="hover:opacity-70 transition-opacity">Berita</Link>
+            <Link href="/" className="hover:opacity-75 transition-opacity">Beranda</Link>
+            <Link href="/tentang-kami" className="hover:opacity-75 transition-opacity">Tentang</Link>
+            <Link href="/proyek" className="hover:opacity-75 transition-opacity">Proyek</Link>
+            <Link href="/berita" className="hover:opacity-75 transition-opacity">Berita</Link>
           </div>
-
+ 
           <Link href="/hubungi-kami" className={`hidden sm:inline-block font-bold font-['Plus_Jakarta_Sans'] px-5 py-2 rounded-full transition-colors duration-500 text-[13px] ${btnClasses}`}>
             Hubungi Kami
           </Link>
-
+ 
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="relative focus:outline-none z-[60] ml-1 w-6 h-4"
@@ -74,23 +74,29 @@ export default function Navbar() {
             <span className={`absolute left-0 top-1.5 w-full h-[2px] rounded transition-all duration-300 ease-in-out ${burgerLineColor} ${isMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'}`}></span>
             <span className={`absolute left-0 w-full h-[2px] rounded transition-all duration-300 ease-in-out ${burgerLineColor} ${isMenuOpen ? 'top-1.5 -rotate-45' : 'top-3'}`}></span>
           </button>
-
+ 
           <div className={`absolute top-[calc(100%+12px)] right-0 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.12)] border border-white/50 overflow-hidden transition-all duration-300 origin-top-right ${
             isMenuOpen ? "scale-100 opacity-100 pointer-events-auto translate-y-0" : "scale-95 opacity-0 pointer-events-none -translate-y-2"
           }`}>
             <div className="flex flex-col p-2 gap-1">
-              {utilityMenu.map((item, idx) => (
-                <Link 
-                  key={idx} 
-                  href={item.href} 
-                  onClick={() => setIsMenuOpen(false)} 
-                  className="flex items-center gap-3 px-4 py-3 text-[#004282] text-sm font-semibold font-['Plus_Jakarta_Sans'] hover:bg-sky-50 rounded-xl transition-colors group"
-                >
-                  {/* Memanggil SVG Ikon dari folder public */}
-                  <img src={item.icon} alt={item.name} className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity object-contain" />
-                  <span className="group-hover:text-sky-700 transition-colors">{item.name}</span>
-                </Link>
-              ))}
+              {utilityMenu.map((item, idx) => {
+                const isExternal = item.href.startsWith("http");
+                const LinkComponent = isExternal ? "a" : Link;
+                return (
+                  <LinkComponent 
+                    key={idx} 
+                    href={item.href} 
+                    onClick={() => setIsMenuOpen(false)} 
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    className="flex items-center gap-3 px-4 py-3 text-[#004282] text-sm font-semibold font-['Plus_Jakarta_Sans'] hover:bg-sky-50 rounded-xl transition-colors group"
+                  >
+                    {/* Memanggil SVG Ikon dari folder public */}
+                    <img src={item.icon} alt={item.name} className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity object-contain" />
+                    <span className="group-hover:text-sky-700 transition-colors">{item.name}</span>
+                  </LinkComponent>
+                );
+              })}
             </div>
           </div>
 
