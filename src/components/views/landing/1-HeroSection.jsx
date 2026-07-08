@@ -27,7 +27,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full h-screen bg-[#004282] overflow-hidden flex items-center rounded-b-[64px]">
+    <section className="relative w-full min-h-[100svh] py-[clamp(4rem,10vh,8rem)] bg-[#004282] overflow-hidden flex items-center rounded-b-[64px]">
       <div className="absolute inset-0 z-0">
         <img src={hero.imageUrl || "/hero-bg.svg"} alt="Background" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#004282]/85"></div>
@@ -42,7 +42,7 @@ export default function HeroSection() {
           <FadeUp delay={0.2}>
             <HeroTitle
               text={hero.title}
-              className="text-white text-5xl md:text-[64px] font-serif leading-[1.05] tracking-tight"
+              className="text-white text-[clamp(2.5rem,5vw,4rem)] font-serif leading-[1.05] tracking-tight"
             />
           </FadeUp>
           

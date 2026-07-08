@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import HeroTitle from "@/components/shared/HeroTitle";
 import BoldText from "@/components/shared/BoldText";
+import FadeUp from "@/components/ui/FadeUp";
 
 export default function TentangKamiPage() {
   const [about, setAbout] = useState(null);
@@ -36,66 +37,67 @@ export default function TentangKamiPage() {
     "Mengembangkan kapabilitas profesional tim kami melalui pelatihan berkelanjutan dan pengembangan karir.",
     "Berkontribusi pada pembangunan berkelanjutan infrastruktur dan lingkungan binaan Indonesia.",
   ];
+
   return (
     <main className="w-full bg-[#F1F1F1] min-h-screen pb-24">
       
-      {/* HERO SECTION - Menggunakan h-screen agar sama persis dengan Landing Page */}
-      <section className="relative w-full h-screen flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
+      {/* HERO SECTION */}
+      <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
         <div className="absolute inset-0 z-0">
-          <img src="/hero-bg.svg" alt="Background Tentang Kami" className="w-full h-full object-cover" />
+          <img src="/bg-hubungi-kami.svg" alt="Background Tentang Kami" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-[#004282]/85"></div>
         </div>
 
-        <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col items-center gap-6">
+        <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col items-center gap-[clamp(0.75rem,2vh,1.25rem)] mt-10">
           <HeroTitle
             text={hero.title}
-            className="text-white text-4xl md:text-5xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight"
+            className="text-white text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] leading-tight"
           />
-          <BoldText text={subtitle} className="text-white/90 text-[15px] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[850px]" as="p" />
+          <BoldText text={subtitle} className="text-white/90 text-[clamp(0.9rem,1.5vw,1.1rem)] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[850px]" as="p" />
         </div>
       </section>
 
       {/* KONTEN TENTANG KAMI */}
-      <section className="flex flex-col items-center justify-start pt-20 px-6 gap-20">
+      <section className="flex flex-col items-center justify-start pt-16 md:pt-20 px-6 gap-12 md:gap-16">
          
-         <div className="max-w-[1152px] w-full text-center flex flex-col gap-4">
+         <FadeUp delay={0.1} className="max-w-[800px] w-full text-center flex flex-col gap-4">
             <h2 className="text-[#1E1E1E] text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
-              Tentang PT Sinar Cerah Sempurna
+              {title}
             </h2>
-            <p className="text-[#757575] text-[15px] font-normal font-['Plus_Jakarta_Sans'] max-w-3xl mx-auto leading-relaxed">
+            <p className="text-[#757575] text-[15px] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed">
               {content}
             </p>
-         </div>
+         </FadeUp>
 
-         <div className="max-w-[1000px] w-full bg-white rounded-[32px] p-10 md:p-14 shadow-sm border border-neutral-200">
+         <FadeUp delay={0.2} className="max-w-[1000px] w-full bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-neutral-200">
             <div className="flex flex-col gap-10">
-              <div className="text-center flex flex-col gap-4">
+              <div className="text-center flex flex-col gap-3">
                 <h3 className="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#1E1E1E]">Visi</h3>
-                <p className="text-[15px] text-[#424242] font-['Plus_Jakarta_Sans'] leading-relaxed">
+                <p className="text-[15px] text-[#424242] font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[800px] mx-auto">
                   {vision}
                 </p>
               </div>
               
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
                 <h3 className="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#1E1E1E] text-center mb-2">Misi</h3>
-                <ul className="list-disc pl-5 space-y-3 text-[15px] text-[#424242] font-['Plus_Jakarta_Sans'] leading-relaxed marker:text-neutral-400">
+                <ul className="list-disc pl-5 md:pl-10 space-y-3 text-[15px] text-[#424242] font-['Plus_Jakarta_Sans'] leading-relaxed marker:text-neutral-400">
                   {missionItems.map((item, i) => (
                     <li key={i}>{item}</li>
                   ))}
                 </ul>
               </div>
             </div>
-         </div>
+         </FadeUp>
 
-         <div className="max-w-[1152px] w-full flex flex-col items-center gap-12">
-            <div className="text-center flex flex-col gap-4">
+         <div className="max-w-[1152px] w-full flex flex-col items-center gap-10">
+            <FadeUp delay={0.1} className="text-center flex flex-col gap-3">
               <h2 className="text-[#1E1E1E] text-3xl font-extrabold font-['Plus_Jakarta_Sans']">Fondasi Utama Keunggulan Kami</h2>
               <p className="text-[#757575] text-[15px] font-normal font-['Plus_Jakarta_Sans'] max-w-2xl mx-auto leading-relaxed">
                 Nilai-nilai ini adalah inti dari setiap keputusan, desain, dan struktur yang kami bangun. Ini adalah prinsip yang memandu langkah kami untuk selalu memberikan yang terbaik.
               </p>
-            </div>
+            </FadeUp>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[900px]">
+            <FadeUp delay={0.2} className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[900px]">
               <div className="flex gap-5">
                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center shrink-0">
                   <span className="text-xl">🛡️</span>
@@ -132,7 +134,7 @@ export default function TentangKamiPage() {
                   <p className="text-sm text-[#757575] font-['Plus_Jakarta_Sans'] leading-relaxed">Kami percaya bahwa kolaborasi yang kuat antar tim adalah kunci keberhasilan setiap proyek yang kami kerjakan.</p>
                 </div>
               </div>
-            </div>
+            </FadeUp>
          </div>
 
       </section>
