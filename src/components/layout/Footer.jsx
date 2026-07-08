@@ -45,9 +45,14 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3 max-w-xs">
           <h4 className="text-white text-base font-bold font-['Plus_Jakarta_Sans']">Lokasi</h4>
-          <p className="text-white/80 text-[13px] font-['Plus_Jakarta_Sans'] leading-relaxed">
-            Jl. Karangrejo Barat No 09. RT. 02 RW. 02 (Kp. Pentul), Tinjomoyo, Semarang
-          </p>
+          <a 
+            href="https://maps.google.com/?q=Jl.+Karangrejo+Barat+No+09.+RT.+02+RW.+02+(Kp.+Pentul),+Tinjomoyo,+Semarang" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-white/80 hover:text-white text-[13px] font-['Plus_Jakarta_Sans'] leading-relaxed transition-colors hover:underline"
+          >
+            Jl. Karangrejo Barat No 09. RT. 02 RW. 02 (Kp. Pentul), Tinjomoyo, Semarang 🗺️
+          </a>
           <div className="mt-auto pt-4">
             <p className="text-white/60 text-[11px] font-['Plus_Jakarta_Sans']">
               © 2026 PT. Sinar Cerah Sempurna. All rights reserved.

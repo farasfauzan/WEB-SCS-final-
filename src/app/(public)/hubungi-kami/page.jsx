@@ -68,7 +68,14 @@ export default function HubungiKamiPage() {
             
             <div className="flex flex-col gap-1">
               <h3 className="text-white text-[14px] font-bold font-['Plus_Jakarta_Sans']">Alamat</h3>
-              <p className="text-white/80 text-[14px] font-['Plus_Jakarta_Sans'] leading-relaxed">Jl Karangrejo Barat No 9. Tinjomoyo, KOTA SEMARANG</p>
+              <a 
+                href="https://maps.google.com/?q=Jl.+Karangrejo+Barat+No+09.+RT.+02+RW.+02+(Kp.+Pentul),+Tinjomoyo,+Semarang" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-white/80 hover:text-white text-[14px] font-['Plus_Jakarta_Sans'] leading-relaxed transition-colors underline"
+              >
+                Jl Karangrejo Barat No 9. Tinjomoyo, KOTA SEMARANG 🗺️
+              </a>
             </div>
             
             <div className="flex flex-col gap-1">
