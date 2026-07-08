@@ -185,6 +185,23 @@ function checkSmallTalk(input) {
 }
 
 // ═══════════════════════════════════════════════════════════
+// EASTER EGG 🥚
+// ═══════════════════════════════════════════════════════════
+
+const EASTER_EGG = {
+  patterns: ["pembuat", "developer", "bikin web", "buat web", "siapa yang buat", "siapa yang bikin", "creator", "dibuat oleh", "dibikin", "programmer", "tim developer", "web developer"],
+  response: {
+    text: "🎉 Easter egg unlocked!\n\nWebsite ini dibuat dengan ❤️ oleh tim developer keren ini:\n\n👨‍💻 Tim Web Developer SCS\n\nMereka adalah otak di balik layar yang membangun website PT Sinar Cerah Sempurna dari nol! 🚀",
+    image: "/team-photo.jpg"
+  }
+};
+
+function checkEasterEgg(input) {
+  const lower = input.toLowerCase();
+  return EASTER_EGG.patterns.some(p => lower.includes(p));
+}
+
+// ═══════════════════════════════════════════════════════════
 // FALLBACK RESPONSES
 // ═══════════════════════════════════════════════════════════
 
@@ -195,6 +212,11 @@ const FALLBACK_RESPONSES = [
 ];
 
 function generateResponse(input) {
+  // 0. Check easter egg 🥚
+  if (checkEasterEgg(input)) {
+    return { type: "easter_egg", ...EASTER_EGG.response };
+  }
+
   // 1. Check small talk
   const smallTalk = checkSmallTalk(input);
   if (smallTalk) return smallTalk;
@@ -229,13 +251,17 @@ export default function ChatbotButton() {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const addBotMessage = (text) => {
+  const addBotMessage = (response) => {
     setIsTyping(true);
-    // Dynamic delay based on response length
-    const delay = Math.min(400 + text.length * 2, 1500);
+    const textLength = typeof response === "string" ? response.length : response.text.length;
+    const delay = Math.min(400 + textLength * 2, 1500);
     setTimeout(() => {
       setIsTyping(false);
-      setMessages(prev => [...prev, { type: "bot", text }]);
+      if (typeof response === "object" && response.type === "easter_egg") {
+        setMessages(prev => [...prev, { type: "bot", text: response.text, image: response.image }]);
+      } else {
+        setMessages(prev => [...prev, { type: "bot", text: typeof response === "string" ? response : response.text }]);
+      }
     }, delay);
   };
 
@@ -317,6 +343,13 @@ export default function ChatbotButton() {
                       : "bg-white text-[#1E1E1E] border border-neutral-200 rounded-bl-md shadow-sm"
                   }`}>
                     {msg.text}
+                    {msg.image && (
+                      <img 
+                        src={msg.image} 
+                        alt="Tim Developer" 
+                        className="w-full rounded-xl mt-2 shadow-md border border-neutral-100" 
+                      />
+                    )}
                   </div>
                 </motion.div>
               ))}
