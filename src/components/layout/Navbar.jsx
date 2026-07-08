@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-export default function Navbar() {
+export default function Navbar({ settings = {} }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFloating, setIsFloating] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
@@ -33,10 +33,10 @@ export default function Navbar() {
 
   // Data Menu Dropdown menggunakan SVG dari public folder
   const utilityMenu = [
-    { name: "YouTube", href: "https://www.youtube.com/@sinarcerahsempurna8137", icon: "/menu-youtube.svg" },
-    { name: "Portal Aplikasi", href: "/portal-aplikasi", icon: "/menu-aplikasi-scs.svg" },
-    { name: "SOP", href: "/sop", icon: "/menu-sop.svg" },
-    { name: "Anak Perusahaan", href: "/anak-perusahaan", icon: "/menu-anak-perusahaan.svg" }
+    { name: "YouTube", href: settings.youtube_url || "https://www.youtube.com/@sinarcerahsempurna8137", icon: "/menu-youtube.svg" },
+    { name: "Portal Aplikasi", href: settings.portal_app_url || "/portal-aplikasi", icon: "/menu-aplikasi-scs.svg" },
+    { name: "SOP", href: settings.sop_url || "/sop", icon: "/menu-sop.svg" },
+    { name: "Anak Perusahaan", href: settings.anak_perusahaan_url || "/anak-perusahaan", icon: "/menu-anak-perusahaan.svg" }
   ];
 
   return (
@@ -47,8 +47,11 @@ export default function Navbar() {
         
         <Link href="/" className="flex items-center gap-3 group shrink-0">
           <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
-          <span className={`font-extrabold font-['Plus_Jakarta_Sans'] tracking-wide text-lg md:text-xl transition-colors duration-500 ${textColor}`}>
-            Sinar Cerah Sempurna
+          <span 
+            style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}
+            className={`font-bold tracking-wide text-lg md:text-xl transition-colors duration-500 ${textColor}`}
+          >
+            {settings.company_name ? `PT. ${settings.company_name}` : "PT. Sinar Cerah Sempurna"}
           </span>
         </Link>
  
