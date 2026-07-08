@@ -36,6 +36,23 @@ function BeritaContent() {
   const heroTitle = heroData?.title || "Kilas Balik & Berita Terkini";
   const heroDesc = heroData?.description || "Simak perjalanan dan perkembangan terbaru dari proyek-proyek strategis kami. Informasi seputar kemajuan, kolaborasi, dan dedikasi kami dalam menghadirkan solusi konstruksi berkualitas di Indonesia.";
 
+  // Fungsi untuk mengubah **teks** menjadi warna kuning
+  const formatYellowText = (text) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    
+    return parts.map((part, index) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <span key={index} className="text-[#FFD700]">
+            {part.replace(/\*\*/g, "")}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   const filteredNews = allNews.filter((news) => {
     return (
       news.title?.toLowerCase().includes(query) || 
@@ -55,12 +72,13 @@ function BeritaContent() {
         <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col gap-[clamp(0.75rem,2vh,1.25rem)] mt-10">
           <FadeUp delay={0.1}>
             <h1 className="text-white text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
-              {heroTitle}
+              {formatYellowText(heroTitle)}
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
+            {/* formatYellowText diterapkan pada Deskripsi */}
             <p className="text-white/90 text-[clamp(0.9rem,1.5vw,1.1rem)] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[800px] mx-auto">
-              {heroDesc}
+              {formatYellowText(heroDesc)}
             </p>
           </FadeUp>
         </div>

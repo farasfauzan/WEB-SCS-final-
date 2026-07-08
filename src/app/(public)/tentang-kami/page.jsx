@@ -22,7 +22,7 @@ export default function TentangKamiPage() {
       .catch(() => {});
   }, []);
 
-  const heroTitle = heroData?.title?.replace(/\*\*/g, "") || "Membangun dengan Kepercayaan, Berkarya dengan Kualitas.";
+  const heroTitle = heroData?.title || "Membangun dengan Kepercayaan, Berkarya dengan Kualitas.";
   const heroDesc = heroData?.subtitle || heroData?.description || "Berpegang teguh pada motto \"Memberi Kepuasan Kepada Relasi\", kami terus membangun kepercayaan dalam industri konstruksi melalui dedikasi tinggi. Komitmen ini kami wujudkan dengan konsisten meningkatkan kompetensi Sumber Daya Manusia agar selalu terampil dan profesional.";
 
   const aboutTitle = aboutData?.title || "Tentang PT Sinar Cerah Sempurna";
@@ -40,6 +40,23 @@ export default function TentangKamiPage() {
         "Berkontribusi pada pembangunan berkelanjutan infrastruktur dan lingkungan binaan Indonesia."
       ];
 
+  // Fungsi untuk mengubah **teks** menjadi warna kuning
+  const formatYellowText = (text) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    
+    return parts.map((part, index) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <span key={index} className="text-[#FFD700]">
+            {part.replace(/\*\*/g, "")}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   return (
     <main className="w-full bg-[#F1F1F1] min-h-screen pb-24">
       
@@ -53,12 +70,13 @@ export default function TentangKamiPage() {
         <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col items-center gap-[clamp(0.75rem,2vh,1.25rem)] mt-10">
           <FadeUp delay={0.1}>
             <h1 className="text-white text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] leading-tight whitespace-pre-line">
-              {heroTitle}
+              {formatYellowText(heroTitle)}
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
+            {/* formatYellowText diterapkan pada Deskripsi */}
             <p className="text-white/90 text-[clamp(0.9rem,1.5vw,1.1rem)] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[850px]">
-              {heroDesc}
+              {formatYellowText(heroDesc)}
             </p>
           </FadeUp>
         </div>
@@ -106,7 +124,6 @@ export default function TentangKamiPage() {
 
             <FadeUp delay={0.2} className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[900px]">
               <div className="flex gap-5">
-                {/* Diubah jadi grayscale */}
                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center shrink-0 grayscale opacity-80 transition-all duration-300 hover:grayscale-0">
                   <span className="text-xl">🛡️</span>
                 </div>
@@ -116,7 +133,6 @@ export default function TentangKamiPage() {
                 </div>
               </div>
               <div className="flex gap-5">
-                {/* Diubah jadi grayscale */}
                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center shrink-0 grayscale opacity-80 transition-all duration-300 hover:grayscale-0">
                   <span className="text-xl">💎</span>
                 </div>
@@ -126,7 +142,6 @@ export default function TentangKamiPage() {
                 </div>
               </div>
               <div className="flex gap-5">
-                {/* Diubah jadi grayscale */}
                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center shrink-0 grayscale opacity-80 transition-all duration-300 hover:grayscale-0">
                   <span className="text-xl">💡</span>
                 </div>
@@ -136,7 +151,6 @@ export default function TentangKamiPage() {
                 </div>
               </div>
               <div className="flex gap-5">
-                {/* Diubah jadi grayscale */}
                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center shrink-0 grayscale opacity-80 transition-all duration-300 hover:grayscale-0">
                   <span className="text-xl">🤝</span>
                 </div>

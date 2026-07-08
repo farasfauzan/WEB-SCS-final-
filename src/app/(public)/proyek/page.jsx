@@ -37,9 +37,8 @@ function ProyekContent() {
       .then((res) => res.json())
       .then((data) => {
         if (data.heroes?.length > 0) {
-          // Menghilangkan tanda ** dari markdown agar sesuai dengan desain UI raw-text milikmu
           setHero({ 
-            title: data.heroes[0].title.replace(/\*\*/g, ""), 
+            title: data.heroes[0].title, 
             desc: data.heroes[0].description 
           });
         }
@@ -60,6 +59,23 @@ function ProyekContent() {
         setTimeout(() => setIsLoading(false), 600);
       });
   }, []); 
+
+  // Fungsi untuk mengubah **teks** menjadi warna kuning
+  const formatYellowText = (text) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    
+    return parts.map((part, index) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <span key={index} className="text-[#FFD700]">
+            {part.replace(/\*\*/g, "")}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
 
   // Filter logika gabungan: Menyaring data dari database berdasarkan filter & pencarian UI-mu
   const filteredProjects = projects.filter((proj) => {
@@ -98,12 +114,13 @@ function ProyekContent() {
         <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col items-center gap-[clamp(0.75rem,2vh,1.25rem)] mt-10">
           <FadeUp delay={0.1}>
             <h1 className="text-white text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
-              {hero.title}
+              {formatYellowText(hero.title)}
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
+            {/* formatYellowText diterapkan pada Deskripsi */}
             <p className="text-white/90 text-[clamp(0.9rem,1.5vw,1.1rem)] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[693px]">
-              {hero.desc}
+              {formatYellowText(hero.desc)}
             </p>
           </FadeUp>
         </div>
