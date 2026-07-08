@@ -30,15 +30,36 @@ export default function SinergiSection() {
         </FadeUp>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-4">
-          {networks.map((item, idx) => (
-            <FadeUp key={idx} delay={0.2 + (idx * 0.1)} className="flex flex-col items-center gap-4 text-center">
-              <div className="w-32 h-32 bg-blue-900 rounded-full flex items-center justify-center overflow-hidden shrink-0">
-                <img src={`https://placehold.co/128x128`} alt="Logo" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-black text-xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">{item.title}</h3>
-              <p className="text-black text-sm font-normal font-['Plus_Jakarta_Sans']">{item.desc}</p>
-            </FadeUp>
-          ))}
+          {networks.map((item, idx) => {
+            const displayName = item.name || item.title || "PT Maharani Globalindo";
+            const logo = item.logoUrl || "/logo-scs.svg"; // Fallback to logo-scs or a nice default
+            const hasLink = !!item.linkUrl;
+            const WrapperComponent = hasLink ? "a" : "div";
+
+            return (
+              <FadeUp key={idx} delay={0.2 + (idx * 0.1)} className="flex flex-col items-center gap-4 text-center">
+                <WrapperComponent 
+                  href={item.linkUrl || undefined}
+                  target={hasLink ? "_blank" : undefined}
+                  rel={hasLink ? "noopener noreferrer" : undefined}
+                  className={`w-32 h-32 bg-white rounded-full flex items-center justify-center overflow-hidden shrink-0 border border-neutral-200 shadow-sm p-4 ${
+                    hasLink ? "hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer" : ""
+                  }`}
+                >
+                  <img src={logo} alt={displayName} className="w-full h-full object-contain" />
+                </WrapperComponent>
+                <h3 className="text-black text-xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
+                  {hasLink ? (
+                    <a href={item.linkUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-900 transition-colors">
+                      {displayName}
+                    </a>
+                  ) : (
+                    displayName
+                  )}
+                </h3>
+              </FadeUp>
+            );
+          })}
         </div>
 
       </div>
