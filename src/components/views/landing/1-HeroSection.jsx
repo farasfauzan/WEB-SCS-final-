@@ -3,8 +3,8 @@ import FadeUp from "@/components/ui/FadeUp";
 
 export default function HeroSection() {
   return (
-    // Lengkungan ditambahkan di sini: rounded-b-[64px]
-    <section className="relative w-full h-screen bg-[#004282] overflow-hidden flex items-center rounded-b-[64px]">
+    // Menggunakan min-h-[100svh] dan py dinamis
+    <section className="relative w-full min-h-[100svh] py-[clamp(4rem,10vh,8rem)] bg-[#004282] overflow-hidden flex items-center rounded-b-[64px]">
       
       {/* Background & Overlay Biru Transparan */}
       <div className="absolute inset-0 z-0">
@@ -23,7 +23,8 @@ export default function HeroSection() {
           </FadeUp>
           
           <FadeUp delay={0.2}>
-            <h1 className="text-white text-5xl md:text-[64px] font-serif leading-[1.05] tracking-tight">
+            {/* Ukuran teks judul menggunakan clamp */}
+            <h1 className="text-white text-[clamp(2.5rem,5vw,4rem)] font-serif leading-[1.05] tracking-tight">
               <span className="text-yellow-400 font-bold italic">Integrity</span> isn&apos;t just a policy—it&apos;s the standard we build by. Your <span className="text-yellow-400 font-bold italic">trust</span> is our greatest structure.
             </h1>
           </FadeUp>

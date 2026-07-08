@@ -11,11 +11,11 @@ export default function NewsPreview() {
   ];
 
   return (
-    <section className="w-full h-full bg-[#F1F1F1] pt-6 pb-12 flex flex-col items-center justify-center px-6">
+    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,8vh,6rem)] flex flex-col items-center justify-center px-6">
       <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
         
-        <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-10">
-          <h2 className="text-black text-3xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans']">Kilas Balik & Berita Terkini</h2>
+        <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-[clamp(2rem,5vh,3rem)]">
+          <h2 className="text-black text-[clamp(1.75rem,3.5vw,2.25rem)] font-extrabold font-['Plus_Jakarta_Sans']">Kilas Balik & Berita Terkini</h2>
           <p className="text-stone-600 text-sm md:text-base font-normal font-['Plus_Jakarta_Sans']">
             Simak perjalanan dan perkembangan terbaru dari proyek-proyek strategis kami serta dedikasi kami dalam menghadirkan solusi konstruksi berkualitas.
           </p>

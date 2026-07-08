@@ -8,7 +8,6 @@ export default function ProjectPreview() {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const categories = ["Semua", "Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Lainnya"];
 
-  // Data tiruan yang siap diganti dari database nanti
   const allProjects = [
     { id: 1, title: "Renovasi Eks Kantor menjadi Gedung Paviliun", category: "Rumah Sakit", location: "RSUD Aji Muhammad Parikesit", client: "Pemkab Kutai Kartanegara", image: "" },
     { id: 2, title: "Pembangunan Gedung Rektorat", category: "Gedung Pendidikan", location: "Universitas Diponegoro", client: "Kemenristekdikti", image: "" },
@@ -17,18 +16,16 @@ export default function ProjectPreview() {
     { id: 5, title: "Renovasi Pasar Johar", category: "Pusat Perbelanjaan", location: "Kota Semarang", client: "Pemkot Semarang", image: "" },
   ];
 
-  // Logika Filter
   const filteredProjects = activeCategory === "Semua" 
     ? allProjects.slice(0, 3) 
     : allProjects.filter(p => p.category === activeCategory).slice(0, 3);
 
   return (
-    // Padding vertikal (py) dikurangi agar sangat padat dan muat 1 layar
-    <section className="w-full h-full bg-[#F1F1F1] py-6 flex flex-col items-center justify-center px-6">
+    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,8vh,6rem)] flex flex-col items-center justify-center px-6">
       <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
         
-        <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-6">
-          <h2 className="text-black text-3xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans']">Visi Kami dalam Karya</h2>
+        <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-[clamp(1.5rem,4vh,2.5rem)]">
+          <h2 className="text-black text-[clamp(1.75rem,3.5vw,2.25rem)] font-extrabold font-['Plus_Jakarta_Sans']">Visi Kami dalam Karya</h2>
           <p className="text-stone-600 text-sm md:text-base font-normal font-['Plus_Jakarta_Sans'] px-4">
             Dedikasi kami tertuang dalam setiap detail proyek. Kami menggabungkan inovasi konstruksi dengan standar kualitas tertinggi.
           </p>
@@ -50,7 +47,6 @@ export default function ProjectPreview() {
           </div>
         </FadeUp>
 
-        {/* Jika kategori tidak ada isinya, munculkan pesan kosong */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mb-4">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((item, idx) => (

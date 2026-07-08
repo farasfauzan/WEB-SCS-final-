@@ -4,17 +4,14 @@ import Link from "next/link";
 
 export default function ContactCTA() {
   return (
-    // Padding disesuaikan untuk Mobile dan Desktop
-    <section className="w-full bg-[#F1F1F1] pt-10 pb-20 md:pt-16 md:pb-32 flex justify-center px-4 md:px-6">
-      <FadeUp delay={0.1} className="w-full max-w-[1152px]">
-        {/* Tinggi tidak dikunci statis, melainkan pakai padding (py-12 md:py-16) */}
-        <div className="w-full py-12 md:py-16 bg-[#004282] rounded-[24px] md:rounded-3xl relative overflow-hidden flex flex-col items-center justify-center shadow-lg">
+    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,10vh,8rem)] flex justify-center px-4 md:px-6">
+      <FadeUp delay={0.1} className="w-full max-w-6xl">
+        <div className="w-full py-[clamp(3rem,8vh,4rem)] bg-[#004282] rounded-[24px] md:rounded-3xl relative overflow-hidden flex flex-col items-center justify-center shadow-lg">
           
-          {/* mix-blend-overlay DIHAPUS agar biru murni #004282 tidak rusak. Hanya pakai opacity-10 */}
           <img src="/bg-hubungi-kami.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-10" />
           
           <div className="relative z-10 flex flex-col items-center gap-4 md:gap-5 px-6">
-            <h2 className="text-white text-3xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans'] text-center leading-snug">
+            <h2 className="text-white text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] text-center leading-snug">
               Siap Mewujudkan Visi Konstruksi Anda
             </h2>
             <p className="text-white text-sm md:text-[15px] font-normal font-['Plus_Jakarta_Sans'] text-center max-w-[693px] leading-relaxed">

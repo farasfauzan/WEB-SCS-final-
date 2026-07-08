@@ -20,11 +20,11 @@ export default function VisiMisiSection() {
   ];
 
   return (
-    <section className="w-full bg-[#F1F1F1] pt-24 pb-10 px-6 flex flex-col items-center">
-      <div className="max-w-7xl mx-auto w-full flex flex-col gap-16 items-center">
+    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,8vh,6rem)] px-6 flex flex-col items-center">
+      <div className="max-w-7xl mx-auto w-full flex flex-col gap-[clamp(2.5rem,6vh,4rem)] items-center">
         
         <FadeUp delay={0.1} className="max-w-3xl text-center flex flex-col gap-4">
-          <h2 className="text-[#1E1E1E] text-4xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
+          <h2 className="text-[#1E1E1E] text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
             Membangun Kualitas <br/>Merajut Masa Depan
           </h2>
           <p className="text-[#757575] text-base font-normal font-['Plus_Jakarta_Sans'] leading-relaxed">
@@ -33,11 +33,10 @@ export default function VisiMisiSection() {
         </FadeUp>
 
         <FadeUp delay={0.2} className="w-full">
-          <div className="bg-[#FFFFFF] rounded-3xl p-8 md:p-12 border border-[#E6E6E6] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="bg-[#FFFFFF] rounded-3xl p-[clamp(1.5rem,4vw,3rem)] border border-[#E6E6E6] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-10">
             {values.map((item, idx) => (
               <div key={idx} className="flex flex-col gap-3">
                 <div className="flex items-center gap-3 mb-2">
-                  {/* Memanggil SVG logovisi dari public folder */}
                   <div className="w-8 h-8 flex items-center justify-center shrink-0">
                     <img src={item.icon} alt={item.title} className="w-full h-full object-contain" />
                   </div>
@@ -45,7 +44,6 @@ export default function VisiMisiSection() {
                     {item.title}
                   </h3>
                 </div>
-                {/* Margin kiri disesuaikan agar teks rata dengan judul */}
                 <p className="text-[#757575] text-sm font-normal font-['Plus_Jakarta_Sans'] leading-relaxed pl-11">
                   {item.desc}
                 </p>
