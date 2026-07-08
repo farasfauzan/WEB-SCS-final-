@@ -1,11 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -17,17 +14,9 @@ enum Role {
   USER
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  companyProfiles CompanyProfile[]
-  news            News[]
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
 }
 
 model Admin {
@@ -38,31 +27,14 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
-model CompanyProfile {
-  id          Int      @id @default(autoincrement())
-  slug        String   @unique
-  name        String
-  tagline     String?
-  description String?
-  logoUrl     String?
-  heroImage   String?
-  address     String?
-  phone       String?
-  email       String?
-  website     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-}
-
 model Hero {
   id          Int      @id @default(autoincrement())
+  page        String   @default("home")
   title       String
   subtitle    String?
   description String?
   imageUrl    String?
+  isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -72,30 +44,9 @@ model About {
   title       String
   subtitle    String?
   content     String?
+  vision      String?
+  mission     String?
   imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Service {
-  id          Int          @id @default(autoincrement())
-  title       String
-  description String
-  icon        String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  subservices Subservice[]
-  projects    Project[]
-}
-
-model Subservice {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  imageUrl    String?
-  serviceId   Int
-  service     Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -104,29 +55,36 @@ model Project {
   id            Int      @id @default(autoincrement())
   title         String
   description   String
-  imageUrl      String?
+  category      String   @default("Lainnya")
+  location      String?
   client        String?
+  imageUrl      String?
   completedDate String?
-  serviceId     Int
-  service       Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  isActive      Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model News {
+  id          Int        @id @default(autoincrement())
+  slug        String     @unique
+  title       String
+  excerpt     String?
+  content     String
+  imageUrl    String?
+  status      NewsStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Partner {
   id        Int      @id @default(autoincrement())
   name      String?
-  logoUrl   String
+  logoUrl   String?
+  linkUrl   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model TimelineEvent {
-  id          Int      @id @default(autoincrement())
-  year        String
-  title       String
-  description String
-  createdAt   DateTime @default(now())
 }
 
 model Contact {
@@ -134,6 +92,7 @@ model Contact {
   label     String
   value     String
   icon      String?
+  type      String   @default("general")
   createdAt DateTime @default(now())
 }
 
@@ -145,16 +104,14 @@ model Statistic {
   createdAt DateTime @default(now())
 }
 
-model UniqueVisitor {
+model Setting {
   id        Int      @id @default(autoincrement())
-  ip        String   @unique
-  lastVisit DateTime
-}
-
-model VisitStats {
-  id             Int @id @default(autoincrement())
-  totalVisits    Int
-  uniqueVisitors Int
+  key       String   @unique
+  value     String
+  label     String?
+  group     String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PageContent {
@@ -167,16 +124,14 @@ model PageContent {
   updatedAt DateTime @updatedAt
 }
 
-model News {
-  id          Int      @id @default(autoincrement())
-  slug        String   @unique
-  title       String
-  excerpt     String?
-  content     String
-  imageUrl    String?
-  publishedAt DateTime?
-  authorId    Int?
-  author      User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model UniqueVisitor {
+  id        Int      @id @default(autoincrement())
+  ip        String   @unique
+  lastVisit DateTime
+}
+
+model VisitStats {
+  id             Int @id @default(autoincrement())
+  totalVisits    Int
+  uniqueVisitors Int
 }

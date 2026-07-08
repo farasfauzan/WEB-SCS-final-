@@ -1,12 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import FadeUp from "@/components/ui/FadeUp";
 import ProjectCard from "@/components/shared/ProjectCard";
 import Pagination from "@/components/shared/Pagination";
 import ProjectSkeleton from "@/components/ui/ProjectSkeleton"; 
 
-export default function ProyekPage() {
+// Bungkus komponen utama agar useSearchParams aman di Next.js
+function ProyekContent() {
   const searchParams = useSearchParams();
   const currentPage = searchParams.get("page") || "1";
 
@@ -15,6 +16,13 @@ export default function ProyekPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [prevPage, setPrevPage] = useState(currentPage);
 
+  // State untuk menyimpan data dari Database Backend
+  const [projects, setProjects] = useState([]);
+  const [hero, setHero] = useState({
+    title: "Visi Kami dalam Karya",
+    desc: "Dedikasi kami tertuang dalam setiap detail proyek. Kami menggabungkan inovasi konstruksi dengan standar kualitas tertinggi untuk menghadirkan bangunan yang bukan sekadar fungsional, namun inspiratif."
+  });
+
   if (currentPage !== prevPage) {
     setPrevPage(currentPage);
     setIsLoading(true);
@@ -22,36 +30,61 @@ export default function ProyekPage() {
   
   const categories = ["Semua", "Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Lainnya"];
 
-  const allProjects = [
-    { id: 1, title: "Renovasi Eks Kantor menjadi Gedung Paviliun", category: "Rumah Sakit", location: "RSUD Aji Muhammad Parikesit", client: "Pemkab Kutai Kartanegara", image: "/hero-bg.svg" },
-    { id: 2, title: "Pembangunan Gedung Rektorat", category: "Gedung Pendidikan", location: "Universitas Diponegoro", client: "Kemenristekdikti", image: "" },
-    { id: 3, title: "Ekspansi Mall Central", category: "Pusat Perbelanjaan", location: "Semarang Tengah", client: "PT Retail Indo", image: "" },
-    { id: 4, title: "Klinik Utama Sehat", category: "Rumah Sakit", location: "Semarang Selatan", client: "Dinas Kesehatan", image: "" },
-    { id: 5, title: "Renovasi Pasar Johar", category: "Pusat Perbelanjaan", location: "Kota Semarang", client: "Pemkot Semarang", image: "" },
-    { id: 6, title: "Pembangunan Jembatan Tol", category: "Lainnya", location: "Jawa Tengah", client: "Kementerian PUPR", image: "" },
-  ];
+  // Mengambil data dari API backend saat halaman pertama kali dimuat
+  useEffect(() => {
+    // 1. Ambil data teks Hero
+    fetch("/api/hero?page=projects")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.heroes?.length > 0) {
+          // Menghilangkan tanda ** dari markdown agar sesuai dengan desain UI raw-text milikmu
+          setHero({ 
+            title: data.heroes[0].title.replace(/\*\*/g, ""), 
+            desc: data.heroes[0].description 
+          });
+        }
+      })
+      .catch(() => {});
 
-  const filteredProjects = allProjects.filter((proj) => {
+    // 2. Ambil data Proyek
+    fetch("/api/project")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.projects?.length > 0) {
+          setProjects(data.projects);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        // Setelah data selesai diambil, beri jeda sedikit agar animasi skeleton UI-mu terlihat smooth
+        setTimeout(() => setIsLoading(false), 600);
+      });
+  }, []); 
+
+  // Filter logika gabungan: Menyaring data dari database berdasarkan filter & pencarian UI-mu
+  const filteredProjects = projects.filter((proj) => {
     const matchCategory = activeFilter === "Semua" || proj.category === activeFilter;
     const lowerCaseQuery = searchQuery.toLowerCase();
+    
+    // Defensive check (berjaga-jaga jika ada data kosong dari database)
+    const title = proj.title?.toLowerCase() || "";
+    const location = proj.location?.toLowerCase() || "";
+    const client = proj.client?.toLowerCase() || "";
+
     const matchSearch = 
-      proj.title.toLowerCase().includes(lowerCaseQuery) ||
-      proj.location.toLowerCase().includes(lowerCaseQuery) ||
-      proj.client.toLowerCase().includes(lowerCaseQuery);
+      title.includes(lowerCaseQuery) ||
+      location.includes(lowerCaseQuery) ||
+      client.includes(lowerCaseQuery);
+      
     return matchCategory && matchSearch;
   });
-
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => setIsLoading(false), 800);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]); 
 
   const handleFilterChange = (cat) => {
     if (cat === activeFilter) return; 
     setActiveFilter(cat);
     setIsLoading(true);
+    // Efek skeleton muncul sebentar saat pindah kategori
+    setTimeout(() => setIsLoading(false), 500);
   };
 
   return (
@@ -59,18 +92,18 @@ export default function ProyekPage() {
       
       <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
         <div className="absolute inset-0 z-0">
-          <img src="/hero-bg.svg" alt="Background Proyek" className="w-full h-full object-cover" />
+          <img src="/carousel3.svg" alt="Background Proyek" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#004282]/85"></div>
         </div>
         <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col items-center gap-[clamp(0.75rem,2vh,1.25rem)] mt-10">
           <FadeUp delay={0.1}>
             <h1 className="text-white text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
-              Visi Kami dalam Karya
+              {hero.title}
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="text-white/90 text-[clamp(0.9rem,1.5vw,1.1rem)] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed max-w-[693px]">
-              Dedikasi kami tertuang dalam setiap detail proyek. Kami menggabungkan inovasi konstruksi dengan standar kualitas tertinggi untuk menghadirkan bangunan yang bukan sekadar fungsional, namun inspiratif.
+              {hero.desc}
             </p>
           </FadeUp>
         </div>
@@ -133,5 +166,14 @@ export default function ProyekPage() {
       </section>
 
     </main>
+  );
+}
+
+// Mengekspor komponen dengan Suspense sebagai standar keamanan Next.js
+export default function ProyekPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#F1F1F1]" />}>
+      <ProyekContent />
+    </Suspense>
   );
 }

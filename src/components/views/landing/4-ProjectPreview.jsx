@@ -1,27 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
 import ProjectCard from "@/components/shared/ProjectCard";
 import Link from "next/link";
 
+const FALLBACK_PROJECTS = [
+  { id: 1, title: "Renovasi Eks Kantor menjadi Gedung Paviliun", category: "Rumah Sakit", location: "RSUD Aji Muhammad Parikesit", client: "Pemkab Kutai Kartanegara", image: "" },
+  { id: 2, title: "Pembangunan Gedung Rektorat", category: "Gedung Pendidikan", location: "Universitas Diponegoro", client: "Kemenristekdikti", image: "" },
+  { id: 3, title: "Ekspansi Mall Central", category: "Pusat Perbelanjaan", location: "Semarang Tengah", client: "PT Retail Indo", image: "" },
+  { id: 4, title: "Klinik Utama Sehat", category: "Rumah Sakit", location: "Semarang Selatan", client: "Dinas Kesehatan", image: "" },
+  { id: 5, title: "Renovasi Pasar Johar", category: "Pusat Perbelanjaan", location: "Kota Semarang", client: "Pemkot Semarang", image: "" },
+];
+
 export default function ProjectPreview() {
   const [activeCategory, setActiveCategory] = useState("Semua");
+  const [allProjects, setAllProjects] = useState(FALLBACK_PROJECTS);
   const categories = ["Semua", "Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Lainnya"];
 
-  const allProjects = [
-    { id: 1, title: "Renovasi Eks Kantor menjadi Gedung Paviliun", category: "Rumah Sakit", location: "RSUD Aji Muhammad Parikesit", client: "Pemkab Kutai Kartanegara", image: "" },
-    { id: 2, title: "Pembangunan Gedung Rektorat", category: "Gedung Pendidikan", location: "Universitas Diponegoro", client: "Kemenristekdikti", image: "" },
-    { id: 3, title: "Ekspansi Mall Central", category: "Pusat Perbelanjaan", location: "Semarang Tengah", client: "PT Retail Indo", image: "" },
-    { id: 4, title: "Klinik Utama Sehat", category: "Rumah Sakit", location: "Semarang Selatan", client: "Dinas Kesehatan", image: "" },
-    { id: 5, title: "Renovasi Pasar Johar", category: "Pusat Perbelanjaan", location: "Kota Semarang", client: "Pemkot Semarang", image: "" },
-  ];
+  useEffect(() => {
+    fetch("/api/project")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.projects?.length > 0) {
+          setAllProjects(data.projects);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredProjects = activeCategory === "Semua" 
     ? allProjects.slice(0, 3) 
     : allProjects.filter(p => p.category === activeCategory).slice(0, 3);
 
   return (
-    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,8vh,6rem)] flex flex-col items-center justify-center px-6">
+    <section className="w-full bg-[#F1F1F1] pt-[clamp(1.5rem,4vh,3rem)] pb-[clamp(3rem,8vh,6rem)] flex flex-col items-center justify-center px-6">
       <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
         
         <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-[clamp(1.5rem,4vh,2.5rem)]">
@@ -61,7 +73,7 @@ export default function ProjectPreview() {
           )}
         </div>
 
-        <FadeUp delay={0.6} className="w-full flex justify-end">
+        <FadeUp delay={0.3} className="w-full flex justify-end">
           <Link href="/proyek" className="inline-flex items-center gap-1 text-sky-700 hover:text-sky-900 font-bold text-xs md:text-sm font-['Plus_Jakarta_Sans'] transition-colors">
             Lihat Semua 
             <svg className="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>

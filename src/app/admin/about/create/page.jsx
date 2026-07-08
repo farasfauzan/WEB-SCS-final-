@@ -1,0 +1,109 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import ImageUpload from "@/components/admin/ImageUpload";
+
+export default function CreateAboutPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    title: "",
+    subtitle: "",
+    content: "",
+    vision: "",
+    mission: "",
+    imageUrl: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/about", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error((await res.json()).error);
+      router.push("/admin/about");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  return (
+    <div className="max-w-3xl mx-auto space-y-6">
+      <div className="flex items-center gap-3">
+        <Link href="/admin/about" className="text-gray-400 hover:text-gray-600">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </Link>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Create About Page</h1>
+          <p className="text-gray-500 text-sm mt-1">Add about page content with vision & mission</p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
+        {error && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg">{error}</div>}
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Title *</label>
+            <input type="text" name="title" value={form.title} onChange={handleChange} required
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Subtitle</label>
+            <input type="text" name="subtitle" value={form.subtitle} onChange={handleChange}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">Content</label>
+          <textarea name="content" value={form.content} onChange={handleChange} rows={4}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm resize-none" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Vision</label>
+            <textarea name="vision" value={form.vision} onChange={handleChange} rows={3}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm resize-none" />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Mission</label>
+            <textarea name="mission" value={form.mission} onChange={handleChange} rows={3}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm resize-none" />
+          </div>
+        </div>
+
+        <ImageUpload
+          currentImage={form.imageUrl}
+          onImageChange={(url) => setForm((prev) => ({ ...prev, imageUrl: url }))}
+          label="About Image"
+        />
+
+        <div className="flex gap-3 pt-2">
+          <button type="submit" disabled={loading}
+            className="bg-[#004282] text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors disabled:opacity-50">
+            {loading ? "Creating..." : "Create About"}
+          </button>
+          <Link href="/admin/about"
+            className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
+            Cancel
+          </Link>
+        </div>
+      </form>
+    </div>
+  );
+}

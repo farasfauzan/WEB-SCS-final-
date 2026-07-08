@@ -69,7 +69,8 @@ export default function Navbar() {
         
         <Link href="/" className="flex items-center gap-3 group shrink-0">
           <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
-          <span className={`font-extrabold font-['Plus_Jakarta_Sans'] tracking-wide text-lg md:text-xl transition-colors duration-500 ${textColor}`}>
+          {/* FONT COMIC SANS DIMASUKKAN DI SINI */}
+          <span className={`font-extrabold font-['Comic_Sans_MS',_cursive] tracking-wide text-lg md:text-xl transition-colors duration-500 ${textColor}`}>
             Sinar Cerah Sempurna
           </span>
         </Link>

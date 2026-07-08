@@ -4,7 +4,8 @@ import Link from "next/link";
 
 export default function ContactCTA() {
   return (
-    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,10vh,8rem)] flex justify-center px-4 md:px-6">
+    // Padding Atas (pt) diperkecil agar menempel rapi dengan SinergiSection
+    <section className="w-full bg-[#F1F1F1] pt-[clamp(1.5rem,4vh,3rem)] pb-[clamp(3rem,10vh,8rem)] flex justify-center px-4 md:px-6">
       <FadeUp delay={0.1} className="w-full max-w-6xl">
         <div className="w-full py-[clamp(3rem,8vh,4rem)] bg-[#004282] rounded-[24px] md:rounded-3xl relative overflow-hidden flex flex-col items-center justify-center shadow-lg">
           

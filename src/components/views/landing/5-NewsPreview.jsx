@@ -1,17 +1,31 @@
 "use client";
+import { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
 import NewsCard from "@/components/shared/NewsCard";
 import Link from "next/link";
 
+const FALLBACK_NEWS = [
+  { id: 1, title: "Peresmian Kantor Baru PT Sinar Cerah Sempurna", desc: "Peresmian kantor baru ini tidak hanya menandai bertambahnya fasilitas operasional perusahaan, tetapi juga langkah awal menuju ekspansi besar.", image: "" },
+  { id: 2, title: "Penghargaan Kontraktor Terbaik 2025", desc: "SCS berhasil meraih penghargaan nasional berkat komitmen pada standar keselamatan dan kualitas struktur yang tak kenal kompromi.", image: "" },
+  { id: 3, title: "Penerapan Beton Ramah Lingkungan", desc: "Dalam proyek terbaru, kami mulai mengimplementasikan penggunaan material konstruksi hijau untuk mendukung kelestarian ekosistem alam.", image: "" }
+];
+
 export default function NewsPreview() {
-  const previewNews = [
-    { id: 1, title: "Peresmian Kantor Baru PT Sinar Cerah Sempurna", desc: "Peresmian kantor baru ini tidak hanya menandai bertambahnya fasilitas operasional perusahaan, tetapi juga langkah awal menuju ekspansi besar.", image: "" },
-    { id: 2, title: "Penghargaan Kontraktor Terbaik 2025", desc: "SCS berhasil meraih penghargaan nasional berkat komitmen pada standar keselamatan dan kualitas struktur yang tak kenal kompromi.", image: "" },
-    { id: 3, title: "Penerapan Beton Ramah Lingkungan", desc: "Dalam proyek terbaru, kami mulai mengimplementasikan penggunaan material konstruksi hijau untuk mendukung kelestarian ekosistem alam.", image: "" }
-  ];
+  const [previewNews, setPreviewNews] = useState(FALLBACK_NEWS);
+
+  useEffect(() => {
+    fetch("/api/news?status=PUBLISHED")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.news?.length > 0) {
+          setPreviewNews(data.news.slice(0, 3));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
-    <section className="w-full bg-[#F1F1F1] py-[clamp(3rem,8vh,6rem)] flex flex-col items-center justify-center px-6">
+    <section className="w-full bg-[#F1F1F1] pt-[clamp(3rem,8vh,6rem)] pb-[clamp(1.5rem,4vh,3rem)] flex flex-col items-center justify-center px-6">
       <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
         
         <FadeUp delay={0.1} className="text-center flex flex-col gap-3 max-w-3xl mb-[clamp(2rem,5vh,3rem)]">
@@ -29,7 +43,7 @@ export default function NewsPreview() {
           ))}
         </div>
 
-        <FadeUp delay={0.5} className="w-full flex justify-end">
+        <FadeUp delay={0.2} className="w-full flex justify-end">
           <Link href="/berita" className="inline-flex items-center gap-1 text-sky-700 hover:text-sky-900 font-bold text-xs md:text-sm font-['Plus_Jakarta_Sans'] transition-colors">
             Lihat Semua 
             <svg className="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>

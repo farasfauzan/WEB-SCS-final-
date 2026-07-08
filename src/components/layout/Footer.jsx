@@ -9,7 +9,8 @@ export default function Footer() {
         <div className="flex flex-col gap-3 max-w-xs">
           <div className="flex items-center gap-3">
             <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
-            <span className="text-white text-lg font-bold font-['Plus_Jakarta_Sans']">Sinar Cerah Sempurna</span>
+            {/* FONT COMIC SANS DIMASUKKAN DI SINI */}
+            <span className="text-white text-lg font-bold font-['Comic_Sans_MS',_cursive]">Sinar Cerah Sempurna</span>
           </div>
           <p className="text-white/80 text-[13px] font-['Plus_Jakarta_Sans'] leading-relaxed">
             Perusahaan konstruksi dan infrastruktur terpercaya di Indonesia dengan komitmen tinggi pada kualitas dan inovasi.

@@ -1,14 +1,41 @@
 "use client";
+import { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
+import HeroTitle from "@/components/shared/HeroTitle";
+import BoldText from "@/components/shared/BoldText";
 
 export default function HeroSection() {
+  // State bawaan dengan desain fallback milikmu
+  const [hero, setHero] = useState({
+    subtitle: "PT SINAR CERAH SEMPURNA",
+    title: "**Integrity** isn't just a policy—it's the standard we build by. Your **trust** is our greatest structure.",
+    description: "PT Sinar Cerah Sempurna adalah perusahaan konstruksi dan infrastruktur yang berpengalaman dalam pembangunan gedung, jalan, jembatan, dan berbagai proyek infrastruktur lainnya di Indonesia.",
+    imageUrl: "/hero-bg.svg"
+  });
+
+  // Fetch API secara aman di Client-side (mencegah infinite loop)
+  useEffect(() => {
+    fetch("/api/hero?page=home")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.heroes?.length > 0) {
+          setHero({
+            subtitle: data.heroes[0].subtitle || hero.subtitle,
+            title: data.heroes[0].title || hero.title,
+            description: data.heroes[0].description || hero.description,
+            imageUrl: data.heroes[0].imageUrl || hero.imageUrl
+          });
+        }
+      })
+      .catch(() => {});
+  }, []); // Array kosong memastikan ini hanya dipanggil 1 kali!
+
   return (
-    // Menggunakan min-h-[100svh] dan py dinamis
     <section className="relative w-full min-h-[100svh] py-[clamp(4rem,10vh,8rem)] bg-[#004282] overflow-hidden flex items-center rounded-b-[64px]">
       
       {/* Background & Overlay Biru Transparan */}
       <div className="absolute inset-0 z-0">
-        <img src="/hero-bg.svg" alt="Background" className="w-full h-full object-cover" />
+        <img src={hero.imageUrl} alt="Background" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#004282]/85"></div>
       </div>
 
@@ -17,22 +44,26 @@ export default function HeroSection() {
         {/* Kolom Kiri: Teks */}
         <div className="flex flex-col gap-4">
           <FadeUp delay={0.1}>
-            <span className="text-white text-xs md:text-sm font-semibold tracking-widest uppercase">
-              PT SINAR CERAH SEMPURNA
-            </span>
+            <BoldText 
+              text={hero.subtitle} 
+              className="text-white text-xs md:text-sm font-semibold tracking-widest uppercase" 
+              as="span" 
+            />
           </FadeUp>
           
           <FadeUp delay={0.2}>
-            {/* Ukuran teks judul menggunakan clamp */}
-            <h1 className="text-white text-[clamp(2.5rem,5vw,4rem)] font-serif leading-[1.05] tracking-tight">
-              <span className="text-yellow-400 font-bold italic">Integrity</span> isn&apos;t just a policy—it&apos;s the standard we build by. Your <span className="text-yellow-400 font-bold italic">trust</span> is our greatest structure.
-            </h1>
+            <HeroTitle
+              text={hero.title}
+              className="text-white text-[clamp(2.5rem,5vw,4rem)] font-serif leading-[1.05] tracking-tight"
+            />
           </FadeUp>
           
           <FadeUp delay={0.3}>
-            <p className="text-white text-[15px] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed opacity-90 max-w-lg mt-2">
-              PT Sinar Cerah Sempurna adalah perusahaan konstruksi dan infrastruktur yang berpengalaman dalam pembangunan gedung, jalan, jembatan, dan berbagai proyek infrastruktur lainnya di Indonesia.
-            </p>
+            <BoldText 
+              text={hero.description} 
+              className="text-white text-[15px] font-normal font-['Plus_Jakarta_Sans'] leading-relaxed opacity-90 max-w-lg mt-2" 
+              as="p" 
+            />
           </FadeUp>
         </div>
 
