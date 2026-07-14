@@ -58,7 +58,7 @@ export default function DetailProyekPage({ params }) {
 
           <FadeUp delay={0.15} className="w-full rounded-4xl overflow-hidden shadow-md border border-neutral-200 bg-neutral-300 relative">
             <img 
-              src={project.coverImage || project.image || "/carousel3.svg"} 
+              src={project.imageUrl || project.coverImage || project.image || "/carousel3.svg"} 
               alt={project.title} 
               className="w-full h-auto max-h-[55vh] object-cover"
             />

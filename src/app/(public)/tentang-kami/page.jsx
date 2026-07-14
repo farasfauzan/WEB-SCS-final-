@@ -96,7 +96,10 @@ export default function TentangKamiPage() {
               </div>
             </div>
          </FadeUp>
+      </section>
 
+      {/* FONDASI UTAMA */}
+      <section className="flex flex-col items-center justify-start py-16 md:py-20 px-6 gap-12 md:gap-16">
          <div className="max-w-[1152px] w-full flex flex-col items-center gap-10">
             <FadeUp delay={0.1} className="text-center flex flex-col gap-3">
               <h2 className="text-[#1E1E1E] text-3xl font-extrabold font-['Plus_Jakarta_Sans']">Fondasi Utama Keunggulan Kami</h2>
