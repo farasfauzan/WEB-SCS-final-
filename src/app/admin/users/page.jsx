@@ -64,7 +64,7 @@ export default function AdminListPage() {
           <tbody>
             {admins.length === 0 ? (
               <tr>
-                <td colSpan={4} className="p-8 text-center text-gray-400">No admin users yet.</td>
+                <td colSpan={4} className="p-8 text-center text-gray-500">No admin users yet.</td>
               </tr>
             ) : (
               admins.map((admin) => (

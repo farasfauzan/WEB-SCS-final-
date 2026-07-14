@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import CldImg from "@/components/shared/CldImg";
 
 // ═══════════════════════════════════════════════════════════
 // KNOWLEDGE BASE — Semua informasi tentang PT Sinar Cerah Sempurna
@@ -428,7 +429,7 @@ export default function ChatbotButton({ settings = {} }) {
                     }`}>
                       {msg.text}
                       {msg.image && (
-                        <img 
+                        <CldImg 
                           src={msg.image} 
                           alt="Tim Developer" 
                           className="w-full rounded-xl mt-2 shadow-md border border-neutral-100" 

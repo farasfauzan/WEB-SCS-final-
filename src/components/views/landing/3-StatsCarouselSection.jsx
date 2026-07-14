@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
+import CldImg from "@/components/shared/CldImg";
 
 export default function StatsCarouselSection() {
   const [stats, setStats] = useState([
@@ -43,7 +44,7 @@ export default function StatsCarouselSection() {
         <div className="animate-infinite-scroll flex gap-6 px-3 hover:[animation-play-state:paused] cursor-pointer">
           {[...carouselImages, ...carouselImages].map((img, idx) => (
             <div key={idx} className="w-96 h-60 bg-white rounded-xl overflow-hidden shrink-0 border border-neutral-200 shadow-sm">
-              <img src={img} alt={`Proyek ${idx}`} className="w-full h-full object-cover" />
+              <CldImg src={img} alt={`Proyek ${idx}`} className="w-full h-full object-cover" loading="lazy" />
             </div>
           ))}
         </div>
@@ -51,7 +52,7 @@ export default function StatsCarouselSection() {
 
       <FadeUp delay={0.3} className="w-full max-w-[1152px] px-6">
         <div className="w-full h-48 bg-[#004282] rounded-3xl relative overflow-hidden flex items-center justify-center shadow-xl">
-          <img src="/bg-carousel.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-90" />
+          <CldImg src="/bg-carousel.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-90" />
           <div className="absolute inset-0 bg-[#004282]/85"></div>
           
           <div className="relative z-10 w-full flex justify-center items-center gap-10 md:gap-20">

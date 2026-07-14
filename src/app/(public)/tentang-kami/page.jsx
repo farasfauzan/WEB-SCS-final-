@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import HeroTitle from "@/components/shared/HeroTitle";
 import BoldText from "@/components/shared/BoldText";
 import FadeUp from "@/components/ui/FadeUp";
+import { IMAGE_SIZES } from "@/lib/cloudinary";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 export default function TentangKamiPage() {
   const [aboutData, setAboutData] = useState(null);
@@ -48,7 +50,7 @@ export default function TentangKamiPage() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
         <div className="absolute inset-0 z-0">
-          <img src="/bg-hero-tentang-kami.svg" alt="Background Tentang Kami" className="w-full h-full object-cover opacity-30" />
+          <OptimizedImage src={heroData?.imageUrl || "/bg-hero-tentang-kami.svg"} alt="Background Tentang Kami" fill cldOptions={IMAGE_SIZES.hero} className="object-cover opacity-30" />
           <div className="absolute inset-0 bg-[#004282]/85"></div>
         </div>
 

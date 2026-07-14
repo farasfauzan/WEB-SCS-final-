@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
+import { IMAGE_SIZES } from "@/lib/cloudinary";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 export default function SinergiSection() {
   const [networks, setNetworks] = useState(
@@ -49,11 +51,11 @@ export default function SinergiSection() {
                   href={item.linkUrl || undefined}
                   target={hasLink ? "_blank" : undefined}
                   rel={hasLink ? "noopener noreferrer" : undefined}
-                  className={`w-32 h-32 bg-white rounded-full flex items-center justify-center overflow-hidden shrink-0 border border-neutral-200 shadow-sm p-4 ${
+                  className={`relative w-32 h-32 bg-white rounded-full flex items-center justify-center overflow-hidden shrink-0 border border-neutral-200 shadow-sm p-4 ${
                     hasLink ? "hover:scale-105 hover:shadow-md transition-all duration-300 cursor-pointer" : ""
                   }`}
                 >
-                  <img src={logo} alt={displayName} className="w-full h-full object-contain" />
+                  <OptimizedImage src={logo} alt={displayName} fill cldOptions={IMAGE_SIZES.avatar} className="object-contain" />
                 </WrapperComponent>
                 <h3 className="text-black text-xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
                   {hasLink ? (

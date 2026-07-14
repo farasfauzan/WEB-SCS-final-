@@ -7,6 +7,8 @@ import Pagination from "@/components/shared/Pagination";
 import ProjectSkeleton from "@/components/ui/ProjectSkeleton"; 
 import HeroTitle from "@/components/shared/HeroTitle";
 import BoldText from "@/components/shared/BoldText";
+import { IMAGE_SIZES } from "@/lib/cloudinary";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 function ProyekContent() {
   const searchParams = useSearchParams();
@@ -17,7 +19,8 @@ function ProyekContent() {
   const [projects, setProjects] = useState([]);
   const [hero, setHero] = useState({
     title: "**Visi** Kami dalam **Karya**",
-    desc: "Dedikasi kami tertuang dalam setiap detail proyek. Kami menggabungkan inovasi konstruksi dengan standar kualitas tertinggi untuk menghadirkan bangunan yang bukan sekadar fungsional, namun inspiratif."
+    desc: "Dedikasi kami tertuang dalam setiap detail proyek. Kami menggabungkan inovasi konstruksi dengan standar kualitas tertinggi untuk menghadirkan bangunan yang bukan sekadar fungsional, namun inspiratif.",
+    imageUrl: "/carousel3.svg"
   });
   const [isLoading, setIsLoading] = useState(true);
   const [prevPage, setPrevPage] = useState(currentPage);
@@ -37,7 +40,8 @@ function ProyekContent() {
         if (data.heroes?.length > 0) {
           setHero({ 
             title: data.heroes[0].title || "**Visi** Kami dalam **Karya**", 
-            desc: data.heroes[0].description || "Dedikasi kami tertuang dalam setiap detail proyek."
+            desc: data.heroes[0].description || "Dedikasi kami tertuang dalam setiap detail proyek.",
+            imageUrl: data.heroes[0].imageUrl || "/carousel3.svg"
           });
         }
       })
@@ -89,7 +93,7 @@ function ProyekContent() {
       
       <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
         <div className="absolute inset-0 z-0">
-          <img src="/carousel3.svg" alt="Background Proyek" className="w-full h-full object-cover" />
+          <OptimizedImage src={hero.imageUrl} alt="Background Proyek" fill priority cldOptions={IMAGE_SIZES.hero} className="object-cover" />
           <div className="absolute inset-0 bg-[#004282]/85"></div>
         </div>
 

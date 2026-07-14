@@ -58,7 +58,7 @@ export default function CreateNewsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/admin/news" className="text-gray-400 hover:text-gray-600">
+        <Link href="/admin/news" className="text-gray-500 hover:text-gray-700">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -82,7 +82,7 @@ export default function CreateNewsPage() {
           <label className="block text-sm font-semibold text-gray-700 mb-1">Slug</label>
           <input type="text" name="slug" value={form.slug} onChange={handleChange} required
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
-          <p className="text-xs text-gray-400 mt-1">Auto-generated from title. Must be unique.</p>
+          <p className="text-xs text-gray-500 mt-1">Auto-generated from title. Must be unique.</p>
         </div>
 
         <div>

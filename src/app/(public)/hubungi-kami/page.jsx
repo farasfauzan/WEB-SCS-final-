@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
+import CldImg from "@/components/shared/CldImg";
 
 export default function HubungiKamiPage() {
   const [contacts, setContacts] = useState([]);
@@ -42,7 +43,7 @@ export default function HubungiKamiPage() {
     <main className="relative w-full min-h-screen flex flex-col items-center justify-center bg-[#004282] pt-28 pb-16 px-6">
       
       <div className="absolute inset-0 z-0">
-        <img src="/hero-bg.svg" alt="Background Hubungi Kami" className="w-full h-full object-cover" />
+        <CldImg src="/hero-bg.svg" alt="Background Hubungi Kami" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#004282]/85"></div>
       </div>
 

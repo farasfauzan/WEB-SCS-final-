@@ -1,6 +1,7 @@
 "use client";
 import FadeUp from "@/components/ui/FadeUp";
 import Link from "next/link";
+import CldImg from "@/components/shared/CldImg";
 
 export default function ContactCTA() {
   return (
@@ -9,7 +10,7 @@ export default function ContactCTA() {
       <FadeUp delay={0.1} className="w-full max-w-6xl">
         <div className="w-full py-[clamp(3rem,8vh,4rem)] bg-[#004282] rounded-[24px] md:rounded-3xl relative overflow-hidden flex flex-col items-center justify-center shadow-lg">
           
-          <img src="/bg-hubungi-kami.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-10" />
+          <CldImg src="/bg-hubungi-kami.svg" alt="Pattern" className="absolute inset-0 w-full h-full object-cover opacity-10" />
           
           <div className="relative z-10 flex flex-col items-center gap-4 md:gap-5 px-6">
             <h2 className="text-white text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold font-['Plus_Jakarta_Sans'] text-center leading-snug">

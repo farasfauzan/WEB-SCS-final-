@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import CldImg from "@/components/shared/CldImg";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
@@ -39,12 +40,12 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-[#004282] flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
-        <img src="/hero-bg.svg" alt="" className="w-full h-full object-cover" />
+        <CldImg src="/hero-bg.svg" alt="" className="w-full h-full object-cover" />
       </div>
 
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
-          <img src="/logo-scs.svg" alt="SCS Logo" className="w-16 h-16 mx-auto mb-4" />
+          <CldImg src="/logo-scs.svg" alt="SCS Logo" className="w-16 h-16 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-white">SCS Admin Panel</h1>
           <p className="text-white/70 text-sm mt-1">Masuk untuk mengelola website</p>
         </div>

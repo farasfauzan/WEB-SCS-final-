@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import CldImg from "@/components/shared/CldImg";
 
 export default function Navbar({ settings = {} }) {
   const pathname = usePathname();
@@ -68,7 +69,7 @@ export default function Navbar({ settings = {} }) {
       <nav className={`pointer-events-auto flex items-center justify-between w-full h-12 px-6 md:px-8 rounded-full transition-all duration-500 ease-in-out ${navBg}`}>
         
         <Link href="/" className="flex items-center gap-3 group shrink-0">
-          <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
+          <CldImg src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
           <span 
             style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}
             className={`font-bold tracking-wide text-lg md:text-xl transition-colors duration-500 ${textColor}`}
@@ -123,7 +124,7 @@ export default function Navbar({ settings = {} }) {
                     rel={isExternal ? "noopener noreferrer" : undefined}
                     className="flex items-center gap-3 px-4 py-3 text-[#004282] text-sm font-semibold font-['Plus_Jakarta_Sans'] hover:bg-sky-50 rounded-xl transition-colors group"
                   >
-                    <img src={item.icon} alt={item.name} className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity object-contain" />
+                    <CldImg src={item.icon} alt={item.name} className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity object-contain" />
                     <span className="group-hover:text-sky-700 transition-colors">{item.name}</span>
                   </LinkComponent>
                 );

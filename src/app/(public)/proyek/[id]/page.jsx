@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
+import { IMAGE_SIZES } from "@/lib/cloudinary";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 export default function DetailProyekPage({ params }) {
   const { id } = React.use(params);
@@ -52,16 +54,21 @@ export default function DetailProyekPage({ params }) {
       <div className="max-w-5xl w-full flex flex-col gap-8">
         
         <section className="w-full flex flex-col gap-4">
-          <FadeUp delay={0.1} className="text-neutral-500 text-xs md:text-sm font-semibold font-['Plus_Jakarta_Sans'] tracking-wide uppercase">
+          <FadeUp delay={0.1} className="text-neutral-600 text-xs md:text-sm font-semibold font-['Plus_Jakarta_Sans'] tracking-wide uppercase">
             Diterbitkan pada: {publishDate}
           </FadeUp>
 
           <FadeUp delay={0.15} className="w-full rounded-4xl overflow-hidden shadow-md border border-neutral-200 bg-neutral-300 relative">
-            <img 
-              src={project.imageUrl || project.coverImage || project.image || "/carousel3.svg"} 
-              alt={project.title} 
-              className="w-full h-auto max-h-[55vh] object-cover"
-            />
+            <div className="relative w-full max-h-[55vh] aspect-[3/2]">
+              <OptimizedImage
+                src={project.imageUrl || project.coverImage || project.image || "/carousel3.svg"}
+                alt={project.title}
+                fill
+                priority
+                cldOptions={IMAGE_SIZES.full}
+                className="object-cover"
+              />
+            </div>
           </FadeUp>
 
           <FadeUp delay={0.2} className="mt-2">
@@ -74,7 +81,7 @@ export default function DetailProyekPage({ params }) {
             
             <FadeUp delay={0.25} className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-neutral-200/60 flex flex-col gap-4 h-full justify-between">
               <div>
-                <h3 className="text-neutral-800 text-lg font-bold font-['Plus_Jakarta_Sans'] mb-2">Deskripsi Kerja</h3>
+                <h2 className="text-neutral-800 text-lg font-bold font-['Plus_Jakarta_Sans'] mb-2">Deskripsi Kerja</h2>
                 <p className="text-neutral-600 text-sm md:text-[15px] font-['Plus_Jakarta_Sans'] leading-relaxed whitespace-pre-line">
                   {project.description || project.desc || "Tidak ada deskripsi tambahan untuk proyek ini."}
                 </p>
@@ -82,20 +89,20 @@ export default function DetailProyekPage({ params }) {
 
               <div className="grid grid-cols-2 gap-4 border-t border-neutral-100 pt-4 mt-4 text-xs md:text-sm">
                 <div>
-                  <span className="text-neutral-400 block font-['Plus_Jakarta_Sans']">Klien:</span>
+                  <span className="text-neutral-600 block font-['Plus_Jakarta_Sans']">Klien:</span>
                   <span className="text-neutral-800 font-bold font-['Plus_Jakarta_Sans']">{project.client || "-"}</span>
                 </div>
                 <div>
-                  <span className="text-neutral-400 block font-['Plus_Jakarta_Sans']">Kategori:</span>
+                  <span className="text-neutral-600 block font-['Plus_Jakarta_Sans']">Kategori:</span>
                   <span className="text-neutral-800 font-bold font-['Plus_Jakarta_Sans']">{project.category || "-"}</span>
                 </div>
               </div>
             </FadeUp>
 
             <FadeUp delay={0.3} className="bg-white rounded-2xl p-6 shadow-sm border border-neutral-200/60 flex flex-col gap-4 w-full">
-              <h3 className="text-neutral-800 text-lg font-bold font-['Plus_Jakarta_Sans']">Lokasi Proyek</h3>
+              <h2 className="text-neutral-800 text-lg font-bold font-['Plus_Jakarta_Sans']">Lokasi Proyek</h2>
               <div className="flex flex-col gap-1">
-                <span className="text-neutral-400 text-xs font-['Plus_Jakarta_Sans']">Alamat Operasional:</span>
+                <span className="text-neutral-600 text-xs font-['Plus_Jakarta_Sans']">Alamat Operasional:</span>
                 <p className="text-neutral-700 text-sm font-semibold font-['Plus_Jakarta_Sans'] leading-relaxed">
                   {project.location || "Lokasi tidak spesifik"}
                 </p>
@@ -133,11 +140,13 @@ export default function DetailProyekPage({ params }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
               {galleryImages.map((img, idx) => (
                 <FadeUp key={idx} delay={0.15 + (idx * 0.05)}>
-                  <div className="w-full aspect-4/3 bg-white rounded-xl overflow-hidden border border-neutral-200 shadow-sm group cursor-pointer">
-                    <img 
-                      src={img} 
-                      alt={`Dokumentasi ${project.title} - ${idx + 1}`} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  <div className="relative w-full aspect-4/3 bg-white rounded-xl overflow-hidden border border-neutral-200 shadow-sm group cursor-pointer">
+                    <OptimizedImage
+                      src={img}
+                      alt={`Dokumentasi ${project.title} - ${idx + 1}`}
+                      fill
+                      cldOptions={IMAGE_SIZES.preview}
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                 </FadeUp>

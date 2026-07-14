@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import CldImg from "@/components/shared/CldImg";
 
 const QUICK_LINKS = [
   { label: "Hero Section", href: "/admin/hero", icon: "/icons/hero.svg" },
@@ -83,8 +84,8 @@ export default function AdminDashboard() {
       {/* Welcome */}
       <div className="bg-gradient-to-r from-[#004282] to-[#003366] rounded-2xl p-6 text-white shadow-lg">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-            <img src="/logo-scs.svg" alt="" className="w-7 h-7 brightness-0 invert" />
+          <div className="w-14 h-14 bg-white/90 rounded-2xl flex items-center justify-center shadow-sm">
+            <CldImg src="/logo-scs.svg" alt="" className="w-7 h-7" />
           </div>
           <div>
             <h1 className="text-xl font-bold">Dashboard</h1>
@@ -111,11 +112,11 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-xl bg-[#004282]/10 flex items-center justify-center group-hover:bg-[#004282]/15 transition-colors">
-                      <img src={section.icon} alt="" className="w-5 h-5" />
+                      <CldImg src={section.icon} alt="" className="w-5 h-5" />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-neutral-700">{section.label}</p>
-                      <p className="text-xs text-neutral-400">{section.desc}</p>
+                      <p className="text-xs text-neutral-500">{section.desc}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -139,10 +140,10 @@ export default function AdminDashboard() {
             {visitorCards.map((card) => (
               <div key={card.label} className="p-5 text-center">
                 <div className="w-10 h-10 rounded-xl bg-[#004282]/5 flex items-center justify-center mx-auto mb-2">
-                  <img src={card.icon} alt="" className="w-5 h-5" />
+                  <CldImg src={card.icon} alt="" className="w-5 h-5" />
                 </div>
                 <p className="text-2xl font-bold text-neutral-800">{card.count.toLocaleString("id-ID")}</p>
-                <p className="text-xs text-neutral-400 mt-0.5">{card.label}</p>
+                <p className="text-xs text-neutral-500 mt-0.5">{card.label}</p>
               </div>
             ))}
           </div>
@@ -157,7 +158,7 @@ export default function AdminDashboard() {
               <div className="w-2 h-2 rounded-full bg-[#004282]" />
               <h2 className="text-sm font-bold text-neutral-700">Quick Actions</h2>
             </div>
-            <span className="text-xs text-neutral-400">Navigate to sections</span>
+            <span className="text-xs text-neutral-500">Navigate to sections</span>
           </div>
         </div>
         <div className="p-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -168,7 +169,7 @@ export default function AdminDashboard() {
               className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#004282]/5 hover:border-[#004282]/20 border border-transparent transition-all duration-150 group"
             >
               <div className="w-9 h-9 rounded-lg bg-[#004282]/5 flex items-center justify-center group-hover:bg-[#004282]/10 transition-colors">
-                <img src={link.icon} alt="" className="w-4 h-4" />
+                <CldImg src={link.icon} alt="" className="w-4 h-4" />
               </div>
               <span className="text-xs font-semibold text-neutral-600 group-hover:text-[#004282] transition-colors">{link.label}</span>
             </Link>

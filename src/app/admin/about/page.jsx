@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import CldImg from "@/components/shared/CldImg";
 
 export default function AboutListPage() {
   const [abouts, setAbouts] = useState([]);
@@ -41,7 +42,7 @@ export default function AboutListPage() {
         <div>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-              <img src="/icons/about.svg" alt="" className="w-5 h-5 text-[#004282]" />
+              <CldImg src="/icons/about.svg" alt="" className="w-5 h-5" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-800">About Pages</h1>
@@ -50,7 +51,7 @@ export default function AboutListPage() {
           </div>
         </div>
         <Link href="/admin/about/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
-          <img src="/icons/plus.svg" alt="" className="w-4 h-4 brightness-0 invert" />
+          <CldImg src="/icons/plus.svg" alt="" className="w-4 h-4 brightness-0 invert" />
           Add About
         </Link>
       </div>
@@ -68,7 +69,7 @@ export default function AboutListPage() {
           <tbody>
             {abouts.length === 0 ? (
               <tr>
-                <td colSpan={4} className="p-8 text-center text-gray-400">No about pages yet.</td>
+                <td colSpan={4} className="p-8 text-center text-gray-500">No about pages yet.</td>
               </tr>
             ) : (
               abouts.map((about) => (

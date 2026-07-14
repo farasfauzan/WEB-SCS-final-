@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
+import { handleImageChange, deleteCloudinaryImage } from "@/lib/cloudinary-server";
 
 export async function GET(request, { params }) {
   try {
@@ -21,6 +22,15 @@ export async function PUT(request, { params }) {
 
     const { id } = await params;
     const data = await request.json();
+
+    // 🔥 If imageUrl is being updated, delete the old Cloudinary image
+    if (data.imageUrl) {
+      const existing = await prisma.project.findUnique({ where: { id: Number(id) } });
+      if (existing?.imageUrl) {
+        await handleImageChange(existing.imageUrl, data.imageUrl);
+      }
+    }
+
     const project = await prisma.project.update({
       where: { id: Number(id) },
       data,
@@ -38,6 +48,13 @@ export async function DELETE(request, { params }) {
     }
 
     const { id } = await params;
+
+    // 🔥 Delete associated Cloudinary image before deleting the record
+    const existing = await prisma.project.findUnique({ where: { id: Number(id) } });
+    if (existing?.imageUrl) {
+      await deleteCloudinaryImage(existing.imageUrl);
+    }
+
     await prisma.project.delete({ where: { id: Number(id) } });
     return NextResponse.json({ success: true });
   } catch (error) {

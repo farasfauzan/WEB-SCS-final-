@@ -1,4 +1,5 @@
 import FadeUp from "@/components/ui/FadeUp";
+import CldImg from "@/components/shared/CldImg";
 
 export default function VisiMisiSection() {
   const values = [
@@ -38,7 +39,7 @@ export default function VisiMisiSection() {
               <div key={idx} className="flex flex-col gap-3">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-8 h-8 flex items-center justify-center shrink-0">
-                    <img src={item.icon} alt={item.title} className="w-full h-full object-contain" />
+                    <CldImg src={item.icon} alt={item.title} className="w-full h-full object-contain" />
                   </div>
                   <h3 className="text-[#1E1E1E] text-xl font-bold font-['Plus_Jakarta_Sans'] leading-tight">
                     {item.title}

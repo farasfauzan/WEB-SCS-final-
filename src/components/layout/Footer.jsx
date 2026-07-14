@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CldImg from "@/components/shared/CldImg";
 
 export default function Footer({ settings = {} }) {
   const youtubeUrl = settings.youtube_url || "https://www.youtube.com/@sinarcerahsempurna8137";
@@ -26,7 +27,7 @@ export default function Footer({ settings = {} }) {
         
         <div className="flex flex-col gap-3 max-w-xs">
           <div className="flex items-center gap-3">
-            <img src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
+            <CldImg src="/logo-scs.svg" alt="Logo SCS" className="w-8 h-8 object-contain" />
             <span 
               style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}
               className="text-white text-lg font-bold"
@@ -41,7 +42,7 @@ export default function Footer({ settings = {} }) {
           {/* Ikon Menu + YouTube Footer (Berfungsi sebagai tombol link) */}
           <div className="flex gap-4 mt-3">
             <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300">
-              <img src="/youtube-footer.svg" alt="YouTube" className="w-6 h-6 object-contain" />
+              <CldImg src="/youtube-footer.svg" alt="YouTube" className="w-6 h-6 object-contain" />
             </a>
             <PortalLinkComponent 
               href={portalAppUrl} 
@@ -49,7 +50,7 @@ export default function Footer({ settings = {} }) {
               rel={isPortalExternal ? "noopener noreferrer" : undefined}
               className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300"
             >
-              <img src="/menu-aplikasi-scs.svg" alt="Portal Aplikasi" className="w-6 h-6 object-contain" />
+              <CldImg src="/menu-aplikasi-scs.svg" alt="Portal Aplikasi" className="w-6 h-6 object-contain" />
             </PortalLinkComponent>
             <SopLinkComponent 
               href={sopUrl} 
@@ -57,7 +58,7 @@ export default function Footer({ settings = {} }) {
               rel={isSopExternal ? "noopener noreferrer" : undefined}
               className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300"
             >
-              <img src="/menu-sop.svg" alt="SOP" className="w-6 h-6 object-contain" />
+              <CldImg src="/menu-sop.svg" alt="SOP" className="w-6 h-6 object-contain" />
             </SopLinkComponent>
             <AnakLinkComponent 
               href={anakPerusahaanUrl} 
@@ -65,7 +66,7 @@ export default function Footer({ settings = {} }) {
               rel={isAnakExternal ? "noopener noreferrer" : undefined}
               className="hover:opacity-75 transition-opacity hover:-translate-y-1 transform duration-300"
             >
-              <img src="/menu-anak-perusahaan.svg" alt="Anak Perusahaan" className="w-6 h-6 object-contain" />
+              <CldImg src="/menu-anak-perusahaan.svg" alt="Anak Perusahaan" className="w-6 h-6 object-contain" />
             </AnakLinkComponent>
           </div>
         </div>

@@ -69,7 +69,7 @@ export default function Pagination({ totalPages, basePath, scrollId = "daftar-ko
           className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm transition-colors ${
             currentPage === page
               ? "bg-yellow-400 text-sky-950"
-              : "bg-neutral-200 text-stone-700 hover:bg-neutral-300"
+              : "bg-neutral-200 text-stone-800 hover:bg-neutral-300"
           }`}
         >
           {page}

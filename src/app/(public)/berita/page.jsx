@@ -8,6 +8,8 @@ import SearchBar from "@/components/views/berita/SearchBar";
 import NewsSkeleton from "@/components/ui/NewsSkeleton";
 import HeroTitle from "@/components/shared/HeroTitle";
 import BoldText from "@/components/shared/BoldText";
+import { IMAGE_SIZES } from "@/lib/cloudinary";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 function BeritaContent() {
   const searchParams = useSearchParams();
@@ -34,7 +36,8 @@ function BeritaContent() {
             id: n.id,
             title: n.title,
             desc: n.excerpt || n.content,
-            image: n.imageUrl || "/hero-bg.svg"
+            imageUrl: n.imageUrl || "",
+            image: n.imageUrl || ""
           }));
           setAllNews(formatted);
         }
@@ -59,7 +62,7 @@ function BeritaContent() {
       
       <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
         <div className="absolute inset-0 z-0">
-          <img src="/carousel1.svg" alt="Background Berita" className="w-full h-full object-cover" />
+          <OptimizedImage src={heroData?.imageUrl || "/carousel1.svg"} alt="Background Berita" fill priority cldOptions={IMAGE_SIZES.hero} className="object-cover" />
           <div className="absolute inset-0 bg-[#004282]/85"></div>
         </div>
         <div className="relative z-10 text-center max-w-4xl px-6 flex flex-col gap-5 mt-10">

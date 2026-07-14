@@ -3,6 +3,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import CldImg from "@/components/shared/CldImg";
 
 const AdminContext = createContext(null);
 export const useAdmin = () => useContext(AdminContext);
@@ -26,10 +27,10 @@ function SidebarContent({ pathname, admin, onLinkClick }) {
       {/* HEADER: Logo + Brand */}
       <div className="px-5 py-4 border-b border-gray-200 shrink-0">
         <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onLinkClick}>
-          <img src="/logo-scs.svg" alt="SCS" className="w-10 h-10 object-contain brightness-0 opacity-80 shrink-0" />
+          <CldImg src="/logo-scs.svg" alt="SCS" className="w-10 h-10 object-contain shrink-0" />
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-gray-800">SCS Admin</span>
-            <span className="text-[10px] text-gray-400 font-medium">CMS Panel</span>
+            <span className="text-[10px] text-gray-500 font-medium">CMS Panel</span>
           </div>
         </Link>
       </div>
@@ -43,7 +44,7 @@ function SidebarContent({ pathname, admin, onLinkClick }) {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-medium text-gray-700">{admin.username}</p>
-              <p className="text-[11px] text-gray-400 font-medium capitalize">{admin.role?.toLowerCase()}</p>
+              <p className="text-[11px] text-gray-500 font-medium capitalize">{admin.role?.toLowerCase()}</p>
             </div>
           </div>
         </div>
@@ -66,7 +67,7 @@ function SidebarContent({ pathname, admin, onLinkClick }) {
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                <img src={item.icon} alt="" className="w-5 h-5 shrink-0 brightness-0 opacity-50" />
+                <CldImg src={item.icon} alt="" className="w-5 h-5 shrink-0 brightness-0 opacity-50" />
                 <span className="whitespace-nowrap">{item.label}</span>
               </Link>
             );

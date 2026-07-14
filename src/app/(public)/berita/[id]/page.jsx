@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import FadeUp from "@/components/ui/FadeUp";
+import { IMAGE_SIZES } from "@/lib/cloudinary";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 export default function DetailBeritaPage({ params }) {
   const { id } = React.use(params);
@@ -52,16 +54,21 @@ export default function DetailBeritaPage({ params }) {
       <div className="max-w-4xl w-full flex flex-col gap-8">
         
         <section className="w-full flex flex-col gap-4">
-          <FadeUp delay={0.1} className="text-neutral-500 text-xs md:text-sm font-semibold font-['Plus_Jakarta_Sans'] tracking-wide uppercase">
+          <FadeUp delay={0.1} className="text-neutral-600 text-xs md:text-sm font-semibold font-['Plus_Jakarta_Sans'] tracking-wide uppercase">
             Berita Terkini • {publishDate}
           </FadeUp>
 
           <FadeUp delay={0.15} className="w-full rounded-4xl overflow-hidden shadow-md border border-neutral-200 bg-neutral-300">
-            <img 
-              src={news.imageUrl || news.image || "/carousel1.svg"} 
-              alt={news.title} 
-              className="w-full h-auto max-h-[55vh] object-cover"
-            />
+            <div className="relative w-full max-h-[55vh] aspect-[3/2]">
+              <OptimizedImage
+                src={news.imageUrl || news.image || "/carousel1.svg"}
+                alt={news.title}
+                fill
+                priority
+                cldOptions={IMAGE_SIZES.full}
+                className="object-cover"
+              />
+            </div>
           </FadeUp>
 
           <FadeUp delay={0.2} className="mt-2">
@@ -92,11 +99,13 @@ export default function DetailBeritaPage({ params }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
               {galleryImages.map((img, idx) => (
                 <FadeUp key={idx} delay={0.15 + (idx * 0.05)}>
-                  <div className="w-full aspect-4/3 bg-white rounded-xl overflow-hidden border border-neutral-200 shadow-sm">
-                    <img 
-                      src={img} 
-                      alt={`Lampiran berita - Gambar ${idx + 1}`} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  <div className="relative w-full aspect-4/3 bg-white rounded-xl overflow-hidden border border-neutral-200 shadow-sm">
+                    <OptimizedImage
+                      src={img}
+                      alt={`Lampiran berita - Gambar ${idx + 1}`}
+                      fill
+                      cldOptions={IMAGE_SIZES.preview}
+                      className="object-cover hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                 </FadeUp>

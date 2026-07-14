@@ -1,4 +1,5 @@
 import Link from "next/link";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatbotButton from "@/components/shared/ChatbotButton";
@@ -16,10 +17,12 @@ export default async function NotFound() {
           
           {/* Cute Anime Image */}
           <div className="w-56 h-56 relative flex items-center justify-center bg-sky-50 rounded-2xl overflow-hidden p-4">
-            <img 
+            <OptimizedImage 
               src="/cute-construction.png" 
               alt="Halaman dalam tahap konstruksi" 
-              className="w-full h-full object-contain animate-pulse"
+              fill
+              className="object-contain animate-pulse"
+              sizes="224px"
             />
           </div>
 
