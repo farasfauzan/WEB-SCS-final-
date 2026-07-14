@@ -11,7 +11,7 @@ export default function StatsCarouselSection() {
   ]);
 
   useEffect(() => {
-    fetch("/api/statistic")
+    fetch("/api/statistics")
       .then((res) => res.json())
       .then((data) => {
         if (data.statistics?.length > 0) {

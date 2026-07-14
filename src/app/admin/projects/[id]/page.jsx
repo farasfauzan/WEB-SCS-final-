@@ -1,29 +1,44 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import ImageUpload from "@/components/admin/ImageUpload";
 
 const CATEGORIES = ["Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Lainnya"];
 
-export default function CreateProjectPage() {
+export default function EditProjectPage() {
   const router = useRouter();
+  const params = useParams();
   const [form, setForm] = useState({ title: "", description: "", category: "Lainnya", location: "", client: "", imageUrl: "", completedDate: "", isActive: true });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      const res = await fetch(`/api/projects/${params.id}`);
+      const data = await res.json();
+      if (data.project) {
+        const p = data.project;
+        setForm({ title: p.title || "", description: p.description || "", category: p.category || "Lainnya", location: p.location || "", client: p.client || "", imageUrl: p.imageUrl || "", completedDate: p.completedDate || "", isActive: p.isActive ?? true });
+      }
+      setLoading(false);
+    };
+    fetchProject();
+  }, [params.id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
     try {
-      const res = await fetch("/api/project", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      const res = await fetch(`/api/projects/${params.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
       if (!res.ok) throw new Error((await res.json()).error);
-      router.push("/admin/project");
+      router.push("/admin/projects");
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -32,17 +47,19 @@ export default function CreateProjectPage() {
     setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   };
 
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#004282]"></div></div>;
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/admin/project" className="text-gray-400 hover:text-gray-600">
+        <Link href="/admin/projects" className="text-gray-400 hover:text-gray-600">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Create Project</h1>
-          <p className="text-gray-500 text-sm mt-1">Add a new project to your portfolio</p>
+          <h1 className="text-2xl font-bold text-gray-800">Edit Project</h1>
+          <p className="text-gray-500 text-sm mt-1">Update project details</p>
         </div>
       </div>
 
@@ -71,7 +88,7 @@ export default function CreateProjectPage() {
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Completed Date</label>
-            <input type="text" name="completedDate" value={form.completedDate} onChange={handleChange} placeholder="e.g. 2025"
+            <input type="text" name="completedDate" value={form.completedDate} onChange={handleChange}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
           </div>
         </div>
@@ -102,11 +119,11 @@ export default function CreateProjectPage() {
         </div>
 
         <div className="flex gap-3 pt-2">
-          <button type="submit" disabled={loading}
+          <button type="submit" disabled={saving}
             className="bg-[#004282] text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors disabled:opacity-50">
-            {loading ? "Creating..." : "Create Project"}
+            {saving ? "Saving..." : "Save Changes"}
           </button>
-          <Link href="/admin/project" className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
+          <Link href="/admin/projects" className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
         </div>
       </form>
     </div>

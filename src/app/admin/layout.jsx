@@ -11,13 +11,13 @@ const SIDEBAR_ITEMS = [
   { label: "Dashboard", href: "/admin/dashboard", icon: "/icons/dashboard.svg" },
   { label: "Hero Section", href: "/admin/hero", icon: "/icons/hero.svg" },
   { label: "About", href: "/admin/about", icon: "/icons/about.svg" },
-  { label: "Projects", href: "/admin/project", icon: "/icons/project.svg" },
+  { label: "Projects", href: "/admin/projects", icon: "/icons/project.svg" },
   { label: "News", href: "/admin/news", icon: "/icons/news.svg" },
   { label: "Contact", href: "/admin/contact", icon: "/icons/contact.svg" },
-  { label: "Partners", href: "/admin/partner", icon: "/icons/partner.svg" },
-  { label: "Statistics", href: "/admin/statistic", icon: "/icons/statistic.svg" },
-  { label: "Settings", href: "/admin/setting", icon: "/icons/setting.svg" },
-  { label: "Admin Users", href: "/admin/admin", icon: "/icons/admin.svg" },
+  { label: "Partners", href: "/admin/partners", icon: "/icons/partner.svg" },
+  { label: "Statistics", href: "/admin/statistics", icon: "/icons/statistic.svg" },
+  { label: "Settings", href: "/admin/settings", icon: "/icons/setting.svg" },
+  { label: "Admin Users", href: "/admin/users", icon: "/icons/admin.svg" },
 ];
 
 function SidebarContent({ pathname, admin, onLinkClick }) {

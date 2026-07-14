@@ -8,7 +8,7 @@ export default function DetailProyekPage({ params }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/project/${id}`)
+    fetch(`/api/projects/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.project) setProject(data.project);

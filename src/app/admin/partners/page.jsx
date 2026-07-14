@@ -9,7 +9,7 @@ export default function PartnerListPage() {
 
   const fetchPartners = async () => {
     try {
-      const res = await fetch("/api/partner");
+      const res = await fetch("/api/partners");
       const data = await res.json();
       setPartners(data.partners || []);
     } catch (err) {
@@ -23,7 +23,7 @@ export default function PartnerListPage() {
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this partner?")) return;
-    const res = await fetch(`/api/partner/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/partners/${id}`, { method: "DELETE" });
     if (res.ok) fetchPartners();
   };
 
@@ -45,7 +45,7 @@ export default function PartnerListPage() {
             </div>
           </div>
         </div>
-        <Link href="/admin/partner/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
+        <Link href="/admin/partners/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
           <img src="/icons/plus.svg" alt="" className="w-4 h-4 brightness-0 invert" />
           Add Partner
         </Link>
@@ -75,7 +75,7 @@ export default function PartnerListPage() {
                 </div>
               </div>
               <div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-50">
-                <Link href={`/admin/partner/${partner.id}`} className="text-[#004282] hover:text-blue-700 text-sm font-medium">Edit</Link>
+                <Link href={`/admin/partners/${partner.id}`} className="text-[#004282] hover:text-blue-700 text-sm font-medium">Edit</Link>
                 <button onClick={() => handleDelete(partner.id)} className="text-red-500 hover:text-red-600 text-sm font-medium">Delete</button>
               </div>
             </div>

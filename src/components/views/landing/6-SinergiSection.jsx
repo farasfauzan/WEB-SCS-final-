@@ -13,7 +13,7 @@ export default function SinergiSection() {
   );
 
   useEffect(() => {
-    fetch("/api/partner")
+    fetch("/api/partners")
       .then((res) => res.json())
       .then((data) => {
         if (data.partners?.length > 0) {

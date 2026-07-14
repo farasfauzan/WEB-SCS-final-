@@ -14,7 +14,7 @@ export default function EditStatisticPage() {
 
   useEffect(() => {
     const fetchStat = async () => {
-      const res = await fetch(`/api/statistic/${params.id}`);
+      const res = await fetch(`/api/statistics/${params.id}`);
       const data = await res.json();
       if (data.statistic) {
         const s = data.statistic;
@@ -29,9 +29,9 @@ export default function EditStatisticPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch(`/api/statistic/${params.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, value: Number(form.value) }) });
+      const res = await fetch(`/api/statistics/${params.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, value: Number(form.value) }) });
       if (!res.ok) throw new Error((await res.json()).error);
-      router.push("/admin/statistic");
+      router.push("/admin/statistics");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,7 +46,7 @@ export default function EditStatisticPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/admin/statistic" className="text-gray-400 hover:text-gray-600">
+        <Link href="/admin/statistics" className="text-gray-400 hover:text-gray-600">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
         </Link>
         <div>
@@ -82,7 +82,7 @@ export default function EditStatisticPage() {
             className="bg-[#004282] text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors disabled:opacity-50">
             {saving ? "Saving..." : "Save Changes"}
           </button>
-          <Link href="/admin/statistic" className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
+          <Link href="/admin/statistics" className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
         </div>
       </form>
     </div>

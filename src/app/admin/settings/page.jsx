@@ -46,7 +46,7 @@ export default function SettingPage() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch("/api/setting");
+        const res = await fetch("/api/settings");
         const data = await res.json();
         setSettings(data.settingsMap || {});
       } catch (err) {
@@ -67,7 +67,7 @@ export default function SettingPage() {
       const group = SETTING_GROUPS.find((g) => g.fields.some((f) => f.key === key))?.group || "general";
       const label = SETTING_GROUPS.flatMap((g) => g.fields).find((f) => f.key === key)?.label || key;
 
-      const res = await fetch("/api/setting", {
+      const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ key, value, label, group }),

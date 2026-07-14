@@ -6,12 +6,12 @@ import Link from "next/link";
 const QUICK_LINKS = [
   { label: "Hero Section", href: "/admin/hero", icon: "/icons/hero.svg" },
   { label: "About", href: "/admin/about", icon: "/icons/about.svg" },
-  { label: "Projects", href: "/admin/project", icon: "/icons/project.svg" },
+  { label: "Projects", href: "/admin/projects", icon: "/icons/project.svg" },
   { label: "News", href: "/admin/news", icon: "/icons/news.svg" },
   { label: "Contacts", href: "/admin/contact", icon: "/icons/contact.svg" },
-  { label: "Partners", href: "/admin/partner", icon: "/icons/partner.svg" },
-  { label: "Statistics", href: "/admin/statistic", icon: "/icons/statistic.svg" },
-  { label: "Settings", href: "/admin/setting", icon: "/icons/setting.svg" },
+  { label: "Partners", href: "/admin/partners", icon: "/icons/partner.svg" },
+  { label: "Statistics", href: "/admin/statistics", icon: "/icons/statistic.svg" },
+  { label: "Settings", href: "/admin/settings", icon: "/icons/setting.svg" },
 ];
 
 export default function AdminDashboard() {
@@ -26,11 +26,11 @@ export default function AdminDashboard() {
           await Promise.all([
             fetch("/api/hero"),
             fetch("/api/about"),
-            fetch("/api/project"),
+            fetch("/api/projects"),
             fetch("/api/news"),
             fetch("/api/contact"),
-            fetch("/api/partner"),
-            fetch("/api/statistic"),
+            fetch("/api/partners"),
+            fetch("/api/statistics"),
             fetch("/api/visitor/stats"),
           ]);
 
@@ -65,10 +65,10 @@ export default function AdminDashboard() {
   const SECTIONS = [
     { label: "Hero Sections", count: stats?.heroes || 0, icon: "/icons/hero.svg", desc: "Homepage banners", href: "/admin/hero" },
     { label: "About Pages", count: stats?.abouts || 0, icon: "/icons/about.svg", desc: "Company profile", href: "/admin/about" },
-    { label: "Projects", count: stats?.projects || 0, icon: "/icons/project.svg", desc: "Portfolio items", href: "/admin/project" },
+    { label: "Projects", count: stats?.projects || 0, icon: "/icons/project.svg", desc: "Portfolio items", href: "/admin/projects" },
     { label: "News Articles", count: stats?.news || 0, icon: "/icons/news.svg", desc: "Announcements", href: "/admin/news" },
     { label: "Contacts", count: stats?.contacts || 0, icon: "/icons/contact.svg", desc: "Contact details", href: "/admin/contact" },
-    { label: "Partners", count: stats?.partners || 0, icon: "/icons/partner.svg", desc: "Affiliations", href: "/admin/partner" },
+    { label: "Partners", count: stats?.partners || 0, icon: "/icons/partner.svg", desc: "Affiliations", href: "/admin/partners" },
   ];
 
   const visitorCards = [

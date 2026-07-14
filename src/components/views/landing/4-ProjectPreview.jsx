@@ -18,7 +18,7 @@ export default function ProjectPreview() {
   const categories = ["Semua", "Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Lainnya"];
 
   useEffect(() => {
-    fetch("/api/project")
+    fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
         if (data.projects?.length > 0) {

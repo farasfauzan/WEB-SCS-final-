@@ -9,7 +9,7 @@ export default function StatisticListPage() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("/api/statistic");
+      const res = await fetch("/api/statistics");
       const data = await res.json();
       setStatistics(data.statistics || []);
     } catch (err) {
@@ -23,7 +23,7 @@ export default function StatisticListPage() {
 
   const handleDelete = async (id) => {
     if (!confirm("Delete this statistic?")) return;
-    const res = await fetch(`/api/statistic/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/statistics/${id}`, { method: "DELETE" });
     if (res.ok) fetchStats();
   };
 
@@ -45,7 +45,7 @@ export default function StatisticListPage() {
             </div>
           </div>
         </div>
-        <Link href="/admin/statistic/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
+        <Link href="/admin/statistics/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
           <img src="/icons/plus.svg" alt="" className="w-4 h-4 brightness-0 invert" />
           Add Statistic
         </Link>
@@ -65,7 +65,7 @@ export default function StatisticListPage() {
               <p className="text-3xl font-bold text-gray-800">{stat.value}</p>
               <p className="text-sm text-gray-500 mt-1">{stat.label}</p>
               <div className="flex justify-center gap-2 mt-3 pt-3 border-t border-gray-50">
-                <Link href={`/admin/statistic/${stat.id}`} className="text-[#004282] hover:text-blue-700 text-sm font-medium">Edit</Link>
+                <Link href={`/admin/statistics/${stat.id}`} className="text-[#004282] hover:text-blue-700 text-sm font-medium">Edit</Link>
                 <button onClick={() => handleDelete(stat.id)} className="text-red-500 hover:text-red-600 text-sm font-medium">Delete</button>
               </div>
             </div>

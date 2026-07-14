@@ -9,7 +9,7 @@ export default function ProjectListPage() {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch("/api/project");
+      const res = await fetch("/api/projects");
       const data = await res.json();
       setProjects(data.projects || []);
     } catch (err) {
@@ -23,7 +23,7 @@ export default function ProjectListPage() {
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this project?")) return;
-    const res = await fetch(`/api/project/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
     if (res.ok) fetchProjects();
   };
 
@@ -45,7 +45,7 @@ export default function ProjectListPage() {
             </div>
           </div>
         </div>
-        <Link href="/admin/project/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
+        <Link href="/admin/projects/create" className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors">
           <img src="/icons/plus.svg" alt="" className="w-4 h-4 brightness-0 invert" />
           Add Project
         </Link>
@@ -77,7 +77,7 @@ export default function ProjectListPage() {
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    <Link href={`/admin/project/${project.id}`} className="text-[#004282] hover:text-blue-700 text-sm font-medium mr-3">Edit</Link>
+                    <Link href={`/admin/projects/${project.id}`} className="text-[#004282] hover:text-blue-700 text-sm font-medium mr-3">Edit</Link>
                     <button onClick={() => handleDelete(project.id)} className="text-red-500 hover:text-red-600 text-sm font-medium">Delete</button>
                   </td>
                 </tr>

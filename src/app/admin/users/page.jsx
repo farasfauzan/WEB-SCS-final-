@@ -44,7 +44,7 @@ export default function AdminListPage() {
           <p className="text-gray-500 text-sm mt-1">Manage CMS administrator accounts</p>
         </div>
         <Link
-          href="/admin/admin/create"
+          href="/admin/users/create"
           className="bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
         >
           + Add Admin
@@ -95,7 +95,7 @@ export default function AdminListPage() {
                   </td>
                   <td className="p-4 text-right">
                     <Link
-                      href={`/admin/admin/${admin.id}`}
+                      href={`/admin/users/${admin.id}`}
                       className="text-[#004282] hover:text-blue-700 text-sm font-medium mr-3"
                     >
                       Edit
