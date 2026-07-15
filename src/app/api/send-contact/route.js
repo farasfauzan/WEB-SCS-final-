@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { resend } from "@/lib/resend";
 import { getSetting } from "@/lib/data";
 import { ContactNotificationEmail } from "@/emails/ContactNotificationEmail";
+import nodemailer from "nodemailer";
+import { render } from "@react-email/render";
 
 // Simple HTML escape to prevent injection in email template
 const escapeHtml = (str) => {
@@ -15,6 +17,98 @@ const escapeHtml = (str) => {
 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function createNodemailerTransporter() {
+  if (!process.env.SMTP_HOST || !process.env.SMTP_PORT) {
+    const message = "SMTP_HOST dan SMTP_PORT tidak dikonfigurasi — tidak bisa kirim email via nodemailer.";
+    console.error("❌ " + message);
+    throw new Error(message);
+  }
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: process.env.SMTP_SECURE === "true",
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
+
+async function renderEmailContent(name, email, phone, subject, message) {
+  const emailElement = ContactNotificationEmail({ name, email, phone, subject, message });
+  const htmlBody = await render(emailElement);
+  const textBody = `
+Pesan Baru dari Website
+
+Nama: ${name}
+Email: ${email}
+${phone ? `Telepon: ${phone}\n` : ""}${subject ? `Subjek: ${subject}\n` : ""}
+Pesan:
+${message}
+    `.trim();
+  return { htmlBody, textBody };
+}
+
+async function sendViaResend({ name, email, phone, subject, message, contactEmail, fromEmail, fromName, emailSubject }) {
+  const { htmlBody, textBody } = await renderEmailContent(name, email, phone, subject, message);
+
+  const { data, error } = await resend.emails.send({
+    from: `${fromName} <${fromEmail}>`,
+    reply_to: email,
+    to: contactEmail,
+    subject: emailSubject,
+    html: htmlBody,
+    text: textBody,
+    headers: {
+      "X-Mailer": "SCS Website Contact Form",
+      "X-Priority": "1",
+      "Priority": "urgent",
+      "Importance": "high",
+      "Precedence": "list",
+      "List-ID": "<contact.scs-website.local>",
+    },
+  });
+
+  if (error) {
+    console.error("Resend error:", error);
+    throw new Error(error.message || "Resend API error");
+  }
+
+  return data;
+}
+
+async function sendViaNodemailer({ name, email, phone, subject, message, contactEmail, fromEmail, fromName, emailSubject }) {
+  const { htmlBody, textBody } = await renderEmailContent(name, email, phone, subject, message);
+
+  const transporter = createNodemailerTransporter();
+
+  const info = await transporter.sendMail({
+    from: `${fromName} <${fromEmail}>`,
+    replyTo: email,
+    to: contactEmail,
+    subject: emailSubject,
+    text: textBody,
+    html: htmlBody,
+    headers: {
+      "X-Mailer": "SCS Website Contact Form",
+      "X-Priority": "1",
+      "Priority": "urgent",
+      "Importance": "high",
+      "X-MSMail-Priority": "High",
+      "Precedence": "list",
+      "List-ID": "<contact.scs-website.local>",
+    },
+  });
+
+  if (process.env.NODE_ENV === "development" && info.messageId) {
+    console.log("✉️ Contact email sent:", info.messageId);
+    console.log("   To:", contactEmail);
+    console.log("   Subject:", emailSubject);
+  }
+
+  return info;
+}
 
 export async function POST(request) {
   try {
@@ -38,7 +132,6 @@ export async function POST(request) {
     }
 
     // Escape hanya untuk subject line (plain text, bukan React)
-    // Data untuk React Email template tidak perlu di-escape (React handle otomatis)
     const emailSubject = `[Pesan dari Website] ${escapeHtml(subject || "Tidak ada subjek")} - dari ${escapeHtml(name)}`;
 
     // Ambil settings dari database
@@ -46,27 +139,25 @@ export async function POST(request) {
     const fromEmail = (await getSetting("contact_from_email")) || process.env.CONTACT_FROM_EMAIL || "__REDACTED__@__REDACTED__.dev";
     const fromName = "Hubungi Kami";
 
-    // Kirim email via Resend menggunakan React Email template
-    const { data, error } = await resend.emails.send({
-      from: `${fromName} <${fromEmail}>`,
-      reply_to: email,
-      to: contactEmail,
-      subject: emailSubject,
-      react: ContactNotificationEmail({
-        name,
-        email,
-        phone,
-        subject,
-        message,
-      }),
-    });
+    const emailPayload = { name, email, phone, subject, message, contactEmail, fromEmail, fromName, emailSubject };
 
-    if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json(
-        { error: "Gagal mengirim pesan. Silakan coba lagi." },
-        { status: 500 }
-      );
+    // Coba kirim via Resend dulu
+    try {
+      await sendViaResend(emailPayload);
+      console.log("✅ Contact email sent via Resend");
+    } catch (resendErr) {
+      console.warn("⚠️ Resend gagal, fallback ke nodemailer:", resendErr.message);
+      // Fallback ke nodemailer
+      try {
+        await sendViaNodemailer(emailPayload);
+        console.log("✅ Contact email sent via nodemailer (fallback)");
+      } catch (nodemailerErr) {
+        console.error("❌ Nodemailer juga gagal:", nodemailerErr);
+        return NextResponse.json(
+          { error: "Gagal mengirim pesan. Silakan coba lagi." },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json({

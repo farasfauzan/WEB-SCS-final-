@@ -53,25 +53,29 @@ export default function AdminLoginPage() {
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-xl">
           <div className="space-y-5">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Username</label>
+              <label htmlFor="login-username" className="block text-sm font-semibold text-gray-700 mb-1.5">Username</label>
               <input
+                id="login-username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#004282] focus:border-transparent transition-all text-sm"
                 placeholder="Masukkan username"
+                autoComplete="username"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+              <label htmlFor="login-password" className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
               <input
+                id="login-password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#004282] focus:border-transparent transition-all text-sm"
                 placeholder="Masukkan password"
+                autoComplete="current-password"
                 required
               />
             </div>
