@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import ImageUpload from "@/components/admin/ImageUpload";
 
-const CATEGORIES = ["Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Lainnya"];
+const CATEGORIES = ["Rumah Sakit", "Gedung Pendidikan", "Pusat Perbelanjaan", "Fasilitas Olahraga", "Infrastruktur Publik", "Perumahan", "Komersial & Perkantoran", "Lainnya"];
 
 export default function EditProjectPage() {
   const router = useRouter();

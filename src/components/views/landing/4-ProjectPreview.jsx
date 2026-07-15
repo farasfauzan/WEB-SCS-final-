@@ -38,6 +38,10 @@ export default function ProjectPreview({ data }) {
     "Rumah Sakit",
     "Gedung Pendidikan",
     "Pusat Perbelanjaan",
+    "Fasilitas Olahraga",
+    "Infrastruktur Publik",
+    "Perumahan",
+    "Komersial & Perkantoran",
     "Lainnya",
   ];
 
