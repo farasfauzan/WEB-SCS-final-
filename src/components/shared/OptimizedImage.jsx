@@ -5,11 +5,9 @@ import { cldImg, cldAsset, cldSrcSet, defaultSizes } from "@/lib/cloudinary";
  * OptimizedImage — Smart image component for Next.js + Cloudinary
  *
  * Features:
- * - Automatically converts local asset paths to Cloudinary CDN URLs via cldAsset()
+ * - For local asset paths: returns them as-is (served from public/ folder)
+ * - For Cloudinary URLs: applies transformations and generates responsive srcSet
  * - Uses Next.js <Image> for non-Cloudinary images (layout stability, lazy loading)
- * - For Cloudinary images: generates a responsive srcSet so the browser picks
- *   the right size for the viewport (desktop gets 1920px, phone gets 400px)
- * - Applies Cloudinary transformations via cldImg() when cldOptions are provided
  * - Falls back to <img> for SVGs (Next.js Image doesn't optimize SVGs)
  */
 export default function OptimizedImage({
@@ -26,7 +24,7 @@ export default function OptimizedImage({
   cldOptions = null, // e.g. IMAGE_SIZES.hero
   ...props
 }) {
-  // Resolve local paths → Cloudinary CDN URLs (or keep external URLs as-is)
+  // Resolve local paths as-is or keep external URLs unchanged
   const cloudSrc = cldAsset(src);
 
   // If no valid src, render nothing

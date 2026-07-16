@@ -61,7 +61,7 @@ export default function Footer({ settings = {} }) {
               <img
                 src="/youtube-footer.svg"
                 alt="YouTube"
-                className="w-8 h-8 object-contain"
+                className="w-6 h-6 object-contain"
               />
             </a>
             <PortalLinkComponent

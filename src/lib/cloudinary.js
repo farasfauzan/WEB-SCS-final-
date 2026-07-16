@@ -1,15 +1,12 @@
-import staticAssets from "./cloudinary-assets.json";
-
-// Cloud name for constructing Cloudinary URLs
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "l9ey3yqz";
-
 /**
- * Convert a local static asset path to its Cloudinary CDN URL.
+ * Convert a local static asset path to its final URL.
+ * Since static assets (icons, logos) are served directly from the public folder,
+ * this returns the local path as-is. Full URLs (like Cloudinary URLs for
+ * user-uploaded images) are returned unchanged.
  *
  * Example:
- *   cldAsset("/hero-bg.svg") → "https://res.cloudinary.com/l9ey3yqz/image/upload/v1234/scs-public/hero-bg.svg"
- *
- * Falls back to the original path if the asset hasn't been uploaded to Cloudinary.
+ *   cldAsset("/logo-scs.svg") → "/logo-scs.svg"
+ *   cldAsset("https://res.cloudinary.com/...") → "https://res.cloudinary.com/..."
  */
 export function cldAsset(localPath) {
   if (!localPath) return localPath;
@@ -18,15 +15,8 @@ export function cldAsset(localPath) {
   // If it's a data URI or protocol-relative, return as-is
   if (localPath.startsWith("data:") || localPath.startsWith("//")) return localPath;
 
-  // Try the static mapping first
-  if (staticAssets[localPath]) return staticAssets[localPath];
-
-  // If not in mapping, try constructing URL dynamically
-  // This handles files that might not be in the mapping yet
-  const cleanPath = localPath.startsWith("/") ? localPath.slice(1) : localPath;
-  // Check if we have a versioned URL in the mapping for a similar path
-  const fallbackUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/scs-public/${cleanPath}`;
-  return fallbackUrl;
+  // For local paths, return them directly — they're served from the public/ folder
+  return localPath;
 }
 
 /**

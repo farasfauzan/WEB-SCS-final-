@@ -339,11 +339,10 @@ export default function GalleryUpload({
                     </span>
                   </div>
 
-                  {/* KOREKSI: Gunakan img bawaan khusus untuk preview admin karena CDN CldImg bisa delay merender thumbnail */}
                   <img
                     src={url}
                     alt={`Gallery ${index + 1}`}
-                    className="w-full h-full object-cover transition-all duration-300 pointer-events-none"
+                    className="w-full h-full object-cover transition-all duration-300 select-none"
                     onError={(e) => {
                       e.target.src = "";
                       e.target.style.display = "none";
@@ -351,22 +350,7 @@ export default function GalleryUpload({
                     draggable={false}
                   />
 
-                  <div className="absolute top-1.5 right-1.5 flex gap-0.5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                    <svg
-                      className="w-4 h-4 text-white drop-shadow-md"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <circle cx="8" cy="6" r="1.5" />
-                      <circle cx="16" cy="6" r="1.5" />
-                      <circle cx="8" cy="12" r="1.5" />
-                      <circle cx="16" cy="12" r="1.5" />
-                      <circle cx="8" cy="18" r="1.5" />
-                      <circle cx="16" cy="18" r="1.5" />
-                    </svg>
-                  </div>
-
-                  <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-all duration-200 flex items-center justify-center gap-2 opacity-0 hover:opacity-100 pointer-events-none hover:pointer-events-auto">
+                  <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-all duration-200 flex items-center justify-center gap-2 opacity-0 hover:opacity-100">
                     <button
                       type="button"
                       onClick={() => handleRemoveImage(index)}

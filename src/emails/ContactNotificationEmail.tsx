@@ -43,7 +43,7 @@ export const ContactNotificationEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://res.cloudinary.com/l9ey3yqz/image/upload/v1784002655/scs-public/logo-scs.svg"
+              src={`${baseUrl}/logo-scs.svg`}
               alt="PT Sinar Cerah Sempurna"
               width="180"
               style={logo}

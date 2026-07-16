@@ -7,7 +7,6 @@ import CldImg from "@/components/shared/CldImg";
 export default function HeroListPage() {
   const [heroes, setHeroes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     const fetchHeroes = async () => {
@@ -22,13 +21,7 @@ export default function HeroListPage() {
       }
     };
     fetchHeroes();
-  }, [refreshTrigger]);
-
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this hero section?")) return;
-    const res = await fetch(`/api/hero/${id}`, { method: "DELETE" });
-    if (res.ok) setRefreshTrigger((prev) => prev + 1);
-  };
+  }, []);
 
   if (loading) {
     return (
@@ -40,33 +33,20 @@ export default function HeroListPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-              <CldImg src="/icons/hero.svg" alt="" className="w-5 h-5" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                Hero Sections
-              </h1>
-              <p className="text-gray-500 text-sm mt-1">
-                Manage your homepage hero banners
-              </p>
-            </div>
+      <div>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+            <CldImg src="/icons/hero.svg" alt="" className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Hero Sections
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">
+              Manage your homepage hero banners
+            </p>
           </div>
         </div>
-        <Link
-          href="/admin/hero/create"
-          className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
-        >
-          <CldImg
-            src="/icons/plus.svg"
-            alt=""
-            className="w-4 h-4 brightness-0 invert"
-          />
-          Add Hero
-        </Link>
       </div>
 
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
@@ -94,7 +74,7 @@ export default function HeroListPage() {
             {heroes.length === 0 ? (
               <tr>
                 <td colSpan={5} className="p-8 text-center text-gray-500">
-                  No hero sections yet. Create your first one!
+                  No hero sections yet.
                 </td>
               </tr>
             ) : (
@@ -124,16 +104,10 @@ export default function HeroListPage() {
                   <td className="p-4 text-right">
                     <Link
                       href={`/admin/hero/${hero.id}`}
-                      className="text-[#004282] hover:text-blue-700 text-sm font-medium mr-3"
+                      className="inline-flex items-center gap-1.5 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
                     >
                       Edit
                     </Link>
-                    <button
-                      onClick={() => handleDelete(hero.id)}
-                      className="text-red-500 hover:text-red-600 text-sm font-medium"
-                    >
-                      Delete
-                    </button>
                   </td>
                 </tr>
               ))

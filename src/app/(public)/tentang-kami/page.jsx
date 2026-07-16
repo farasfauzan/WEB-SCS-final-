@@ -3,13 +3,15 @@ import BoldText from "@/components/shared/BoldText";
 import FadeUp from "@/components/ui/FadeUp";
 import CldImg from "@/components/shared/CldImg";
 import { prisma } from "@/lib/prisma";
+import { getAllSettings } from "@/lib/data";
 
 export const revalidate = 3600;
 
 export default async function TentangKamiPage() {
-  const [heroes, abouts] = await Promise.all([
+  const [heroes, abouts, settings] = await Promise.all([
     prisma.hero.findMany({ where: { page: "about", isActive: true } }),
     prisma.about.findMany(),
+    getAllSettings(),
   ]);
 
   const heroData = heroes[0] || null;
@@ -121,77 +123,31 @@ export default async function TentangKamiPage() {
             delay={0.2}
             className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[900px]"
           >
-            {/* KOREKSI: 4 Emoji (Integritas, Kualitas, Inovasi, Kerjasama) Diganti menjadi Image/img tag */}
-            <div className="flex gap-5">
-              <div className="w-14 h-14 bg-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-neutral-100 flex items-center justify-center shrink-0">
-                <img
-                  src="/integritas.svg"
-                  alt="Integritas"
-                  className="w-6 h-6 object-contain opacity-80"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h4 className="text-lg font-bold text-[#1E1E1E]">Integritas</h4>
-                <p className="text-sm text-[#757575] leading-relaxed">
-                  Kami menjalankan bisnis dengan kejujuran, transparansi, dan
-                  tanggung jawab penuh dalam setiap aspek operasional kami.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-5">
-              <div className="w-14 h-14 bg-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-neutral-100 flex items-center justify-center shrink-0">
-                <img
-                  src="/kualitas.svg"
-                  alt="Kualitas"
-                  className="w-6 h-6 object-contain opacity-80"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h4 className="text-lg font-bold text-[#1E1E1E]">Kualitas</h4>
-                <p className="text-sm text-[#757575] leading-relaxed">
-                  Kami berkomitmen pada standar kualitas tertinggi dalam setiap
-                  proyek, ensuring hasil yang melampaui ekspektasi klien.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-5">
-              <div className="w-14 h-14 bg-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-neutral-100 flex items-center justify-center shrink-0">
-                <img
-                  src="/inovasi.svg"
-                  alt="Inovasi"
-                  className="w-6 h-6 object-contain opacity-80"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h4 className="text-lg font-bold text-[#1E1E1E]">Inovasi</h4>
-                <p className="text-sm text-[#757575] leading-relaxed">
-                  Kami terus mengeksplorasi teknologi dan metode konstruksi
-                  terbaru untuk memberikan solusi yang lebih efisien dan
-                  berkelanjutan.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-5">
-              <div className="w-14 h-14 bg-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-neutral-100 flex items-center justify-center shrink-0">
-                <img
-                  src="/kerja-sama-tim.svg"
-                  alt="Kerja Sama Tim"
-                  className="w-6 h-6 object-contain opacity-80"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h4 className="text-lg font-bold text-[#1E1E1E]">
-                  Kerja Sama Tim
-                </h4>
-                <p className="text-sm text-[#757575] leading-relaxed">
-                  Kami percaya bahwa kolaborasi yang kuat antar tim adalah kunci
-                  keberhasilan setiap proyek yang kami kerjakan.
-                </p>
-              </div>
-            </div>
+            {[
+              { titleKey: "nilai_1_title", descKey: "nilai_1_desc", iconKey: "nilai_1_icon", defaultTitle: "Integritas", defaultDesc: "Kami menjalankan bisnis dengan kejujuran, transparansi, dan tanggung jawab penuh dalam setiap aspek operasional kami.", defaultIcon: "/integritas.svg" },
+              { titleKey: "nilai_2_title", descKey: "nilai_2_desc", iconKey: "nilai_2_icon", defaultTitle: "Kualitas", defaultDesc: "Kami berkomitmen pada standar kualitas tertinggi dalam setiap proyek, ensuring hasil yang melampaui ekspektasi klien.", defaultIcon: "/kualitas.svg" },
+              { titleKey: "nilai_3_title", descKey: "nilai_3_desc", iconKey: "nilai_3_icon", defaultTitle: "Inovasi", defaultDesc: "Kami terus mengeksplorasi teknologi dan metode konstruksi terbaru untuk memberikan solusi yang lebih efisien dan berkelanjutan.", defaultIcon: "/inovasi.svg" },
+              { titleKey: "nilai_4_title", descKey: "nilai_4_desc", iconKey: "nilai_4_icon", defaultTitle: "Kerja Sama Tim", defaultDesc: "Kami percaya bahwa kolaborasi yang kuat antar tim adalah kunci keberhasilan setiap proyek yang kami kerjakan.", defaultIcon: "/kerja-sama-tim.svg" },
+            ].map((n, idx) => {
+              const title = settings[n.titleKey] || n.defaultTitle;
+              const desc = settings[n.descKey] || n.defaultDesc;
+              const icon = settings[n.iconKey] || n.defaultIcon;
+              return (
+                <div key={idx} className="flex gap-5">
+                  <div className="w-14 h-14 bg-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-neutral-100 flex items-center justify-center shrink-0">
+                    <img
+                      src={icon}
+                      alt={title}
+                      className="w-6 h-6 object-contain opacity-80"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-lg font-bold text-[#1E1E1E]">{title}</h4>
+                    <p className="text-sm text-[#757575] leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </FadeUp>
         </div>
       </section>

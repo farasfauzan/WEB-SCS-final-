@@ -7,7 +7,6 @@ import CldImg from "@/components/shared/CldImg";
 export default function PartnerListPage() {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -22,13 +21,7 @@ export default function PartnerListPage() {
       }
     };
     fetchPartners();
-  }, [refreshTrigger]);
-
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this partner?")) return;
-    const res = await fetch(`/api/partners/${id}`, { method: "DELETE" });
-    if (res.ok) setRefreshTrigger((prev) => prev + 1);
-  };
+  }, []);
 
   if (loading) {
     return (
@@ -40,37 +33,24 @@ export default function PartnerListPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-              <CldImg src="/icons/partner.svg" alt="" className="w-5 h-5" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">Partners</h1>
-              <p className="text-gray-500 text-sm mt-1">
-                Manage partner/affiliate companies
-              </p>
-            </div>
+      <div>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+            <CldImg src="/icons/partner.svg" alt="" className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Partners</h1>
+            <p className="text-gray-500 text-sm mt-1">
+              Manage partner/affiliate companies
+            </p>
           </div>
         </div>
-        <Link
-          href="/admin/partners/create"
-          className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
-        >
-          <CldImg
-            src="/icons/plus.svg"
-            alt=""
-            className="w-4 h-4 brightness-0 invert"
-          />
-          Add Partner
-        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {partners.length === 0 ? (
           <div className="col-span-full bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-100">
-            No partners yet. Add your first partner company.
+            No partners yet.
           </div>
         ) : (
           partners.map((partner) => (
@@ -105,19 +85,13 @@ export default function PartnerListPage() {
                   )}
                 </div>
               </div>
-              <div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-50">
+              <div className="flex justify-end mt-3 pt-3 border-t border-gray-50">
                 <Link
                   href={`/admin/partners/${partner.id}`}
-                  className="text-[#004282] hover:text-blue-700 text-sm font-medium"
+                  className="inline-flex items-center gap-1.5 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
                 >
                   Edit
                 </Link>
-                <button
-                  onClick={() => handleDelete(partner.id)}
-                  className="text-red-500 hover:text-red-600 text-sm font-medium"
-                >
-                  Delete
-                </button>
               </div>
             </div>
           ))

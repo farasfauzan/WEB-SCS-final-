@@ -1,6 +1,5 @@
 import { Plus_Jakarta_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
-import { cldAsset } from "@/lib/cloudinary";
 
 // Definisi font Google (Opsional jika Anda ingin menggunakannya melalui Next/Font)
 const plusJakartaSans = Plus_Jakarta_Sans({ 
@@ -13,7 +12,7 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
-const FAVICON_URL = cldAsset("/logo-scs.svg");
+const FAVICON_URL = "/logo-scs.svg";
 
 export const metadata = {
   title: {

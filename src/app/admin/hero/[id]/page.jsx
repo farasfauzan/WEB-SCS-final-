@@ -21,6 +21,8 @@ export default function EditHeroPage() {
     subtitle: "",
     description: "",
     imageUrl: "",
+    heroImage2: "",
+    heroImage3: "",
     isActive: true,
   });
   const [loading, setLoading] = useState(true);
@@ -38,8 +40,27 @@ export default function EditHeroPage() {
           subtitle: data.hero.subtitle || "",
           description: data.hero.description || "",
           imageUrl: data.hero.imageUrl || "",
+          heroImage2: "",
+          heroImage3: "",
           isActive: data.hero.isActive ?? true,
         });
+
+        // Fetch settings for hero small images (only if page is home)
+        if (data.hero.page === "home" || !data.hero.page) {
+          try {
+            const settingsRes = await fetch("/api/settings");
+            const settingsData = await settingsRes.json();
+            if (settingsData.settingsMap) {
+              setForm((prev) => ({
+                ...prev,
+                heroImage2: settingsData.settingsMap["hero_home_image2"] || "",
+                heroImage3: settingsData.settingsMap["hero_home_image3"] || "",
+              }));
+            }
+          } catch (e) {
+            console.error("Failed to fetch hero settings:", e);
+          }
+        }
       }
       setLoading(false);
     };
@@ -52,15 +73,43 @@ export default function EditHeroPage() {
     setError("");
 
     try {
-      const res = await fetch(`/api/hero/${params.id}`, {
+      // Save hero data
+      const heroRes = await fetch(`/api/hero/${params.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          page: form.page,
+          title: form.title,
+          subtitle: form.page === "home" ? form.subtitle : "",
+          description: form.description,
+          imageUrl: form.imageUrl,
+          isActive: form.isActive,
+        }),
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to update");
+      if (!heroRes.ok) {
+        const heroData = await heroRes.json();
+        throw new Error(heroData.error || "Failed to update");
+      }
+
+      // Save hero small images (for home page) to settings
+      if (form.page === "home") {
+        const saveSetting = async (key, value) => {
+          await fetch("/api/settings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              key,
+              value,
+              label: key === "hero_home_image2" ? "Hero Foto Kecil 1" : "Hero Foto Kecil 2",
+              group: "hero",
+            }),
+          });
+        };
+        await Promise.all([
+          saveSetting("hero_home_image2", form.heroImage2),
+          saveSetting("hero_home_image3", form.heroImage3),
+        ]);
       }
 
       router.push("/admin/hero");
@@ -83,6 +132,8 @@ export default function EditHeroPage() {
       </div>
     );
   }
+
+  const isHomePage = form.page === "home";
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -117,11 +168,13 @@ export default function EditHeroPage() {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
         </div>
 
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Subtitle</label>
-          <input type="text" name="subtitle" value={form.subtitle} onChange={handleChange}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
-        </div>
+        {isHomePage && (
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Subtitle</label>
+            <input type="text" name="subtitle" value={form.subtitle} onChange={handleChange}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm" />
+          </div>
+        )}
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
@@ -132,8 +185,30 @@ export default function EditHeroPage() {
         <ImageUpload
           currentImage={form.imageUrl}
           onImageChange={(url) => setForm((prev) => ({ ...prev, imageUrl: url }))}
-          label="Hero Image"
+          label="Hero Image (Background)"
         />
+
+        {isHomePage && (
+          <>
+            <hr className="border-gray-200" />
+            <div>
+              <h3 className="text-sm font-bold text-gray-700 mb-3">Foto Konstruksi Kecil</h3>
+              <p className="text-xs text-gray-500 mb-3">Dua foto kecil yang muncul di sisi kanan hero section Beranda.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <ImageUpload
+                  currentImage={form.heroImage2}
+                  onImageChange={(url) => setForm((prev) => ({ ...prev, heroImage2: url }))}
+                  label="Foto Konstruksi 1"
+                />
+                <ImageUpload
+                  currentImage={form.heroImage3}
+                  onImageChange={(url) => setForm((prev) => ({ ...prev, heroImage3: url }))}
+                  label="Foto Konstruksi 2"
+                />
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="flex items-center gap-3">
           <input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange}
