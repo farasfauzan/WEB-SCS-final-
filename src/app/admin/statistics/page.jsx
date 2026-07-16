@@ -7,7 +7,6 @@ import CldImg from "@/components/shared/CldImg";
 export default function StatisticListPage() {
   const [statistics, setStatistics] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -22,13 +21,7 @@ export default function StatisticListPage() {
       }
     };
     fetchStats();
-  }, [refreshTrigger]);
-
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this statistic?")) return;
-    const res = await fetch(`/api/statistics/${id}`, { method: "DELETE" });
-    if (res.ok) setRefreshTrigger((prev) => prev + 1);
-  };
+  }, []);
 
   if (loading) {
     return (
@@ -51,19 +44,6 @@ export default function StatisticListPage() {
           </p>
         </div>
       </div>
-      <div className="flex justify-end">
-        <Link
-          href="/admin/statistics/create"
-          className="inline-flex items-center gap-2 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
-        >
-          <CldImg
-            src="/icons/plus.svg"
-            alt=""
-            className="w-4 h-4 brightness-0 invert"
-          />
-          Add Statistic
-        </Link>
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {statistics.length === 0 ? (
@@ -85,19 +65,13 @@ export default function StatisticListPage() {
               </div>
               <p className="text-3xl font-bold text-gray-800">{stat.value}</p>
               <p className="text-sm text-gray-500 mt-1">{stat.label}</p>
-              <div className="flex justify-center gap-2 mt-3 pt-3 border-t border-gray-50">
+              <div className="flex justify-center mt-3 pt-3 border-t border-gray-50">
                 <Link
                   href={`/admin/statistics/${stat.id}`}
-                  className="text-[#004282] hover:text-blue-700 text-sm font-medium"
+                  className="inline-flex items-center gap-1.5 bg-[#004282] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors"
                 >
                   Edit
                 </Link>
-                <button
-                  onClick={() => handleDelete(stat.id)}
-                  className="text-red-500 hover:text-red-600 text-sm font-medium"
-                >
-                  Delete
-                </button>
               </div>
             </div>
           ))

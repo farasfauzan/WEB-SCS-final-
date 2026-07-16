@@ -56,14 +56,14 @@ export default function HeroSection({ data }) {
         <FadeUp delay={0.4} className="hidden md:flex gap-5 h-[420px] relative">
           <div className="w-1/2 h-[85%] mt-8 rounded-xl overflow-hidden shadow-2xl border-[3px] border-white/20">
             <CldImg
-              src="/foto-hero1.svg"
+              src={hero.heroImage2 || "/foto-hero1.svg"}
               alt="Konstruksi 1"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="w-1/2 h-[85%] mb-8 rounded-xl overflow-hidden shadow-2xl border-[3px] border-white/20">
             <CldImg
-              src="/foto-hero2.svg"
+              src={hero.heroImage3 || "/foto-hero2.svg"}
               alt="Konstruksi 2"
               className="w-full h-full object-cover"
             />
