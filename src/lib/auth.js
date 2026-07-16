@@ -8,6 +8,74 @@ const JWT_SECRET = new TextEncoder().encode(
 const JWT_EXPIRES_IN = "24h";
 const COOKIE_NAME = "scs_admin_token";
 
+// In-memory rate limiter untuk login attempts
+const loginAttempts = new Map();
+
+// Bersihkan entry yang expired setiap 5 menit
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, data] of loginAttempts.entries()) {
+    if (now > data.expiresAt) {
+      loginAttempts.delete(key);
+    }
+  }
+}, 5 * 60 * 1000);
+
+const MAX_LOGIN_ATTEMPTS = 3;
+const LOGIN_COOLDOWN_MS = 1 * 60 * 1000; // 1 menit
+
+export function checkLoginRateLimit(username, ip) {
+  const key = `${username}:${ip}`;
+  const now = Date.now();
+  const record = loginAttempts.get(key);
+
+  if (record && now < record.expiresAt) {
+    const remainingSeconds = Math.ceil((record.expiresAt - now) / 1000);
+    return {
+      allowed: false,
+      remainingSeconds,
+      attemptsLeft: 0,
+    };
+  }
+
+  // Reset jika sudah lewat masa cooldown
+  if (record && now >= record.expiresAt) {
+    loginAttempts.delete(key);
+  }
+
+  return { allowed: true, remainingSeconds: 0, attemptsLeft: MAX_LOGIN_ATTEMPTS };
+}
+
+export function recordLoginAttempt(username, ip, success) {
+  const key = `${username}:${ip}`;
+  const now = Date.now();
+  
+  if (success) {
+    // Reset attempts jika berhasil login
+    loginAttempts.delete(key);
+    return;
+  }
+
+  // Catat attempt gagal
+  const record = loginAttempts.get(key) || { count: 0, expiresAt: 0 };
+  record.count += 1;
+  
+  if (record.count >= MAX_LOGIN_ATTEMPTS) {
+    record.expiresAt = now + LOGIN_COOLDOWN_MS;
+  }
+  
+  loginAttempts.set(key, record);
+}
+
+export function getRemainingAttempts(username, ip) {
+  const key = `${username}:${ip}`;
+  const record = loginAttempts.get(key);
+  if (!record) return MAX_LOGIN_ATTEMPTS;
+  // Jika sedang dalam cooldown, sisa percobaan = 0
+  if (record.expiresAt > 0) return 0;
+  return Math.max(0, MAX_LOGIN_ATTEMPTS - record.count);
+}
+
 export async function hashPassword(password) {
   return bcrypt.hash(password, 12);
 }

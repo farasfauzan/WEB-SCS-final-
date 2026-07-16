@@ -20,11 +20,24 @@ enum NewsStatus {
 }
 
 model Admin {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
   password  String
-  role      Role     @default(ADMIN)
+  role      Role       @default(ADMIN)
+  createdAt DateTime   @default(now())
+  logs      AdminLog[]
+}
+
+model AdminLog {
+  id        Int      @id @default(autoincrement())
+  adminId   Int?
+  username  String
+  action    String   // LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT
+  ip        String?
+  userAgent String?
   createdAt DateTime @default(now())
+
+  admin Admin? @relation(fields: [adminId], references: [id])
 }
 
 model Hero {

@@ -17,6 +17,7 @@ const QUICK_LINKS = [
     icon: "/icons/statistic.svg",
   },
   { label: "Settings", href: "/admin/settings", icon: "/icons/setting.svg" },
+  { label: "Activity Log", href: "/admin/logs", icon: "/icons/eye.svg" },
 ];
 
 export default function AdminDashboard() {

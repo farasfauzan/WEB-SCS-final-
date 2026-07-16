@@ -55,7 +55,8 @@ export default function AdminLoginPage() {
     setError("");
 
     if (lockUntil > 0) {
-      setError("Akun berkala terkunci. Silakan tunggu beberapa menit.");
+      const secondsLeft = Math.ceil((lockUntil - Date.now()) / 1000);
+      setError(`Terlalu banyak percobaan login. Silakan coba lagi dalam ${secondsLeft} detik.`);
       return;
     }
 
@@ -76,11 +77,11 @@ export default function AdminLoginPage() {
         localStorage.setItem("admin_login_attempts", nextAttempts);
 
         if (nextAttempts >= 3) {
-          const unlockTime = Date.now() + 15 * 60 * 1000; // Kunci akses 15 menit
+          const unlockTime = Date.now() + 1 * 60 * 1000; // Cooldown 1 menit
           setLockUntil(unlockTime);
           localStorage.setItem("admin_lock_until", unlockTime);
           setError(
-            "Akses ditolak. Anda salah memasukkan sandi 3 kali. Akun dibekukan selama 15 menit.",
+            "Terlalu banyak percobaan login. Silakan coba lagi dalam 60 detik.",
           );
         } else {
           setError(

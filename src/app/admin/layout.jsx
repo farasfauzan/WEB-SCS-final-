@@ -19,6 +19,7 @@ const SIDEBAR_ITEMS = [
   { label: "Statistics", href: "/admin/statistics", icon: "/icons/statistic.svg" },
   { label: "Settings", href: "/admin/settings", icon: "/icons/setting.svg" },
   { label: "Admin Users", href: "/admin/users", icon: "/icons/admin.svg" },
+  { label: "Activity Log", href: "/admin/logs", icon: "/icons/eye.svg" },
 ];
 
 function SidebarContent({ pathname, admin, onLinkClick }) {
