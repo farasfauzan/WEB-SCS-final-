@@ -4,26 +4,28 @@ import { useEffect } from "react";
 
 export default function VisitorTracker() {
   useEffect(() => {
-    // Use sendBeacon so tracking doesn't block page rendering
     const track = () => {
       try {
-        navigator.sendBeacon("/api/visitor/track", JSON.stringify({}));
+        // KOREKSI: Gunakan Blob untuk memaksa header Content-Type menjadi application/json
+        const data = new Blob([JSON.stringify({})], {
+          type: "application/json",
+        });
+        navigator.sendBeacon("/api/visitor/track", data);
       } catch {
-        // Fallback to fetch if sendBeacon is not available
+        // Fallback jika browser sangat kuno dan tidak mendukung sendBeacon
         fetch("/api/visitor/track", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({}),
-        }).catch(() => {});
+        }).catch(() => {}); // Tangkap error secara diam-diam agar tidak mengotori console
       }
     };
 
-    // Only track on initial page load (not on client-side navigation)
     let shouldTrack = true;
     try {
       shouldTrack = !sessionStorage.getItem("visitor_tracked");
     } catch {
-      // sessionStorage might be blocked (incognito, permissions)
+      // Abaikan jika sessionStorage diblokir oleh browser
     }
 
     if (shouldTrack) {
@@ -31,7 +33,7 @@ export default function VisitorTracker() {
       try {
         sessionStorage.setItem("visitor_tracked", "1");
       } catch {
-        // Silently ignore if sessionStorage is unavailable
+        // Abaikan jika gagal menyimpan sesi
       }
     }
   }, []);
