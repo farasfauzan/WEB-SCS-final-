@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import CldImg from "@/components/shared/CldImg"; // Tetap pertahankan untuk jaga-jaga
+import CldImg from "@/components/shared/CldImg";
 
 export default function GalleryUpload({
   images = [],
@@ -40,7 +40,7 @@ export default function GalleryUpload({
     setUploading(true);
 
     try {
-      const uploadedUrls = [];
+      const uploadedItems = [];
 
       for (const file of filesToUpload) {
         const validTypes = [
@@ -72,14 +72,15 @@ export default function GalleryUpload({
 
         const data = await res.json();
         if (data.success) {
-          uploadedUrls.push(data.url);
+          // KOREKSI: Simpan sebagai object berisi url dan caption kosong
+          uploadedItems.push({ url: data.url, caption: "" });
         } else {
           console.error("Upload failed:", data.error);
         }
       }
 
-      if (uploadedUrls.length > 0) {
-        const newImages = [...images, ...uploadedUrls];
+      if (uploadedItems.length > 0) {
+        const newImages = [...images, ...uploadedItems];
         onImagesChange(newImages);
       }
     } catch (err) {
@@ -100,13 +101,29 @@ export default function GalleryUpload({
   const handlePasteUrl = () => {
     const url = prompt("Masukkan URL gambar:");
     if (url && url.trim()) {
-      const newImages = [...images, url.trim()];
+      // KOREKSI: Simpan URL manual sebagai object
+      const newImages = [...images, { url: url.trim(), caption: "" }];
       onImagesChange(newImages);
     }
   };
 
   const handleRemoveImage = (index) => {
     const newImages = images.filter((_, i) => i !== index);
+    onImagesChange(newImages);
+  };
+
+  // KOREKSI UTAMA: Fungsi untuk merubah nilai Caption pada index tertentu
+  const handleCaptionChange = (index, newCaption) => {
+    const newImages = [...images];
+    const currentItem = newImages[index];
+
+    // Pastikan data lama (string) dikonversi ke object sebelum diubah
+    if (typeof currentItem === "string") {
+      newImages[index] = { url: currentItem, caption: newCaption };
+    } else {
+      newImages[index] = { ...currentItem, caption: newCaption };
+    }
+
     onImagesChange(newImages);
   };
 
@@ -187,10 +204,7 @@ export default function GalleryUpload({
     (e, dropIndex) => {
       e.preventDefault();
 
-      if (dragIndex === null && e.dataTransfer.files?.length > 0) {
-        return;
-      }
-
+      if (dragIndex === null && e.dataTransfer.files?.length > 0) return;
       e.stopPropagation();
 
       if (dragIndex === null || dragIndex === dropIndex) {
@@ -284,32 +298,17 @@ export default function GalleryUpload({
           </div>
         )}
 
-        {/* Reorder hint - shown only while reordering */}
-        {dragIndex !== null && (
-          <div className="flex items-center gap-2 px-3 py-2 mb-3 bg-yellow-50 border border-yellow-200 rounded-lg text-xs text-yellow-700">
-            <svg
-              className="w-3.5 h-3.5 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-              />
-            </svg>
-            <span>Lepaskan untuk menempatkan gambar di posisi baru</span>
-          </div>
-        )}
-
         {/* Image Grid */}
         {images.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {images.map((url, index) => {
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {images.map((item, index) => {
               const isDragging = dragIndex === index;
               const isDragOver = dragOverIndex === index && dragIndex !== index;
+
+              // KOREKSI: Sanitasi variabel agar kompatibel dengan data string maupun object
+              const imgUrl = typeof item === "string" ? item : item?.url || "";
+              const caption =
+                typeof item === "string" ? "" : item?.caption || "";
 
               return (
                 <div
@@ -322,8 +321,8 @@ export default function GalleryUpload({
                   onDrop={(e) => handleDrop(e, index)}
                   onDragEnd={handleDragEnd}
                   className={`
-                    relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 
-                    transition-all duration-200 cursor-grab active:cursor-grabbing
+                    relative flex flex-col p-2 gap-2 bg-gray-50 rounded-xl border-2 
+                    transition-all duration-200 
                     ${
                       isDragging
                         ? "border-[#004282] opacity-50 scale-95 shadow-lg z-10"
@@ -333,55 +332,62 @@ export default function GalleryUpload({
                     }
                   `}
                 >
-                  <div className="absolute top-1.5 left-1.5 z-10 flex items-center gap-1 pointer-events-none">
-                    <span className="bg-black/50 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
-                      {index + 1}
-                    </span>
-                  </div>
-
-                  <img
-                    src={url}
-                    alt={`Gallery ${index + 1}`}
-                    className="w-full h-full object-cover transition-all duration-300 select-none"
-                    onError={(e) => {
-                      e.target.src = "";
-                      e.target.style.display = "none";
-                    }}
-                    draggable={false}
-                  />
-
-                  <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-all duration-200 flex items-center justify-center gap-2 opacity-0 hover:opacity-100">
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveImage(index)}
-                      className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-all shadow-lg cursor-pointer"
-                      title="Hapus gambar"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {url.includes("cloudinary") && (
-                    <div className="absolute bottom-1.5 right-1.5 bg-[#004282]/70 text-white text-[8px] font-semibold px-1.5 py-0.5 rounded pointer-events-none">
-                      CDN
+                  <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group cursor-grab active:cursor-grabbing">
+                    <div className="absolute top-1.5 left-1.5 z-10 flex items-center gap-1 pointer-events-none">
+                      <span className="bg-black/50 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
+                        {index + 1}
+                      </span>
                     </div>
-                  )}
 
-                  {isDragOver && (
-                    <div className="absolute inset-0 border-2 border-yellow-400 rounded-lg pointer-events-none" />
-                  )}
+                    <img
+                      src={imgUrl}
+                      alt={`Gallery ${index + 1}`}
+                      className="w-full h-full object-cover transition-all duration-300 select-none"
+                      onError={(e) => {
+                        e.target.src = "";
+                        e.target.style.display = "none";
+                      }}
+                      draggable={false}
+                    />
+
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-all shadow-lg cursor-pointer"
+                        title="Hapus gambar"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {imgUrl.includes("cloudinary") && (
+                      <div className="absolute bottom-1.5 right-1.5 bg-[#004282]/70 text-white text-[8px] font-semibold px-1.5 py-0.5 rounded pointer-events-none">
+                        CDN
+                      </div>
+                    )}
+                  </div>
+
+                  {/* KOREKSI: Tambahan Input Teks untuk Caption */}
+                  <input
+                    type="text"
+                    placeholder="Tulis caption (opsional)"
+                    value={caption}
+                    onChange={(e) => handleCaptionChange(index, e.target.value)}
+                    className="w-full px-2 py-1.5 text-xs text-gray-700 bg-white border border-gray-300 rounded focus:outline-none focus:border-[#004282] focus:ring-1 focus:ring-[#004282] transition-colors"
+                  />
                 </div>
               );
             })}
@@ -485,23 +491,6 @@ export default function GalleryUpload({
           </span>
         </div>
       )}
-
-      <p className="text-xs text-gray-400 flex items-center gap-1">
-        <svg
-          className="w-3 h-3 shrink-0"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        Drag & drop file dari komputer. Gambar dioptimasi via Cloudinary CDN.
-      </p>
     </div>
   );
 }

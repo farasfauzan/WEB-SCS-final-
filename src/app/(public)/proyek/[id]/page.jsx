@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import FadeUp from "@/components/ui/FadeUp";
 import CldImg from "@/components/shared/CldImg";
+import InteractiveGallery from "@/components/ui/InteractiveGallery";
 
 export default function DetailProyekPage({ params }) {
   const { id } = React.use(params);
@@ -28,8 +29,13 @@ export default function DetailProyekPage({ params }) {
     );
   }
 
-  const galleryImages =
+  // Sanitasi & Pemformatan Data Galeri
+  const rawGallery =
     project.gallery || project.images || project.galleryImages || [];
+  const formattedGallery = rawGallery.map((item) => {
+    if (typeof item === "string") return { url: item, caption: "" };
+    return { url: item.url || "", caption: item.caption || "" };
+  });
 
   const formatYellowText = (text) => {
     if (!text) return null;
@@ -203,21 +209,8 @@ export default function DetailProyekPage({ params }) {
             </h2>
           </div>
 
-          {galleryImages.length > 0 ? (
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {galleryImages.map((img, idx) => (
-                <div
-                  key={idx}
-                  className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden group shadow-sm border border-neutral-100"
-                >
-                  <CldImg
-                    src={img}
-                    alt={`Galeri ${idx + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-              ))}
-            </div>
+          {formattedGallery.length > 0 ? (
+            <InteractiveGallery images={formattedGallery} />
           ) : (
             <div className="w-full py-16 flex flex-col items-center justify-center bg-zinc-50 rounded-2xl border-2 border-dashed border-neutral-200">
               <img
