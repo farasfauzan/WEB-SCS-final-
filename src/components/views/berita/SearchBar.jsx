@@ -7,20 +7,25 @@ export default function SearchBar() {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  // Mengambil nilai awal dari URL jika pengguna melakukan refresh halaman
   const [term, setTerm] = useState(searchParams.get("q")?.toString() || "");
 
   useEffect(() => {
-    // Debounce: Tunggu 300ms setelah selesai mengetik sebelum mengubah URL
+    // 1. Ambil nilai query 'q' dari URL saat ini
+    const currentQuery = searchParams.get("q") || "";
+
+    // 2. GUARD CLAUSE (KUNCI PERBAIKAN):
+    // Hentikan eksekusi jika input state 'term' sudah sama dengan parameter URL.
+    if (term === currentQuery) return;
+
+    // 3. Jalankan Debounce jika ada perbedaan
     const delayDebounceFn = setTimeout(() => {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams(searchParams.toString());
       if (term) {
-        params.set("q", term); // Setel query parameternya, ex: ?q=beton
+        params.set("q", term);
       } else {
-        params.delete("q"); // Hapus jika input kosong
+        params.delete("q");
       }
 
-      // Update URL tanpa reload halaman (scroll: false agar tidak melompat ke atas)
       replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, 300);
 
