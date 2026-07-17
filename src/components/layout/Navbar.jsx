@@ -90,7 +90,16 @@ export default function Navbar({ settings = {} }) {
       <nav
         className={`pointer-events-auto flex items-center justify-between w-full h-12 px-6 md:px-8 rounded-full transition-all duration-500 ease-in-out ${navBg}`}
       >
-        <Link href="/" className="flex items-center gap-3 group shrink-0">
+        <Link
+          href="/"
+          onClick={(e) => {
+            if (pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+          className="flex items-center gap-3 group shrink-0"
+        >
           <CldImg
             src="/logo-scs.svg"
             alt="Logo SCS"

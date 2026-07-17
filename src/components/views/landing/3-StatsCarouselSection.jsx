@@ -41,7 +41,7 @@ export default function StatsCarouselSection({ data }) {
       `}</style>
 
       <FadeUp delay={0.1} className="w-full overflow-hidden mb-8 md:mb-12 flex">
-        <div className="animate-infinite-scroll flex gap-4 md:gap-6 px-3 hover:[animation-play-state:paused] cursor-pointer">
+        <div className="animate-infinite-scroll flex gap-4 md:gap-6 px-3 hover:[animation-play-state:paused] cursor-default">
           {[...carouselImages, ...carouselImages].map((img, idx) => (
             // KOREKSI: Pengecilan ukuran gambar di layar mobile (w-56 h-36)
             <div

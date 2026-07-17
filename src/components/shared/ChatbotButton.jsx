@@ -1025,7 +1025,7 @@ export default function ChatbotButton({ settings = {} }) {
                 </div>
                 <button
                   onClick={toggleLanguage}
-                  className="text-[11px] font-bold bg-white/20 px-2.5 py-1.5 rounded-md hover:bg-white/30 transition-colors border border-white/10"
+                  className="text-[11px] font-bold bg-white/20 px-2.5 py-1.5 rounded-md hover:bg-white/30 transition-colors border border-white/10 cursor-pointer"
                 >
                   {lang === "id" ? "EN" : "ID"}
                 </button>
@@ -1175,7 +1175,7 @@ export default function ChatbotButton({ settings = {} }) {
                     if (inputValue.trim()) processUserInput(inputValue.trim());
                   }}
                   disabled={!inputValue.trim()}
-                  className="bg-[#004282] text-white px-4 py-2.5 rounded-xl text-[13px] font-bold hover:bg-blue-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="bg-[#004282] text-white px-4 py-2.5 rounded-xl text-[13px] font-bold hover:bg-blue-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {lang === "id" ? "Kirim" : "Send"}
                 </button>
@@ -1188,7 +1188,7 @@ export default function ChatbotButton({ settings = {} }) {
       {/* Tombol Utama */}
       <button
         onClick={handleToggleChat}
-        className="relative w-14 h-14 bg-yellow-400 hover:bg-yellow-500 text-[#004282] rounded-full shadow-xl transition-all duration-200 focus:outline-none group active:scale-95 flex items-center justify-center z-10"
+        className="relative w-14 h-14 bg-yellow-400 hover:bg-yellow-500 text-[#004282] rounded-full shadow-xl transition-all duration-200 focus:outline-none group active:scale-95 flex items-center justify-center z-10 cursor-pointer"
       >
         {/* Titik Merah Notifikasi */}
         {hasUnread && !isOpen && (

@@ -75,7 +75,7 @@ export default function ProjectPreview({ data }) {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 ${
+                className={`cursor-pointer px-5 py-2 rounded-full font-semibold text-xs md:text-sm transition-all duration-300 ${
                   activeCategory === cat
                     ? "bg-[#6B7AE5] text-white shadow-sm"
                     : "text-neutral-400 hover:text-stone-600"
