@@ -31,10 +31,14 @@ export async function PUT(request, { params }) {
       }
     }
 
-    // Ensure galleryImages is always an array
+    // Ensure galleryImages is always an array of JSON strings (store url + caption)
     const updateData = {
       ...data,
-      galleryImages: data.galleryImages || [],
+      galleryImages: (data.galleryImages || []).map((item) =>
+        typeof item === "string"
+          ? item
+          : JSON.stringify({ url: item.url || "", caption: item.caption || "" })
+      ),
     };
 
     const news = await prisma.news.update({

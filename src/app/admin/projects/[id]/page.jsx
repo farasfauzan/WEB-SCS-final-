@@ -22,7 +22,27 @@ export default function EditProjectPage() {
       const data = await res.json();
       if (data.project) {
         const p = data.project;
-        setForm({ title: p.title || "", description: p.description || "", category: p.category || "Lainnya", location: p.location || "", client: p.client || "", imageUrl: p.imageUrl || "", galleryImages: p.galleryImages || [], completedDate: p.completedDate || "", isActive: p.isActive ?? true });
+        setForm({
+          title: p.title || "",
+          description: p.description || "",
+          category: p.category || "Lainnya",
+          location: p.location || "",
+          client: p.client || "",
+          imageUrl: p.imageUrl || "",
+          galleryImages: (p.galleryImages || []).map((item) => {
+            if (typeof item === "string") {
+              try {
+                const parsed = JSON.parse(item);
+                if (parsed && typeof parsed === "object" && parsed.url)
+                  return parsed;
+              } catch {}
+              return { url: item, caption: "" };
+            }
+            return item;
+          }),
+          completedDate: p.completedDate || "",
+          isActive: p.isActive ?? true,
+        });
       }
       setLoading(false);
     };

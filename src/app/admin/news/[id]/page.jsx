@@ -20,7 +20,25 @@ export default function EditNewsPage() {
       const data = await res.json();
       if (data.news) {
         const n = data.news;
-        setForm({ slug: n.slug || "", title: n.title || "", excerpt: n.excerpt || "", content: n.content || "", imageUrl: n.imageUrl || "", galleryImages: n.galleryImages || [], status: n.status || "DRAFT" });
+        setForm({
+          slug: n.slug || "",
+          title: n.title || "",
+          excerpt: n.excerpt || "",
+          content: n.content || "",
+          imageUrl: n.imageUrl || "",
+          galleryImages: (n.galleryImages || []).map((item) => {
+            if (typeof item === "string") {
+              try {
+                const parsed = JSON.parse(item);
+                if (parsed && typeof parsed === "object" && parsed.url)
+                  return parsed;
+              } catch {}
+              return { url: item, caption: "" };
+            }
+            return item;
+          }),
+          status: n.status || "DRAFT",
+        });
       }
       setLoading(false);
     };

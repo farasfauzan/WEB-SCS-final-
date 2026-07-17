@@ -25,10 +25,14 @@ export async function POST(request) {
     }
 
     const data = await request.json();
-    // Ensure galleryImages is always an array
+    // Ensure galleryImages is always an array of JSON strings (store url + caption)
     const createData = {
       ...data,
-      galleryImages: data.galleryImages || [],
+      galleryImages: (data.galleryImages || []).map((item) =>
+        typeof item === "string"
+          ? item
+          : JSON.stringify({ url: item.url || "", caption: item.caption || "" })
+      ),
     };
     const news = await prisma.news.create({ data: createData });
     return NextResponse.json({ news }, { status: 201 });
