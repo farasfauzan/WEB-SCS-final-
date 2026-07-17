@@ -27,8 +27,8 @@ export default function SinergiSection({ data }) {
           </p>
         </FadeUp>
 
-        {/* Grid Sinergi yang Responsif (Mobile First) */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full mt-4">
+        {/* Layout Sinergi Adaptif (Flex Wrap) */}
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-10 md:gap-x-12 md:gap-y-14 w-full mt-4">
           {networks.map((item, idx) => {
             const displayName =
               item.name || item.title || "PT Maharani Globalindo";
@@ -39,8 +39,9 @@ export default function SinergiSection({ data }) {
             return (
               <FadeUp
                 key={idx}
-                delay={0.2 + idx * 0.1}
-                className="flex flex-col items-center gap-3 md:gap-4 text-center"
+                // Membatasi delay animasi agar tidak menunggu selamanya jika data sangat banyak
+                delay={0.2 + Math.min(idx * 0.1, 0.8)}
+                className="flex flex-col items-center gap-3 md:gap-4 text-center w-[140px] md:w-[180px]"
               >
                 {/* Lingkaran Logo Sinergi */}
                 <WrapperComponent

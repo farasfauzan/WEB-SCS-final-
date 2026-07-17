@@ -773,23 +773,32 @@ export default function ChatbotButton({ settings = {} }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping, feedbackState, activeTopic]);
 
-  // FUNGSI PEMICU FEEDBACK (Harus diletakkan di atas sebelum dipanggil oleh Timer)
+  // FUNGSI PEMICU FEEDBACK (Ditingkatkan agar Anti-Duplikasi)
   const triggerFeedback = (delay = 0) => {
+    // 1. Cek apakah pesan feedback sudah ada di layar (Guard Clause)
+    const feedbackExists = messages.some((m) => m.type === "feedback_prompt");
+    if (feedbackExists) return;
+
     setFeedbackState((prev) => {
       if (prev !== "none") return prev; // Mencegah muncul dua kali
 
       setTimeout(() => {
-        setMessages((msgs) => [
-          ...msgs,
-          {
-            id: `feedback-${Date.now()}`,
-            type: "feedback_prompt",
-            text:
-              langRef.current === "id"
-                ? "Apakah jawaban Hikari membantu sejauh ini?"
-                : "Has Hikari been helpful so far?",
-          },
-        ]);
+        setMessages((msgs) => {
+          // Double check di dalam setMessages untuk keamanan extra
+          if (msgs.some((m) => m.type === "feedback_prompt")) return msgs;
+
+          return [
+            ...msgs,
+            {
+              id: "feedback-prompt", // ID Statis agar tidak mungkin duplikat
+              type: "feedback_prompt",
+              text:
+                langRef.current === "id"
+                  ? "Apakah jawaban Hikari membantu sejauh ini?"
+                  : "Has Hikari been helpful so far?",
+            },
+          ];
+        });
 
         // Munculkan titik merah jika user sedang menutup chat
         if (!isOpenRef.current) {

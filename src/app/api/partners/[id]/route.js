@@ -1,16 +1,25 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
-import { handleImageChange, deleteCloudinaryImage } from "@/lib/cloudinary-server";
+import {
+  handleImageChange,
+  deleteCloudinaryImage,
+} from "@/lib/cloudinary-server";
 
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
-    const partner = await prisma.partner.findUnique({ where: { id: Number(id) } });
-    if (!partner) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const partner = await prisma.partner.findUnique({
+      where: { id: Number(id) },
+    });
+    if (!partner)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ partner });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch partner" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch partner" },
+      { status: 500 },
+    );
   }
 }
 
@@ -22,10 +31,14 @@ export async function PUT(request, { params }) {
     const { id } = await params;
     const data = await request.json();
 
-    // 🔥 If logoUrl is being updated, delete the old Cloudinary image
+    // 🔥 LOGIKA YANG DIPERBAIKI: Hapus gambar lama HANYA JIKA url-nya berbeda
     if (data.logoUrl) {
-      const existing = await prisma.partner.findUnique({ where: { id: Number(id) } });
-      if (existing?.logoUrl) {
+      const existing = await prisma.partner.findUnique({
+        where: { id: Number(id) },
+      });
+
+      // Cek apakah gambar sebelumnya ada, DAN apakah url-nya berbeda dengan yang baru diupload
+      if (existing?.logoUrl && existing.logoUrl !== data.logoUrl) {
         await handleImageChange(existing.logoUrl, data.logoUrl);
       }
     }
@@ -36,7 +49,10 @@ export async function PUT(request, { params }) {
     });
     return NextResponse.json({ partner });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to update partner" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update partner" },
+      { status: 500 },
+    );
   }
 }
 
@@ -47,8 +63,11 @@ export async function DELETE(request, { params }) {
     }
     const { id } = await params;
 
+    const existing = await prisma.partner.findUnique({
+      where: { id: Number(id) },
+    });
+
     // 🔥 Delete associated Cloudinary image before deleting the record
-    const existing = await prisma.partner.findUnique({ where: { id: Number(id) } });
     if (existing?.logoUrl) {
       await deleteCloudinaryImage(existing.logoUrl);
     }
@@ -56,7 +75,9 @@ export async function DELETE(request, { params }) {
     await prisma.partner.delete({ where: { id: Number(id) } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to delete partner" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete partner" },
+      { status: 500 },
+    );
   }
 }
-
