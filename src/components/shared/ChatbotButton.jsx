@@ -5,6 +5,36 @@ import { motion, AnimatePresence } from "framer-motion";
 import CldImg from "@/components/shared/CldImg";
 
 // ═══════════════════════════════════════════════════════════
+// FILTER STOPWORDS (FITUR 1)
+// ═══════════════════════════════════════════════════════════
+const STOPWORDS = [
+  "dan",
+  "di",
+  "ke",
+  "yang",
+  "dari",
+  "pada",
+  "untuk",
+  "dengan",
+  "ini",
+  "itu",
+  "ya",
+  "saya",
+  "aku",
+  "kamu",
+  "kami",
+  "adalah",
+  "apakah",
+  "bagaimana",
+  "kenapa",
+  "kapan",
+  "siapa",
+  "dimana",
+  "ada",
+  "apa",
+];
+
+// ═══════════════════════════════════════════════════════════
 // ALGORITMA ANTI-TYPO (Proteksi Super Ketat)
 // ═══════════════════════════════════════════════════════════
 function levenshtein(a, b) {
@@ -32,12 +62,13 @@ function levenshtein(a, b) {
 function isFuzzyMatch(word, keyword) {
   if (word === keyword) return true;
 
-  // Jika selisih panjang lebih dari 2 huruf, tolak mentah-mentah (mencegah "hi" masuk ke "hikari")
+  // Jika selisih panjang lebih dari 2 huruf, tolak mentah-mentah
   if (Math.abs(word.length - keyword.length) > 2) return false;
 
-  // Proteksi Khusus Kata Pendek: Mencegah "hai" ber-mutasi menjadi "hasil"
+  // MASALAH 1: Proteksi Khusus Kata Pendek (Wajib Sama Persis)
+  // Menghapus .includes() agar "wa" tidak dianggap cocok dengan "kecewa"
   if (word.length <= 3 || keyword.length <= 3) {
-    return word.includes(keyword) || keyword.includes(word);
+    return word === keyword;
   }
 
   const distance = levenshtein(word, keyword);
@@ -46,9 +77,8 @@ function isFuzzyMatch(word, keyword) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// KNOWLEDGE BASE — Dwibahasa (ID & EN) (Full Data 1000+ Baris)
+// KNOWLEDGE BASE — Dwibahasa (ID & EN)
 // ═══════════════════════════════════════════════════════════
-
 function getDynamicKnowledgeBase(settings, lang = "id") {
   const address =
     settings.footer_address ||
@@ -61,19 +91,16 @@ function getDynamicKnowledgeBase(settings, lang = "id") {
     {
       topic: "arti_nama",
       keywords: [
+        "hikari", // EASTER EGG HIKARI DITEMPATKAN DI SINI
         "kenapa hikari",
         "arti nama",
-        "meaning",
-        "why hikari",
         "namamu",
-        "your name",
-        "asal nama",
         "siapa hikari",
-        "namanya",
+        "scs pintar",
       ],
       answer: {
-        id: "Nama 'Hikari' (光) berasal dari bahasa Jepang yang berarti 'Cahaya'. 🌟\n\nNama ini dipilih karena mencerminkan PT Sinar Cerah Sempurna yang selalu berusaha menjadi cahaya penerang dan memberikan solusi terbaik dalam setiap proyek konstruksi Anda! ✨",
-        en: "The name 'Hikari' (光) comes from Japanese, meaning 'Light'. 🌟\n\nThis name was chosen because it reflects PT Sinar Cerah Sempurna, which always strives to be the guiding light and provide the best solutions in every construction project! ✨",
+        id: "Halo! 'Hikari' adalah namaku yang dulu, diambil dari bahasa Jepang yang artinya 'Cahaya'. 🌟\n\nTapi sekarang, panggil aku **SCS Pintar**, asisten digital resmi PT Sinar Cerah Sempurna yang siap memberikan solusi untukmu! ✨",
+        en: "Hello! 'Hikari' was my old name, taken from Japanese meaning 'Light'. 🌟\n\nBut now, call me **SCS Pintar**, the official digital assistant of PT Sinar Cerah Sempurna ready to provide solutions for you! ✨",
       },
     },
     {
@@ -507,7 +534,6 @@ function getDynamicKnowledgeBase(settings, lang = "id") {
 // ═══════════════════════════════════════════════════════════
 // ANAK PERTANYAAN (DYNAMIC FAQ TREE)
 // ═══════════════════════════════════════════════════════════
-
 const FAQ_TREE = {
   default: {
     id: [
@@ -577,38 +603,55 @@ function getDynamicFaq(lang, currentTopic) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// SMART MATCHING ENGINE
+// SMART MATCHING ENGINE (Logika Inti Diperbaiki)
 // ═══════════════════════════════════════════════════════════
-
 function findBestAnswer(input, knowledgeBase) {
   const lower = input.toLowerCase().replace(/[?!.,]/g, "");
-  const words = lower.split(/\s+/);
+
+  // MASALAH 4 (Bagian 1): Filter stopwords agar tidak ikut diproses Levenshtein
+  const words = lower
+    .split(/\s+/)
+    .filter((word) => !STOPWORDS.includes(word) && word.length > 0);
 
   let bestMatch = null;
   let bestScore = 0;
 
   for (const entry of knowledgeBase) {
     let score = 0;
+
     for (const keyword of entry.keywords) {
-      if (lower.includes(keyword)) {
-        score += keyword.split(/\s+/).length * 3;
+      // MASALAH 2: Menggunakan Regex \b agar "visi" tidak me-match "televisi"
+      const exactMatchRegex = new RegExp("\\b" + keyword + "\\b", "i");
+
+      if (exactMatchRegex.test(lower)) {
+        score += 5; // Poin besar jika keyword-nya match sempurna 1 frasa utuh
+        continue; // MASALAH 3: Hentikan pengecekan kata-per-kata di bawahnya agar skor tidak ganda
       }
+
+      // Jika tidak match frasa utuh, pecah keyword dan lakukan Fuzzy per kata
       const kwWords = keyword.split(/\s+/);
       for (const kw of kwWords) {
+        if (kw.length < 3) continue; // FITUR 3: Skip keyword < 3 huruf dari proses fuzzy
+
         for (const word of words) {
+          if (word.length < 3) continue; // FITUR 3: Skip input user < 3 huruf dari proses fuzzy
+
           if (isFuzzyMatch(word, kw)) {
             score += 2;
+            break; // MASALAH 4: Jika 1 kata user sudah match dgn kw ini, stop perulangan agar tidak dihitung dua kali
           }
         }
       }
     }
+
     if (score > bestScore) {
       bestScore = score;
       bestMatch = entry;
     }
   }
 
-  return bestScore >= 2 ? bestMatch : null;
+  // FITUR 2: Naikkan threshold dinamis ke skor 4 (Setara dengan 1 frasa utuh ATAU 2 kata typo)
+  return bestScore >= 4 ? bestMatch : null;
 }
 
 const GREETINGS = {
@@ -639,12 +682,12 @@ const GREETINGS = {
   ],
   responses: {
     id: [
-      "Halo! 😊 Saya Hikari. Ada yang bisa saya bantu tentang PT Sinar Cerah Sempurna?",
-      "Hai! 👋 Senang bisa membantu Anda. Mau tanya apa tentang SCS ke Hikari?",
+      "Halo! 😊 Saya SCS Pintar. Ada yang bisa saya bantu tentang PT Sinar Cerah Sempurna?",
+      "Hai! 👋 Senang bisa membantu Anda. Mau tanya apa tentang SCS ke SCS Pintar?",
     ],
     en: [
-      "Hello! 😊 I am Hikari. How can I help you regarding PT Sinar Cerah Sempurna?",
-      "Hi! 👋 Glad to help. What would you like to ask Hikari about SCS?",
+      "Hello! 😊 I am SCS Pintar. How can I help you regarding PT Sinar Cerah Sempurna?",
+      "Hi! 👋 Glad to help. What would you like to ask SCS Pintar about SCS?",
     ],
   },
 };
@@ -720,10 +763,10 @@ function generateResponse(input, settings, lang) {
 
   const fallbacks = {
     id: [
-      "Hmm, Hikari belum menangkap maksudnya. 🤔 Coba tanyakan tentang layanan, lokasi, atau profil PT Sinar Cerah Sempurna!",
+      "Hmm, SCS Pintar belum menangkap maksudnya. 🤔 Coba tanyakan tentang layanan, lokasi, atau profil PT Sinar Cerah Sempurna!",
     ],
     en: [
-      "Hmm, Hikari didn't quite get that. 🤔 Try asking about the services, location, or profile of PT Sinar Cerah Sempurna!",
+      "Hmm, SCS Pintar didn't quite get that. 🤔 Try asking about the services, location, or profile of PT Sinar Cerah Sempurna!",
     ],
   };
   return { text: fallbacks[lang][0], type: "bot", topic: "default" };
@@ -732,10 +775,9 @@ function generateResponse(input, settings, lang) {
 // ═══════════════════════════════════════════════════════════
 // COMPONENT UTAMA
 // ═══════════════════════════════════════════════════════════
-
 export default function ChatbotButton({ settings = {} }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasUnread, setHasUnread] = useState(false); // State untuk Titik Merah
+  const [hasUnread, setHasUnread] = useState(false);
   const [lang, setLang] = useState("id");
 
   const [messages, setMessages] = useState([
@@ -743,7 +785,7 @@ export default function ChatbotButton({ settings = {} }) {
       id: "welcome-msg",
       type: "bot",
       isWelcome: true,
-      text: "Halo! 👋 Saya Hikari, asisten virtual PT Sinar Cerah Sempurna.\n\nSilakan pilih pertanyaan di bawah atau ketik langsung apa yang ingin Anda tanyakan!",
+      text: "Halo! 👋 Saya SCS Pintar, asisten virtual PT Sinar Cerah Sempurna.\n\nSilakan pilih pertanyaan di bawah atau ketik langsung apa yang ingin Anda tanyakan!",
       reaction: null,
     },
   ]);
@@ -753,12 +795,11 @@ export default function ChatbotButton({ settings = {} }) {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const [feedbackState, setFeedbackState] = useState("none"); // none, prompted, awaiting_text, done
+  const [feedbackState, setFeedbackState] = useState("none");
 
   const messagesEndRef = useRef(null);
   const inactivityTimerRef = useRef(null);
 
-  // Menyimpan referensi state terbaru untuk digunakan di dalam setTimeout
   const langRef = useRef(lang);
   useEffect(() => {
     langRef.current = lang;
@@ -773,34 +814,30 @@ export default function ChatbotButton({ settings = {} }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping, feedbackState, activeTopic]);
 
-  // FUNGSI PEMICU FEEDBACK (Ditingkatkan agar Anti-Duplikasi)
   const triggerFeedback = (delay = 0) => {
-    // 1. Cek apakah pesan feedback sudah ada di layar (Guard Clause)
     const feedbackExists = messages.some((m) => m.type === "feedback_prompt");
     if (feedbackExists) return;
 
     setFeedbackState((prev) => {
-      if (prev !== "none") return prev; // Mencegah muncul dua kali
+      if (prev !== "none") return prev;
 
       setTimeout(() => {
         setMessages((msgs) => {
-          // Double check di dalam setMessages untuk keamanan extra
           if (msgs.some((m) => m.type === "feedback_prompt")) return msgs;
 
           return [
             ...msgs,
             {
-              id: "feedback-prompt", // ID Statis agar tidak mungkin duplikat
+              id: "feedback-prompt",
               type: "feedback_prompt",
               text:
                 langRef.current === "id"
-                  ? "Apakah jawaban Hikari membantu sejauh ini?"
-                  : "Has Hikari been helpful so far?",
+                  ? "Apakah jawaban SCS Pintar membantu sejauh ini?"
+                  : "Has SCS Pintar been helpful so far?",
             },
           ];
         });
 
-        // Munculkan titik merah jika user sedang menutup chat
         if (!isOpenRef.current) {
           setHasUnread(true);
         }
@@ -810,17 +847,15 @@ export default function ChatbotButton({ settings = {} }) {
     });
   };
 
-  // TIMER 3 MENIT INACTIVITY
   useEffect(() => {
     if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
 
-    // Mulai hitung mundur 3 menit JIKA user sudah nge-chat minimal 1 kali, dan feedback belum muncul
     const userHasInteracted = messages.some((m) => m.type === "user");
 
     if (userHasInteracted && feedbackState === "none") {
       inactivityTimerRef.current = setTimeout(() => {
-        triggerFeedback(0); // Sekarang aman karena fungsinya sudah dideklarasikan di atas
-      }, 180000); // 180.000 ms = 3 Menit
+        triggerFeedback(0);
+      }, 180000);
     }
 
     return () => clearTimeout(inactivityTimerRef.current);
@@ -870,13 +905,12 @@ export default function ChatbotButton({ settings = {} }) {
     setInputValue("");
     setShowFaq(false);
 
-    // Jika mode penerimaan saran
     if (feedbackState === "awaiting_text") {
       addBotMessage({
         text:
           lang === "id"
-            ? "Terima kasih atas masukannya! Hikari akan belajar menjadi lebih baik. 🙏"
-            : "Thank you for your feedback! Hikari will learn to be better. 🙏",
+            ? "Terima kasih atas masukannya! SCS Pintar akan belajar menjadi lebih baik. 🙏"
+            : "Thank you for your feedback! SCS Pintar will learn to be better. 🙏",
         type: "bot",
       });
       setFeedbackState("done");
@@ -885,21 +919,17 @@ export default function ChatbotButton({ settings = {} }) {
       return;
     }
 
-    // Alur percakapan normal
     const responseData = generateResponse(text, settings, lang);
     addBotMessage(responseData);
 
-    // Perbarui FAQ Tree berdasarkan topik jawaban
     setActiveTopic(responseData.topic);
     setTimeout(() => setShowFaq(true), 1800);
 
-    // LOGIKA END OF BRANCH:
-    // Jika topik saat ini bukan default dan tidak memiliki anak pertanyaan di FAQ_TREE
     const isEndOfBranch =
       responseData.topic !== "default" && !FAQ_TREE[responseData.topic];
 
     if (isEndOfBranch) {
-      triggerFeedback(3500); // Tunggu 3.5 detik (setelah bot selesai ngetik jawabannya) baru munculkan feedback
+      triggerFeedback(3500);
     }
   };
 
@@ -911,8 +941,8 @@ export default function ChatbotButton({ settings = {} }) {
       addBotMessage({
         text:
           lang === "id"
-            ? "Maaf jika jawaban Hikari belum memuaskan. 😔 Boleh beritahu apa yang bisa Hikari perbaiki?"
-            : "Sorry if Hikari's answer wasn't satisfactory. 😔 Could you tell me what I can improve?",
+            ? "Maaf jika jawaban SCS Pintar belum memuaskan. 😔 Boleh beritahu apa yang bisa diperbaiki?"
+            : "Sorry if SCS Pintar's answer wasn't satisfactory. 😔 Could you tell me what can be improved?",
         type: "bot",
       });
     } else {
@@ -946,8 +976,8 @@ export default function ChatbotButton({ settings = {} }) {
               reaction: null,
               text:
                 newLang === "id"
-                  ? "Halo! 👋 Saya Hikari, asisten virtual PT Sinar Cerah Sempurna.\n\nSilakan pilih pertanyaan di bawah atau ketik langsung apa yang ingin Anda tanyakan!"
-                  : "Hello! 👋 I am Hikari, PT Sinar Cerah Sempurna's virtual assistant.\n\nPlease select a question below or directly type what you want to ask!",
+                  ? "Halo! 👋 Saya SCS Pintar, asisten virtual PT Sinar Cerah Sempurna.\n\nSilakan pilih pertanyaan di bawah atau ketik langsung apa yang ingin Anda tanyakan!"
+                  : "Hello! 👋 I am SCS Pintar, PT Sinar Cerah Sempurna's virtual assistant.\n\nPlease select a question below or directly type what you want to ask!",
             },
           ];
         }
@@ -966,7 +996,7 @@ export default function ChatbotButton({ settings = {} }) {
   };
 
   const handleToggleChat = () => {
-    if (!isOpen) setHasUnread(false); // Hilangkan titik merah saat chat dibuka
+    if (!isOpen) setHasUnread(false);
     setIsOpen(!isOpen);
   };
 
@@ -1015,7 +1045,7 @@ export default function ChatbotButton({ settings = {} }) {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-sm leading-tight">
-                      Hikari
+                      SCS Pintar
                     </span>
                     <div className="flex items-center gap-1.5">
                       <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
@@ -1041,7 +1071,6 @@ export default function ChatbotButton({ settings = {} }) {
                     className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
                   >
                     {msg.type === "feedback_prompt" ? (
-                      // UI Kartu Feedback (Inline Telegram Style)
                       <div className="flex flex-col gap-1.5 w-full items-start">
                         <div className="bg-white text-[#1E1E1E] border border-neutral-200 px-3.5 py-2.5 rounded-2xl rounded-bl-md shadow-sm max-w-[85%] text-[13px]">
                           {msg.text}
@@ -1061,7 +1090,6 @@ export default function ChatbotButton({ settings = {} }) {
                         )}
                       </div>
                     ) : (
-                      // UI Chat Bubble Normal dengan Reaksi
                       <div className="relative group">
                         <div
                           className={`px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed max-w-[240px] whitespace-pre-line relative ${
@@ -1079,7 +1107,6 @@ export default function ChatbotButton({ settings = {} }) {
                             />
                           )}
 
-                          {/* Badge Reaksi Aktif (WhatsApp Style) */}
                           {msg.reaction && (
                             <div
                               className={`absolute -bottom-2.5 ${
@@ -1091,7 +1118,6 @@ export default function ChatbotButton({ settings = {} }) {
                           )}
                         </div>
 
-                        {/* Tombol Reaksi Hover */}
                         <button
                           onClick={() => toggleReaction(msg.id)}
                           className={`absolute bottom-0 opacity-0 group-hover:opacity-100 transition-opacity bg-white shadow-md border border-neutral-100 rounded-full p-1 text-xs z-10 hover:scale-110 ${
