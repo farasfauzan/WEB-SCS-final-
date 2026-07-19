@@ -82,7 +82,7 @@ export default function EditPartnerPage() {
             className="bg-[#004282] text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors disabled:opacity-50">
             {saving ? "Saving..." : "Save Changes"}
           </button>
-          <Link href="/admin/partners" className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
+          <Link href="/admin/partners" className="text-center px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
         </div>
       </form>
     </div>

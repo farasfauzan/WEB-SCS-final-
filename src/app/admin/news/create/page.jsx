@@ -99,7 +99,7 @@ export default function CreateNewsPage() {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm resize-none" />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <ImageUpload
               currentImage={form.imageUrl}
@@ -130,7 +130,7 @@ export default function CreateNewsPage() {
             className="bg-[#004282] text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-900 transition-colors disabled:opacity-50">
             {loading ? "Creating..." : "Create News"}
           </button>
-          <Link href="/admin/news" className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
+          <Link href="/admin/news" className="text-center px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</Link>
         </div>
       </form>
     </div>

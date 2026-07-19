@@ -69,8 +69,8 @@ export default function DetailProyekPage({ params }) {
     : "9 Juli 2026";
 
   return (
-    <main className="w-full bg-zinc-100 min-h-screen pt-20 pb-24 px-4 lg:px-8 flex flex-col items-center">
-      <div className="w-full max-w-[1144px] flex flex-col gap-5">
+    <main className="w-full bg-zinc-100 min-h-screen pt-16 md:pt-20 pb-20 md:pb-24 px-3 md:px-4 lg:px-8 flex flex-col items-center">
+      <div className="w-full max-w-[1144px] flex flex-col gap-4 md:gap-5">
         <FadeUp delay={0.1}>
           <Link
             href="/proyek"
@@ -95,16 +95,16 @@ export default function DetailProyekPage({ params }) {
 
         <FadeUp
           delay={0.2}
-          className="w-full bg-white rounded-[32px] md:rounded-[48px] px-6 pt-5 pb-6 lg:px-8 lg:pt-6 lg:pb-8 flex flex-col gap-6 md:gap-8 shadow-sm border border-neutral-100"
+          className="w-full bg-white rounded-[24px] md:rounded-[48px] px-4 md:px-6 pt-4 pb-5 lg:px-8 lg:pt-6 lg:pb-8 flex flex-col gap-4 md:gap-8 shadow-sm border border-neutral-100"
         >
           <div className="w-full flex flex-col gap-3 md:gap-4">
             <div className="w-full text-left">
-              <p className="text-blue-900 text-[12px] md:text-[13px] font-bold font-['Plus_Jakarta_Sans'] tracking-widest uppercase">
+              <p className="text-blue-900 text-[11px] md:text-[13px] font-bold font-['Plus_Jakarta_Sans'] tracking-widest uppercase">
                 Diterbitkan pada • {publishDate}
               </p>
             </div>
 
-            <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden relative">
+            <div className="w-full h-[200px] sm:h-[300px] md:h-[350px] lg:h-[400px] rounded-xl md:rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden relative">
               <CldImg
                 src={
                   project.imageUrl ||
@@ -118,49 +118,49 @@ export default function DetailProyekPage({ params }) {
             </div>
           </div>
 
-          <h1 className="w-full text-left text-black text-2xl md:text-3xl font-bold font-['Montserrat'] leading-snug">
+          <h1 className="w-full text-left text-black text-xl md:text-3xl font-bold font-['Montserrat'] leading-snug">
             {formatYellowText(project.title)}
           </h1>
 
           <hr className="border-neutral-100 w-full" />
 
-          <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 md:gap-10 items-start">
-            <div className="flex flex-col gap-5">
-              <h2 className="text-black text-lg md:text-xl font-bold font-['Montserrat'] mb-1">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-6 md:gap-10 items-start">
+            <div className="flex flex-col gap-4 md:gap-5">
+              <h2 className="text-black text-base md:text-xl font-bold font-['Montserrat'] mb-1">
                 Detail Proyek
               </h2>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3 md:gap-4">
                 <div>
-                  <h3 className="text-black text-[15px] font-bold font-['Montserrat']">
+                  <h3 className="text-black text-[14px] md:text-[15px] font-bold font-['Montserrat']">
                     Kategori
                   </h3>
-                  <p className="text-neutral-700 text-[14px] md:text-[15px] font-normal font-['Montserrat'] mt-0.5">
+                  <p className="text-neutral-700 text-[13px] md:text-[15px] font-normal font-['Montserrat'] mt-0.5">
                     {project.category || "-"}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-black text-[15px] font-bold font-['Montserrat']">
+                  <h3 className="text-black text-[14px] md:text-[15px] font-bold font-['Montserrat']">
                     Lokasi
                   </h3>
-                  <p className="text-neutral-700 text-[14px] md:text-[15px] font-normal font-['Montserrat'] leading-relaxed mt-0.5">
+                  <p className="text-neutral-700 text-[13px] md:text-[15px] font-normal font-['Montserrat'] leading-relaxed mt-0.5">
                     {project.location || "-"}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-black text-[15px] font-bold font-['Montserrat']">
+                  <h3 className="text-black text-[14px] md:text-[15px] font-bold font-['Montserrat']">
                     Status
                   </h3>
-                  <p className="text-neutral-700 text-[14px] md:text-[15px] font-normal font-['Montserrat'] mt-0.5">
+                  <p className="text-neutral-700 text-[13px] md:text-[15px] font-normal font-['Montserrat'] mt-0.5">
                     {project.status || "Completed"}
                   </p>
                 </div>
 
                 {project.description && (
-                  <div className="mt-2">
-                    <h3 className="text-black text-[15px] font-bold font-['Montserrat']">
+                  <div className="mt-1 md:mt-2">
+                    <h3 className="text-black text-[14px] md:text-[15px] font-bold font-['Montserrat']">
                       Deskripsi
                     </h3>
-                    <p className="text-neutral-700 text-[14px] md:text-[15px] font-normal font-['Montserrat'] leading-relaxed whitespace-pre-line mt-1.5">
+                    <p className="text-neutral-700 text-[13px] md:text-[15px] font-normal font-['Montserrat'] leading-relaxed whitespace-pre-line mt-1.5">
                       {project.description}
                     </p>
                   </div>
@@ -168,7 +168,7 @@ export default function DetailProyekPage({ params }) {
               </div>
             </div>
 
-            <div className="w-full lg:w-[420px] aspect-video md:aspect-auto md:h-[260px] rounded-2xl overflow-hidden relative bg-zinc-200 shadow-inner border border-neutral-100">
+            <div className="w-full aspect-video md:aspect-auto md:h-[260px] rounded-xl md:rounded-2xl overflow-hidden relative bg-zinc-200 shadow-inner border border-neutral-100">
               {project.mapsUrl ? (
                 <iframe
                   src={project.mapsUrl}
@@ -180,7 +180,7 @@ export default function DetailProyekPage({ params }) {
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-100 gap-3">
                   <svg
-                    className="w-8 h-8 text-neutral-400"
+                    className="w-6 h-6 md:w-8 md:h-8 text-neutral-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -198,7 +198,7 @@ export default function DetailProyekPage({ params }) {
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                  <span className="text-[13px] text-neutral-500 font-medium font-['Montserrat']">
+                  <span className="text-[12px] md:text-[13px] text-neutral-500 font-medium font-['Montserrat']">
                     Peta tidak tersedia
                   </span>
                 </div>
@@ -209,10 +209,10 @@ export default function DetailProyekPage({ params }) {
 
         <FadeUp
           delay={0.3}
-          className="w-full bg-white rounded-[32px] md:rounded-[48px] px-6 py-6 lg:px-8 lg:py-8 flex flex-col gap-6 md:gap-8 shadow-sm border border-neutral-100"
+          className="w-full bg-white rounded-[24px] md:rounded-[48px] px-4 md:px-6 py-5 md:py-6 lg:px-8 lg:py-8 flex flex-col gap-4 md:gap-8 shadow-sm border border-neutral-100"
         >
           <div className="w-full text-left">
-            <h2 className="text-black text-2xl md:text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
+            <h2 className="text-black text-xl md:text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
               Galeri
             </h2>
           </div>
@@ -220,13 +220,13 @@ export default function DetailProyekPage({ params }) {
           {formattedGallery.length > 0 ? (
             <InteractiveGallery images={formattedGallery} />
           ) : (
-            <div className="w-full py-16 flex flex-col items-center justify-center bg-zinc-50 rounded-2xl border-2 border-dashed border-neutral-200">
+            <div className="w-full py-12 md:py-16 flex flex-col items-center justify-center bg-zinc-50 rounded-2xl border-2 border-dashed border-neutral-200">
               <img
                 src="/no-picture.svg"
                 alt="Tidak ada gambar"
-                className="w-16 h-16 mb-4 opacity-40 object-contain"
+                className="w-12 h-12 md:w-16 md:h-16 mb-3 md:mb-4 opacity-40 object-contain"
               />
-              <p className="text-neutral-500 text-[14px] md:text-[15px] font-medium font-['Plus_Jakarta_Sans']">
+              <p className="text-neutral-500 text-[13px] md:text-[15px] font-medium font-['Plus_Jakarta_Sans'] text-center px-4">
                 Belum ada foto galeri yang ditambahkan.
               </p>
             </div>

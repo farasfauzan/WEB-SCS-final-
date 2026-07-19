@@ -194,7 +194,7 @@ export default function EditHeroPage() {
             <div>
               <h3 className="text-sm font-bold text-gray-700 mb-3">Foto Konstruksi Kecil</h3>
               <p className="text-xs text-gray-500 mb-3">Dua foto kecil yang muncul di sisi kanan hero section Beranda.</p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <ImageUpload
                   currentImage={form.heroImage2}
                   onImageChange={(url) => setForm((prev) => ({ ...prev, heroImage2: url }))}
@@ -222,7 +222,7 @@ export default function EditHeroPage() {
             {saving ? "Saving..." : "Save Changes"}
           </button>
           <Link href="/admin/hero"
-            className="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
+            className="text-center px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
             Cancel
           </Link>
         </div>

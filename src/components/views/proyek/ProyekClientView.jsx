@@ -11,7 +11,7 @@ import CldImg from "@/components/shared/CldImg";
 
 function ProyekHero({ heroData }) {
   return (
-    <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
+    <section className="relative w-full h-[50vh] min-h-[300px] md:min-h-[400px] flex flex-col items-center justify-center rounded-b-[32px] md:rounded-b-[64px] overflow-hidden bg-[#004282]">
       <div className="absolute inset-0 z-0">
         <CldImg
           src={heroData?.imageUrl || "/carousel3.svg"}

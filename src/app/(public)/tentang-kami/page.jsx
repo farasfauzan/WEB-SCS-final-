@@ -55,7 +55,7 @@ export default async function TentangKamiPage() {
   return (
     <main className="w-full bg-[#F1F1F1] min-h-screen pb-24">
       {/* --- HERO SECTION --- */}
-      <section className="relative w-full h-[50vh] min-h-[400px] flex flex-col items-center justify-center rounded-b-[64px] overflow-hidden bg-[#004282]">
+      <section className="relative w-full h-[50vh] min-h-[300px] md:min-h-[400px] flex flex-col items-center justify-center rounded-b-[32px] md:rounded-b-[64px] overflow-hidden bg-[#004282]">
         <div className="absolute inset-0 z-0">
           <CldImg
             src={heroData?.imageUrl || "/bg-hero-tentang-kami.svg"}
@@ -79,35 +79,35 @@ export default async function TentangKamiPage() {
       </section>
 
       {/* --- VISI & MISI SECTION --- */}
-      <section className="flex flex-col items-center justify-start pt-16 md:pt-20 px-6 gap-12 md:gap-16">
+      <section className="flex flex-col items-center justify-start pt-12 md:pt-20 px-4 sm:px-6 gap-10 md:gap-16">
         <FadeUp
           delay={0.1}
           className="max-w-[800px] w-full text-center flex flex-col gap-4"
         >
-          <h2 className="text-[#1E1E1E] text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
+          <h2 className="text-[#1E1E1E] text-2xl md:text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
             {aboutTitle}
           </h2>
-          <p className="text-[#757575] text-[15px] font-normal leading-relaxed whitespace-pre-line">
+          <p className="text-[#757575] text-[14px] md:text-[15px] font-normal leading-relaxed whitespace-pre-line">
             {aboutContent}
           </p>
         </FadeUp>
 
         <FadeUp
           delay={0.2}
-          className="max-w-[1000px] w-full bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-neutral-200"
+          className="max-w-[1000px] w-full bg-white rounded-[24px] md:rounded-[32px] p-6 md:p-12 shadow-sm border border-neutral-200"
         >
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-8 md:gap-10">
             <article className="text-center flex flex-col gap-3">
-              <h3 className="text-2xl font-bold text-[#1E1E1E]">Visi</h3>
-              <p className="text-[15px] text-[#424242] leading-relaxed max-w-[800px] mx-auto whitespace-pre-line">
+              <h3 className="text-xl md:text-2xl font-bold text-[#1E1E1E]">Visi</h3>
+              <p className="text-[14px] md:text-[15px] text-[#424242] leading-relaxed max-w-[800px] mx-auto whitespace-pre-line">
                 {aboutVision}
               </p>
             </article>
             <article className="flex flex-col gap-3">
-              <h3 className="text-2xl font-bold text-[#1E1E1E] text-center mb-2">
+              <h3 className="text-xl md:text-2xl font-bold text-[#1E1E1E] text-center mb-2">
                 Misi
               </h3>
-              <ul className="list-disc pl-5 md:pl-10 space-y-3 text-[15px] text-[#424242] leading-relaxed marker:text-neutral-400">
+              <ul className="list-disc pl-5 md:pl-10 space-y-2.5 md:space-y-3 text-[14px] md:text-[15px] text-[#424242] leading-relaxed marker:text-neutral-400">
                 {aboutMission.map((item, idx) => (
                   <li key={idx}>{item.replace(/^-\s*/, "")}</li>
                 ))}
@@ -118,7 +118,7 @@ export default async function TentangKamiPage() {
       </section>
 
       {/* --- DIREKTUR SECTION (FLOATING CARD) --- */}
-      <section className="relative w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-[1440px] mx-auto overflow-hidden bg-[#004282] mt-16 rounded-[32px] md:rounded-[48px] shadow-2xl border border-white/10">
+      <section className="relative w-[calc(100%-1.5rem)] md:w-[calc(100%-4rem)] max-w-[1440px] mx-auto overflow-hidden bg-[#004282] mt-12 md:mt-16 rounded-[24px] md:rounded-[48px] shadow-2xl border border-white/10">
         <div className="absolute inset-0 z-0">
           <CldImg
             src={heroData?.imageUrl || "/bg-hero-tentang-kami.svg"}
@@ -132,7 +132,7 @@ export default async function TentangKamiPage() {
 
         <FadeUp
           delay={0.3}
-          className="relative z-10 w-full max-w-[1152px] mx-auto flex flex-col md:flex-row items-stretch justify-between px-6 lg:px-8 gap-8 md:gap-16"
+          className="relative z-10 w-full max-w-[1152px] mx-auto flex flex-col md:flex-row items-stretch justify-between px-4 sm:px-6 lg:px-8 gap-6 md:gap-16"
         >
           {/* Kolom Kiri: Foto Direktur & Bayangan (self-end agar rapat ke bawah) */}
           <div className="w-full md:w-5/12 flex flex-col justify-end items-center md:items-start self-end">
@@ -140,19 +140,19 @@ export default async function TentangKamiPage() {
               <img
                 src="/sir-direkture.svg"
                 alt={dirName}
-                className="relative z-10 w-full max-w-[340px] md:max-w-[440px] object-contain drop-shadow-2xl"
+                className="relative z-10 w-full max-w-[260px] md:max-w-[440px] object-contain drop-shadow-2xl"
               />
               {/* Efek bayangan (drop shadow) tepat di bawah kursi/kaki */}
-              <div className="absolute bottom-0 w-[75%] h-[20px] md:h-[24px] bg-black/90 blur-[12px] rounded-[100%] translate-y-1/2 z-0"></div>
+              <div className="absolute bottom-0 w-[75%] h-[16px] md:h-[24px] bg-black/90 blur-[10px] md:blur-[12px] rounded-[100%] translate-y-1/2 z-0"></div>
             </div>
           </div>
 
           {/* Kolom Kanan: Teks & Quote (justify-between memisah konten atas dan bawah) */}
-          <div className="w-full md:w-7/12 flex flex-col justify-between gap-12 text-white pt-12 md:pt-24 pb-16 md:pb-24">
-            <div className="flex flex-col gap-6">
-              <div className="w-14 h-14 bg-[#FFD700] flex items-center justify-center shadow-lg shrink-0 rounded-lg">
+          <div className="w-full md:w-7/12 flex flex-col justify-between gap-8 md:gap-12 text-white pt-4 md:pt-24 pb-12 md:pb-24">
+            <div className="flex flex-col gap-4 md:gap-6">
+              <div className="w-12 h-12 md:w-14 md:h-14 bg-[#FFD700] flex items-center justify-center shadow-lg shrink-0 rounded-lg">
                 <svg
-                  className="w-6 h-6 text-[#004282]"
+                  className="w-5 h-5 md:w-6 md:h-6 text-[#004282]"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -160,21 +160,21 @@ export default async function TentangKamiPage() {
                 </svg>
               </div>
 
-              <div className="flex flex-col gap-4">
-                <h3 className="text-3xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight drop-shadow-md">
+              <div className="flex flex-col gap-3 md:gap-4">
+                <h3 className="text-2xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight drop-shadow-md">
                   {dirQuoteTitle}
                 </h3>
-                <p className="text-white/90 text-[15px] font-normal leading-relaxed text-left drop-shadow-md">
+                <p className="text-white/90 text-[14px] md:text-[15px] font-normal leading-relaxed text-left drop-shadow-md">
                   {dirQuoteDesc}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-col gap-1 drop-shadow-lg">
-              <span className="text-xl font-bold font-['Plus_Jakarta_Sans'] tracking-wide">
+              <span className="text-lg md:text-xl font-bold font-['Plus_Jakarta_Sans'] tracking-wide">
                 {dirName}
               </span>
-              <span className="text-[#FFD700] text-[15px] font-semibold tracking-wider">
+              <span className="text-[#FFD700] text-[14px] md:text-[15px] font-semibold tracking-wider">
                 {dirRole}
               </span>
             </div>
@@ -183,13 +183,13 @@ export default async function TentangKamiPage() {
       </section>
 
       {/* --- FONDASI SECTION --- */}
-      <section className="flex flex-col items-center justify-start py-16 md:py-20 px-6 gap-12 md:gap-16">
-        <div className="max-w-[1152px] w-full flex flex-col items-center gap-10">
+      <section className="flex flex-col items-center justify-start py-12 md:py-20 px-4 sm:px-6 gap-10 md:gap-16">
+        <div className="max-w-[1152px] w-full flex flex-col items-center gap-8 md:gap-10">
           <FadeUp delay={0.1} className="text-center flex flex-col gap-3">
-            <h2 className="text-[#1E1E1E] text-3xl font-extrabold">
+            <h2 className="text-[#1E1E1E] text-2xl md:text-3xl font-extrabold">
               Fondasi Utama Keunggulan Kami
             </h2>
-            <p className="text-[#757575] text-[15px] font-normal max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[#757575] text-[14px] md:text-[15px] font-normal max-w-2xl mx-auto leading-relaxed">
               Nilai-nilai ini adalah inti dari setiap keputusan, desain, dan
               struktur yang kami bangun.
             </p>
@@ -197,7 +197,7 @@ export default async function TentangKamiPage() {
 
           <FadeUp
             delay={0.2}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[900px]"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full max-w-[900px]"
           >
             {[
               {

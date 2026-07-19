@@ -73,7 +73,7 @@ export default function HubungiKamiClient({ initialContacts = [] }) {
   const general = getContact("general");
 
   return (
-    <main className="relative w-full min-h-[100svh] py-[clamp(4rem,10vh,8rem)] bg-[#004282] overflow-hidden flex flex-col items-center justify-center pt-28 pb-16 px-6">
+    <main className="relative w-full min-h-[100svh] bg-[#004282] overflow-hidden flex flex-col items-center justify-center pt-24 md:pt-28 pb-12 md:pb-16 px-4 sm:px-6">
       <div className="absolute inset-0 z-0">
         <CldImg
           src="/hero-bg.svg"
@@ -83,9 +83,9 @@ export default function HubungiKamiClient({ initialContacts = [] }) {
         <div className="absolute inset-0 bg-[#004282]/85"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-[950px] flex flex-col items-center gap-8">
+      <div className="relative z-10 w-full max-w-[950px] flex flex-col items-center gap-6 md:gap-8">
         <FadeUp delay={0.1} className="text-center flex flex-col gap-2">
-          <h1 className="text-white text-4xl font-extrabold font-['Plus_Jakarta_Sans']">
+          <h1 className="text-white text-2xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans']">
             Hubungi Kami
           </h1>
           <p className="text-white/90 text-sm md:text-[15px] font-normal">
@@ -93,13 +93,13 @@ export default function HubungiKamiClient({ initialContacts = [] }) {
           </p>
         </FadeUp>
 
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-stretch">
           <FadeUp delay={0.2} className="w-full">
-            <div className="border border-white/20 rounded-2xl p-6 shadow-xl h-full flex flex-col justify-between bg-white/10 backdrop-blur-md will-change-transform">
-              <h2 className="text-white text-xl font-bold mb-5">
+            <div className="border border-white/20 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-xl h-full flex flex-col justify-between bg-white/10 backdrop-blur-md will-change-transform">
+              <h2 className="text-white text-lg md:text-xl font-bold mb-4 md:mb-5">
                 Kirimkan Pesan
               </h2>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4">
                 {formStatus && (
                   <div
                     className={`px-4 py-3 rounded-lg text-sm font-medium ${formStatus.type === "success" ? "bg-green-500/20 text-green-300 border border-green-400/30" : "bg-red-500/20 text-red-300 border border-red-400/30"}`}
@@ -166,8 +166,8 @@ export default function HubungiKamiClient({ initialContacts = [] }) {
           </FadeUp>
 
           <FadeUp delay={0.3} className="w-full">
-            <div className="border border-white/20 rounded-2xl p-6 flex flex-col justify-center gap-6 shadow-xl h-full bg-white/10 backdrop-blur-md will-change-transform">
-              <h2 className="text-white text-xl font-bold">Informasi Kontak</h2>
+            <div className="border border-white/20 rounded-xl md:rounded-2xl p-5 md:p-6 flex flex-col justify-center gap-5 md:gap-6 shadow-xl h-full bg-white/10 backdrop-blur-md will-change-transform">
+              <h2 className="text-white text-lg md:text-xl font-bold">Informasi Kontak</h2>
               <ContactItem icon={getContactIcon(address?.type)} title="Alamat">
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address?.value || "Jl. Karangrejo Barat No 09, Tinjomoyo, Semarang")}`}
