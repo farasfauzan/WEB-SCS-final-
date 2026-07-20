@@ -14,7 +14,6 @@ function BeritaHero({ heroData }) {
   return (
     <section className="relative w-full h-[50vh] min-h-[300px] md:min-h-[400px] flex flex-col items-center justify-center rounded-b-[32px] md:rounded-b-[64px] overflow-hidden bg-[#004282]">
       <div className="absolute inset-0 z-0">
-        {/* KOREKSI: Penambahan object-top */}
         <CldImg
           src={heroData?.imageUrl || "/carousel1.svg"}
           alt=""
@@ -114,7 +113,8 @@ export default function BeritaClientView({ heroData, initialNews }) {
       <Suspense
         fallback={
           <section className="w-full flex justify-center pt-[clamp(3rem,5vh,4rem)] px-6 mt-10">
-            <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* PERBAIKAN SKELETON: Harus sinkron dengan NewsList, gap-4 md:gap-8 */}
+            <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
               {Array(6)
                 .fill(0)
                 .map((_, idx) => (

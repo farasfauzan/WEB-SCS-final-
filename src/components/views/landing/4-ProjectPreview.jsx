@@ -74,6 +74,9 @@ export default function ProjectPreview({ data }) {
           delay={0.2}
           className="mb-5 md:mb-8 w-full flex justify-start md:justify-center relative z-20"
         >
+          {/* ======================= */}
+          {/* DESKTOP VIEW            */}
+          {/* ======================= */}
           <div className="hidden md:inline-flex bg-white rounded-full p-1.5 shadow-sm items-center justify-center flex-wrap gap-1">
             {categories.map((cat) => (
               <button
@@ -81,7 +84,7 @@ export default function ProjectPreview({ data }) {
                 onClick={() => setActiveCategory(cat)}
                 className={`cursor-pointer px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
                   activeCategory === cat
-                    ? "bg-[#004282] text-white shadow-sm"
+                    ? "bg-[#6B7AE5] text-white shadow-sm" // Disesuaikan menjadi ungu agar seragam
                     : "text-neutral-400 hover:text-stone-600"
                 }`}
               >
@@ -90,14 +93,19 @@ export default function ProjectPreview({ data }) {
             ))}
           </div>
 
-          <div className="block md:hidden relative w-45">
+          {/* ======================= */}
+          {/* MOBILE VIEW (Identik)   */}
+          {/* ======================= */}
+          <div className="md:hidden relative self-start z-30">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full flex justify-between items-center bg-white border border-neutral-200 text-[#004282] text-[13px] font-bold rounded-full px-5 py-3 shadow-sm transition-all"
+              className="flex items-center justify-between gap-3 px-5 py-2.5 bg-white rounded-full shadow-md border border-neutral-100 text-[#6B7AE5] text-[14px] font-bold z-20 relative"
             >
-              <span>{activeCategory}</span>
+              {activeCategory}
               <svg
-                className={`w-4 h-4 transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`}
+                className={`w-4 h-4 transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -111,8 +119,16 @@ export default function ProjectPreview({ data }) {
               </svg>
             </button>
 
+            {/* Layer Transparan Penjaga Klik Luar */}
             <div
-              className={`absolute top-full left-0 right-0 mt-2 bg-white border border-neutral-100 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 flex flex-col origin-top ${
+              className={`fixed inset-0 z-40 ${isDropdownOpen ? "block" : "hidden"}`}
+              onClick={() => setIsDropdownOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* Dropdown Menu (Animasi scale-y) */}
+            <div
+              className={`absolute top-[calc(100%+8px)] left-0 w-[220px] bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border border-neutral-100 overflow-hidden z-50 flex flex-col py-2 origin-top transition-all duration-300 ${
                 isDropdownOpen
                   ? "scale-y-100 opacity-100 pointer-events-auto"
                   : "scale-y-0 opacity-0 pointer-events-none"
@@ -125,9 +141,9 @@ export default function ProjectPreview({ data }) {
                     setActiveCategory(cat);
                     setIsDropdownOpen(false);
                   }}
-                  className={`text-left px-5 py-3 text-[13px] font-semibold transition-colors ${
+                  className={`px-5 py-3 text-left text-[14px] font-semibold transition-colors ${
                     activeCategory === cat
-                      ? "bg-[#004282] text-white"
+                      ? "bg-[#6B7AE5] text-white"
                       : "text-neutral-600 hover:bg-neutral-50"
                   }`}
                 >

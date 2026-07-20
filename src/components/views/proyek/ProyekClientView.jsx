@@ -45,6 +45,7 @@ function ProyekInteractive({ initialProjects }) {
   const [activeFilter, setActiveFilter] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const timeoutRef = useRef(null);
 
   const categories = [
@@ -98,14 +99,16 @@ function ProyekInteractive({ initialProjects }) {
         id="daftar-konten"
         className="relative z-20 -mt-[26px] flex justify-center px-6"
       >
-        {/* KOREKSI 1: Mengembalikan max-w-7xl (1280px) dan justify-between agar tetap mepet ujung layout */}
         <FadeUp
           delay={0.2}
-          className="w-full max-w-7xl flex flex-col lg:flex-row justify-between items-center lg:items-start gap-4 md:gap-6"
+          className="w-full max-w-7xl flex flex-col-reverse lg:flex-row justify-between items-center lg:items-start gap-4 md:gap-6"
         >
-          {/* Pembungkus Kategori - KOREKSI 2: Lebar dimaksimalkan ke lg:max-w-[800px] */}
+          {/* ======================= */}
+          {/* DESKTOP VIEW (ISOLATED) */}
+          {/* ======================= */}
+          {/* lg:flex-wrap dan lg:overflow-visible dipertahankan seperti desain asli milikmu */}
           <div
-            className="flex items-center lg:flex-wrap p-1.5 bg-white rounded-[24px] shadow-md overflow-x-auto lg:overflow-visible w-full lg:max-w-[800px] scrollbar-hide shrink-0"
+            className="hidden lg:flex items-center lg:flex-wrap p-1.5 bg-white rounded-[24px] shadow-md overflow-x-auto lg:overflow-visible w-full lg:max-w-[800px] scrollbar-hide shrink-0 z-30"
             role="tablist"
             aria-label="Kategori Proyek"
           >
@@ -126,8 +129,70 @@ function ProyekInteractive({ initialProjects }) {
             ))}
           </div>
 
-          {/* Search Bar - KOREKSI 3: Diperlebar secara fisik menjadi lg:w-[440px] */}
-          <div className="flex items-center bg-white rounded-full pl-6 pr-1.5 py-1.5 shadow-md w-full lg:w-[440px] shrink-0">
+          {/* ======================= */}
+          {/* MOBILE VIEW (ISOLATED)  */}
+          {/* ======================= */}
+          <div className="lg:hidden w-full flex justify-start relative z-30 shrink-0">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center justify-between gap-3 px-5 py-2.5 bg-white rounded-full shadow-md border border-neutral-100 text-[#6B7AE5] text-[14px] font-bold z-20 relative"
+            >
+              {activeFilter}
+              <svg
+                className={`w-4 h-4 transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+
+            {/* Layer Transparan Penjaga Klik Luar */}
+            <div
+              className={`fixed inset-0 z-40 ${isDropdownOpen ? "block" : "hidden"}`}
+              onClick={() => setIsDropdownOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* Dropdown Menu */}
+            <div
+              className={`absolute top-[calc(100%+8px)] left-0 w-[220px] bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border border-neutral-100 overflow-hidden z-50 flex flex-col py-2 origin-top transition-all duration-300 ${
+                isDropdownOpen
+                  ? "scale-y-100 opacity-100 pointer-events-auto"
+                  : "scale-y-0 opacity-0 pointer-events-none"
+              }`}
+            >
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    handleFilterChange(cat);
+                    setIsDropdownOpen(false);
+                  }}
+                  className={`px-5 py-3 text-left text-[14px] font-semibold transition-colors ${
+                    activeFilter === cat
+                      ? "bg-[#6B7AE5] text-white"
+                      : "text-neutral-600 hover:bg-neutral-50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ======================= */}
+          {/* SEARCH BAR              */}
+          {/* ======================= */}
+          <div className="flex items-center bg-white rounded-full pl-6 pr-1.5 py-1.5 shadow-md w-full lg:w-[440px] shrink-0 relative z-20">
             <input
               type="text"
               placeholder="Cari proyek, lokasi, klien..."
@@ -159,7 +224,7 @@ function ProyekInteractive({ initialProjects }) {
           delay={0.3}
           className="max-w-7xl w-full flex flex-col gap-[clamp(2rem,5vh,3rem)]"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {isLoading ? (
               Array(6)
                 .fill(0)
@@ -195,7 +260,7 @@ export default function ProyekClientView({ heroData, initialProjects }) {
       <Suspense
         fallback={
           <section className="w-full flex justify-center pt-[clamp(3rem,5vh,4rem)] px-6">
-            <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {Array(6)
                 .fill(0)
                 .map((_, idx) => (
