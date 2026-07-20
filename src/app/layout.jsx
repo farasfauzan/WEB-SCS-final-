@@ -27,6 +27,13 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#004282",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="id" className={`${plusJakartaSans.variable} ${montserrat.variable}`}>

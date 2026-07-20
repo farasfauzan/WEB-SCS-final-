@@ -1001,7 +1001,7 @@ export default function ChatbotButton({ settings = {} }) {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-['Plus_Jakarta_Sans']">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end font-['Plus_Jakarta_Sans']">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -1014,8 +1014,8 @@ export default function ChatbotButton({ settings = {} }) {
               scale: 0.9,
             }}
             animate={{
-              width: 340,
-              height: 480,
+              width: "min(340px, calc(100vw - 2rem))",
+              height: "min(480px, calc(100vh - 120px))",
               borderRadius: "16px",
               opacity: 1,
               y: 0,
@@ -1032,7 +1032,7 @@ export default function ChatbotButton({ settings = {} }) {
             transition={{ type: "spring", damping: 24, stiffness: 220 }}
             className="bg-white shadow-2xl border border-neutral-200 overflow-hidden flex flex-col absolute bottom-[70px] right-0 origin-bottom-right"
           >
-            <div className="w-[340px] h-[480px] flex flex-col justify-between shrink-0">
+            <div className="w-[min(340px,calc(100vw-2rem))] h-[min(480px,calc(100vh-120px))] flex flex-col justify-between shrink-0">
               {/* Header */}
               <div className="bg-[#004282] px-4 py-3.5 text-white flex items-center justify-between shrink-0 shadow-sm z-10">
                 <div className="flex items-center gap-2.5">
@@ -1092,7 +1092,7 @@ export default function ChatbotButton({ settings = {} }) {
                     ) : (
                       <div className="relative group">
                         <div
-                          className={`px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed max-w-[240px] whitespace-pre-line relative ${
+                          className={`px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed max-w-[85%] whitespace-pre-line relative ${
                             msg.type === "user"
                               ? "bg-[#004282] text-white rounded-br-md"
                               : "bg-white text-[#1E1E1E] border border-neutral-200 rounded-bl-md shadow-sm"
