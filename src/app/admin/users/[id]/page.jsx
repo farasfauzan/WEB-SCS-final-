@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function EditAdminPage() {
   const router = useRouter();
   const params = useParams();
-  const [form, setForm] = useState({ username: "", password: "", confirmPassword: "", role: "ADMIN" });
+  const [form, setForm] = useState({ username: "", password: "", confirmPassword: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -22,7 +22,6 @@ export default function EditAdminPage() {
             username: data.admin.username || "",
             password: "",
             confirmPassword: "",
-            role: data.admin.role || "ADMIN",
           });
         }
       } catch (err) {
@@ -52,7 +51,6 @@ export default function EditAdminPage() {
     try {
       const body = {
         username: form.username,
-        role: form.role,
       };
       // Only send password if user entered a new one
       if (form.password) {
@@ -109,19 +107,6 @@ export default function EditAdminPage() {
             required
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm"
           />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">Role</label>
-          <select
-            name="role"
-            value={form.role}
-            onChange={handleChange}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm"
-          >
-            <option value="ADMIN">Admin</option>
-            <option value="USER">User</option>
-          </select>
         </div>
 
         <div>

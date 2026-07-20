@@ -9,7 +9,7 @@ export async function GET(request) {
     }
 
     const admins = await prisma.admin.findMany({
-      select: { id: true, username: true, role: true, createdAt: true },
+      select: { id: true, username: true, createdAt: true },
       orderBy: { createdAt: "asc" },
     });
     return NextResponse.json({ admins });
@@ -26,7 +26,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { username, password, role } = await request.json();
+    const { username, password } = await request.json();
 
     if (!username || !password) {
       return NextResponse.json({ error: "Username dan password harus diisi" }, { status: 400 });
@@ -47,9 +47,8 @@ export async function POST(request) {
       data: {
         username,
         password: hashedPassword,
-        role: role || "ADMIN",
       },
-      select: { id: true, username: true, role: true, createdAt: true },
+      select: { id: true, username: true, createdAt: true },
     });
 
     return NextResponse.json({ admin }, { status: 201 });

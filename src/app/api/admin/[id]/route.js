@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
     const { id } = await params;
     const admin = await prisma.admin.findUnique({
       where: { id: Number(id) },
-      select: { id: true, username: true, role: true, createdAt: true },
+      select: { id: true, username: true, createdAt: true },
     });
 
     if (!admin) {
@@ -31,7 +31,7 @@ export async function PUT(request, { params }) {
     }
 
     const { id } = await params;
-    const { username, password, role } = await request.json();
+    const { username, password } = await request.json();
 
     if (!username) {
       return NextResponse.json({ error: "Username harus diisi" }, { status: 400 });
@@ -43,7 +43,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "Username sudah digunakan" }, { status: 409 });
     }
 
-    const updateData = { username, role: role || "ADMIN" };
+    const updateData = { username };
 
     // Only hash and update password if a new one is provided
     if (password && password.length > 0) {
@@ -56,7 +56,7 @@ export async function PUT(request, { params }) {
     const admin = await prisma.admin.update({
       where: { id: Number(id) },
       data: updateData,
-      select: { id: true, username: true, role: true, createdAt: true },
+      select: { id: true, username: true, createdAt: true },
     });
 
     return NextResponse.json({ admin });

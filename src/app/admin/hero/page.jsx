@@ -65,7 +65,6 @@ export default function HeroListPage() {
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="text-left p-4 text-sm font-semibold text-gray-600">Title</th>
                   <th className="text-left p-4 text-sm font-semibold text-gray-600">Page</th>
-                  <th className="text-left p-4 text-sm font-semibold text-gray-600">Status</th>
                   <th className="text-left p-4 text-sm font-semibold text-gray-600">Created</th>
                   <th className="text-right p-4 text-sm font-semibold text-gray-600">Actions</th>
                 </tr>
@@ -73,7 +72,7 @@ export default function HeroListPage() {
               <tbody>
                 {heroes.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-gray-500">No hero sections yet.</td>
+                    <td colSpan={4} className="p-8 text-center text-gray-500">No hero sections yet.</td>
                   </tr>
                 ) : (
                   heroes.map((hero) => (
@@ -82,11 +81,6 @@ export default function HeroListPage() {
                       <td className="p-4">
                         <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 capitalize">
                           {hero.page?.toLowerCase() || "home"}
-                        </span>
-                      </td>
-                      <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${hero.isActive ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-500"}`}>
-                          {hero.isActive ? "Active" : "Inactive"}
                         </span>
                       </td>
                       <td className="p-4 text-sm text-gray-500 whitespace-nowrap">
@@ -124,9 +118,6 @@ export default function HeroListPage() {
                         {hero.page?.toLowerCase() || "home"}
                       </span>
                     </div>
-                    <span className={`shrink-0 px-2 py-1 rounded-full text-[10px] font-semibold ${hero.isActive ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-500"}`}>
-                      {hero.isActive ? "Active" : "Inactive"}
-                    </span>
                   </div>
                   <p className="text-xs text-gray-500">
                     Created: {new Date(hero.createdAt).toLocaleDateString()}

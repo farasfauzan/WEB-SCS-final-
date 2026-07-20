@@ -96,12 +96,12 @@ export async function POST(request) {
     recordLoginAttempt(username, ip, true);
     await createLog("LOGIN_SUCCESS", username, admin.id, ip, userAgent);
 
-    const token = await createToken({ id: admin.id, username: admin.username, role: admin.role });
+    const token = await createToken({ id: admin.id, username: admin.username });
     await createAuthCookie(token);
 
     return NextResponse.json({
       success: true,
-      admin: { id: admin.id, username: admin.username, role: admin.role },
+      admin: { id: admin.id, username: admin.username },
     });
   } catch (error) {
     console.error("Auth error:", error);

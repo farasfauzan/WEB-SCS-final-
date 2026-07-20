@@ -80,7 +80,6 @@ export default function AdminListPage() {
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="text-left p-4 text-sm font-semibold text-gray-600">Username</th>
-                  <th className="text-left p-4 text-sm font-semibold text-gray-600">Role</th>
                   <th className="text-left p-4 text-sm font-semibold text-gray-600">Created</th>
                   <th className="text-right p-4 text-sm font-semibold text-gray-600">Actions</th>
                 </tr>
@@ -88,7 +87,7 @@ export default function AdminListPage() {
               <tbody>
                 {admins.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="p-8 text-center text-gray-500">No admin users yet.</td>
+                    <td colSpan={3} className="p-8 text-center text-gray-500">No admin users yet.</td>
                   </tr>
                 ) : (
                   admins.map((admin) => (
@@ -100,13 +99,6 @@ export default function AdminListPage() {
                           </div>
                           <span className="text-sm font-medium text-gray-800">{admin.username}</span>
                         </div>
-                      </td>
-                      <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          admin.role === "ADMIN" ? "bg-blue-50 text-blue-600" : "bg-gray-100 text-gray-500"
-                        }`}>
-                          {admin.role}
-                        </span>
                       </td>
                       <td className="p-4 text-sm text-gray-500 whitespace-nowrap">
                         {new Date(admin.createdAt).toLocaleDateString("id-ID", {
@@ -147,11 +139,7 @@ export default function AdminListPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-gray-800">{admin.username}</p>
-                      <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                        admin.role === "ADMIN" ? "bg-blue-50 text-blue-600" : "bg-gray-100 text-gray-500"
-                      }`}>
-                        {admin.role}
-                      </span>
+
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 mb-3">

@@ -46,7 +46,6 @@ function SidebarContent({ pathname, admin, onLinkClick }) {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-medium text-gray-700">{admin.username}</p>
-              <p className="text-[11px] text-gray-500 font-medium capitalize">{admin.role?.toLowerCase()}</p>
             </div>
           </div>
         </div>
@@ -98,10 +97,6 @@ export default function AdminLayout({ children }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.admin) {
-          if (data.admin.role !== "ADMIN") {
-            router.push("/admin/login");
-            return;
-          }
           setAdmin(data.admin);
         } else {
           router.push("/admin/login");
