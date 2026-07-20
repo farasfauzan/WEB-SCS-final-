@@ -44,8 +44,7 @@ export default async function TentangKamiPage() {
         "Berkontribusi pada pembangunan berkelanjutan infrastruktur dan lingkungan binaan Indonesia.",
       ];
 
-  const dirQuoteTitle =
-    settings?.dirQuoteTitle || "PT. Sinar Cerah Sempurna";
+  const dirQuoteTitle = settings?.dirQuoteTitle || "PT. Sinar Cerah Sempurna";
   const dirQuoteDesc =
     settings?.dirQuoteDesc ||
     "Merupakan perusahaan konstruksi yang berkomitmen untuk memberikan kualitas terbaik dalam setiap proyek, dengan fokus pada inovasi, keselamatan, dan kepuasan klien.";
@@ -98,7 +97,9 @@ export default async function TentangKamiPage() {
         >
           <div className="flex flex-col gap-8 md:gap-10">
             <article className="text-center flex flex-col gap-3">
-              <h3 className="text-xl md:text-2xl font-bold text-[#1E1E1E]">Visi</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-[#1E1E1E]">
+                Visi
+              </h3>
               <p className="text-[14px] md:text-[15px] text-[#424242] leading-relaxed max-w-[800px] mx-auto whitespace-pre-line">
                 {aboutVision}
               </p>
@@ -137,10 +138,11 @@ export default async function TentangKamiPage() {
           {/* Kolom Kiri: Foto Direktur & Bayangan (self-end agar rapat ke bawah) */}
           <div className="w-full md:w-5/12 flex flex-col justify-end items-center md:items-start self-end">
             <div className="relative flex flex-col items-center w-full">
+              {/* AMAN UNTUK DESKTOP: translate-y-8 ditambahkan agar turun menyentuh bayangan di mobile, md:translate-y-0 mengembalikannya di desktop */}
               <img
                 src="/sir-direkture.svg"
                 alt={dirName}
-                className="relative z-10 w-full max-w-[260px] md:max-w-[440px] object-contain drop-shadow-2xl"
+                className="relative z-10 w-full max-w-[260px] md:max-w-[440px] object-contain drop-shadow-2xl translate-y-8 md:translate-y-0"
               />
               {/* Efek bayangan (drop shadow) tepat di bawah kursi/kaki */}
               <div className="absolute bottom-0 w-[75%] h-[16px] md:h-[24px] bg-black/90 blur-[10px] md:blur-[12px] rounded-[100%] translate-y-1/2 z-0"></div>
@@ -148,7 +150,7 @@ export default async function TentangKamiPage() {
           </div>
 
           {/* Kolom Kanan: Teks & Quote (justify-between memisah konten atas dan bawah) */}
-          <div className="w-full md:w-7/12 flex flex-col justify-between gap-8 md:gap-12 text-white pt-4 md:pt-24 pb-12 md:pb-24">
+          <div className="w-full md:w-7/12 flex flex-col justify-between gap-8 md:gap-12 text-white pt-10 md:pt-24 pb-12 md:pb-24">
             <div className="flex flex-col gap-4 md:gap-6">
               <div className="w-12 h-12 md:w-14 md:h-14 bg-[#FFD700] flex items-center justify-center shadow-lg shrink-0 rounded-lg">
                 <svg

@@ -3,7 +3,6 @@ import { IMAGE_SIZES } from "@/lib/cloudinary";
 import OptimizedImage from "@/components/shared/OptimizedImage";
 
 export default function SinergiSection({ data }) {
-  // Data cadangan jika database kosong
   const fallbackNetworks = [
     { name: "PT Maharani Globalindo", logoUrl: "/logo-scs.svg" },
     { name: "PT Konstruksi Nusantara", logoUrl: "/logo-scs.svg" },
@@ -14,9 +13,8 @@ export default function SinergiSection({ data }) {
   const networks = data?.length > 0 ? data : fallbackNetworks;
 
   return (
-    <section className="w-full flex flex-col items-center justify-center py-16 md:py-24 px-6 bg-[#F1F1F1]">
+    <section className="w-full flex flex-col items-center justify-center pt-6 pb-16 md:py-24 px-6 bg-[#F1F1F1]">
       <div className="max-w-[1152px] w-full flex flex-col items-center gap-10 md:gap-14">
-        {/* Header Judul */}
         <FadeUp delay={0.1} className="text-center flex flex-col gap-3">
           <h2 className="text-[#1E1E1E] text-2xl md:text-4xl font-extrabold font-['Plus_Jakarta_Sans']">
             Sinergi Perusahaan
@@ -27,7 +25,6 @@ export default function SinergiSection({ data }) {
           </p>
         </FadeUp>
 
-        {/* Layout Sinergi Adaptif (Flex Wrap) */}
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-10 md:gap-x-12 md:gap-y-14 w-full mt-4">
           {networks.map((item, idx) => {
             const displayName =
@@ -39,11 +36,9 @@ export default function SinergiSection({ data }) {
             return (
               <FadeUp
                 key={idx}
-                // Membatasi delay animasi agar tidak menunggu selamanya jika data sangat banyak
                 delay={0.2 + Math.min(idx * 0.1, 0.8)}
                 className="flex flex-col items-center gap-3 md:gap-4 text-center w-[140px] md:w-[180px]"
               >
-                {/* Lingkaran Logo Sinergi */}
                 <WrapperComponent
                   href={item.linkUrl || undefined}
                   target={hasLink ? "_blank" : undefined}
@@ -63,7 +58,6 @@ export default function SinergiSection({ data }) {
                   />
                 </WrapperComponent>
 
-                {/* Nama Perusahaan Sinergi */}
                 <h3 className="text-black text-[15px] md:text-xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
                   {hasLink ? (
                     <a
@@ -79,7 +73,6 @@ export default function SinergiSection({ data }) {
                   )}
                 </h3>
 
-                {/* Deskripsi (Disembunyikan di Mobile, Muncul di Desktop) */}
                 {item.desc && (
                   <p className="text-black text-xs md:text-sm font-normal font-['Plus_Jakarta_Sans'] hidden md:block">
                     {item.desc}
