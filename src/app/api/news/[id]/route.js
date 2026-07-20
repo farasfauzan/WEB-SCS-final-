@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
 import { handleImageChange, deleteCloudinaryImage } from "@/lib/cloudinary-server";
 import { decodeId } from "@/lib/encode-id";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET(request, { params }) {
   try {
@@ -13,6 +14,7 @@ export async function GET(request, { params }) {
     if (!news) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ news });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "GET", error });
     console.error("API /api/news/[id] GET error:", error);
     return NextResponse.json({ error: "Failed to fetch news" }, { status: 500 });
   }
@@ -53,6 +55,7 @@ export async function PUT(request, { params }) {
     });
     return NextResponse.json({ news });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "PUT", error });
     console.error("API /api/news/[id] PUT error:", error);
     return NextResponse.json({ error: "Failed to update news" }, { status: 500 });
   }
@@ -77,6 +80,7 @@ export async function DELETE(request, { params }) {
     await prisma.news.delete({ where: { id: Number(realId) } });
     return NextResponse.json({ success: true });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "DELETE", error });
     console.error("API /api/news/[id] DELETE error:", error);
     return NextResponse.json({ error: "Failed to delete news" }, { status: 500 });
   }

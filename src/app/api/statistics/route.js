@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET() {
   try {
     const statistics = await prisma.statistic.findMany({ orderBy: { createdAt: "asc" } });
     return NextResponse.json({ statistics });
   } catch (error) {
+    await saveApiError({ route: "/api/statistics", method: "GET", error });
     console.error("API /api/statistics GET error:", error);
     return NextResponse.json({ error: "Failed to fetch statistics" }, { status: 500 });
   }
@@ -21,6 +23,7 @@ export async function POST(request) {
     const statistic = await prisma.statistic.create({ data });
     return NextResponse.json({ statistic }, { status: 201 });
   } catch (error) {
+    await saveApiError({ route: "/api/statistics", method: "POST", error });
     console.error("API /api/statistics POST error:", error);
     return NextResponse.json({ error: "Failed to create statistic" }, { status: 500 });
   }

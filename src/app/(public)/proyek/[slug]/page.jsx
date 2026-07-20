@@ -4,10 +4,14 @@ import Link from "next/link";
 import FadeUp from "@/components/ui/FadeUp";
 import CldImg from "@/components/shared/CldImg";
 import InteractiveGallery from "@/components/ui/InteractiveGallery";
+import ShareButtons from "@/components/shared/ShareButtons";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import BeforeAfterSlider from "@/components/shared/BeforeAfterSlider";
 
 export default function DetailProyekPage({ params }) {
   const { slug } = React.use(params);
   const [project, setProject] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +29,16 @@ export default function DetailProyekPage({ params }) {
         const idData = await idRes.json();
         if (idData.project) setProject(idData.project);
       } catch {}
+
+      try {
+        const relatedRes = await fetch(`/api/projects?category=${encodeURIComponent(project.category || "")}`);
+        const relatedData = await relatedRes.json();
+        const filtered = (relatedData.projects || []).filter(p => p.id !== project.id && p.slug !== project.slug);
+        setRelatedProjects(filtered.slice(0, 3));
+      } catch (err) {
+        console.warn("Failed to fetch related projects:", err);
+      }
+
       finally {
         setIsLoading(false);
       }
@@ -82,6 +96,15 @@ export default function DetailProyekPage({ params }) {
   return (
     <main className="w-full bg-zinc-100 min-h-screen pt-16 md:pt-20 pb-20 md:pb-24 px-3 md:px-4 lg:px-8 flex flex-col items-center">
       <div className="w-full max-w-[1144px] flex flex-col gap-4 md:gap-5">
+        {project && (
+          <Breadcrumbs
+            items={[
+              { label: "Beranda", href: "/" },
+              { label: "Proyek", href: "/proyek" },
+              { label: project?.title || "Detail Proyek" },
+            ]}
+          />
+        )}
         <FadeUp delay={0.1}>
           <Link
             href="/proyek"
@@ -132,6 +155,14 @@ export default function DetailProyekPage({ params }) {
           <h1 className="w-full text-left text-black text-xl md:text-3xl font-bold font-['Montserrat'] leading-snug">
             {formatYellowText(project.title)}
           </h1>
+
+          <div className="flex items-center gap-3 mt-2">
+            <ShareButtons
+              title={project.title}
+              url={`${process.env.NEXT_PUBLIC_APP_URL || "https://sinarcerahsempurna.com"}/proyek/${project.slug || project.id}`}
+              description={project.description?.slice(0, 100) || ""}
+            />
+          </div>
 
           <hr className="border-neutral-100 w-full" />
 
@@ -243,6 +274,54 @@ export default function DetailProyekPage({ params }) {
             </div>
           )}
         </FadeUp>
+
+        {formattedGallery.length >= 2 && (
+          <FadeUp delay={0.35} className="w-full bg-white rounded-[24px] md:rounded-[48px] px-4 md:px-6 py-5 md:py-6 lg:px-8 lg:py-8 flex flex-col gap-4 md:gap-8 shadow-sm border border-neutral-100">
+            <div className="w-full text-left">
+              <h2 className="text-black text-xl md:text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
+                Sebelum & Sesudah
+              </h2>
+              <p className="text-neutral-500 text-sm mt-1">Geser untuk melihat perbandingan</p>
+            </div>
+            <BeforeAfterSlider
+              beforeSrc={formattedGallery[0].url}
+              afterSrc={formattedGallery[1].url}
+              beforeAlt="Sebelum"
+              afterAlt="Sesudah"
+            />
+          </FadeUp>
+        )}
+
+        {relatedProjects.length > 0 && (
+          <FadeUp delay={0.4} className="w-full bg-white rounded-[24px] md:rounded-[48px] px-4 md:px-6 py-5 md:py-6 lg:px-8 lg:py-8 flex flex-col gap-4 md:gap-8 shadow-sm border border-neutral-100">
+            <div className="w-full text-left">
+              <h2 className="text-black text-xl md:text-3xl font-extrabold font-['Plus_Jakarta_Sans']">
+                Proyek Lainnya
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedProjects.map((proj) => (
+                <Link
+                  key={proj.id}
+                  href={`/proyek/${proj.slug || proj.id}`}
+                  className="group bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:border-[#004282]/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
+                >
+                  <div className="aspect-video w-full overflow-hidden bg-zinc-100">
+                    <CldImg
+                      src={proj.imageUrl || "/carousel3.svg"}
+                      alt={proj.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-sm font-semibold text-neutral-800 line-clamp-2">{proj.title}</h3>
+                    <p className="text-xs text-neutral-500 mt-1">{proj.category || "Proyek"}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </FadeUp>
+        )}
       </div>
     </main>
   );

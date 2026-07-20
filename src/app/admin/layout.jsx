@@ -20,7 +20,11 @@ const SIDEBAR_ITEMS = [
   { label: "Settings", href: "/admin/settings", icon: "/icons/setting.svg" },
   { label: "Evaluasi User", href: "/admin/evaluations", icon: "/icons/about.svg" },
   { label: "Admin Users", href: "/admin/users", icon: "/icons/admin.svg" },
+  { label: "Comments", href: "/admin/comments", icon: "/icons/eye.svg" },
+  { label: "Newsletter", href: "/admin/newsletter", icon: "/icons/contact.svg" },
+  { label: "Revisions", href: "/admin/revisions", icon: "/icons/eye.svg" },
   { label: "Activity Log", href: "/admin/logs", icon: "/icons/eye.svg" },
+  { label: "Error Logs", href: "/admin/error-logs", icon: "/icons/eye.svg" },
 ];
 
 function SidebarContent({ pathname, admin, onLinkClick }) {

@@ -9,7 +9,7 @@ import GalleryUpload from "@/components/admin/GalleryUpload";
 export default function EditNewsPage() {
   const router = useRouter();
   const params = useParams();
-  const [form, setForm] = useState({ slug: "", title: "", excerpt: "", content: "", imageUrl: "", galleryImages: [], status: "DRAFT" });
+  const [form, setForm] = useState({ slug: "", title: "", excerpt: "", content: "", imageUrl: "", galleryImages: [], status: "DRAFT", publishedAt: "", category: "", tags: [] });
 
   const generateSlug = (title) => {
     return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -42,6 +42,9 @@ export default function EditNewsPage() {
             return item;
           }),
           status: n.status || "DRAFT",
+          publishedAt: n.publishedAt ? new Date(n.publishedAt).toISOString().slice(0, 16) : "",
+          category: n.category || "",
+          tags: n.tags || [],
         });
       }
       setLoading(false);
@@ -55,7 +58,7 @@ export default function EditNewsPage() {
     try {
       const res = await fetch(`/api/news/${params.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         ...form,
-        publishedAt: form.status === "PUBLISHED" ? new Date().toISOString() : null,
+        publishedAt: form.publishedAt ? new Date(form.publishedAt).toISOString() : (form.status === "PUBLISHED" ? new Date().toISOString() : null),
       }) });
       if (!res.ok) throw new Error((await res.json()).error);
       router.push("/admin/news");
@@ -138,6 +141,18 @@ export default function EditNewsPage() {
               <option value="PUBLISHED">Published</option>
             </select>
           </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">Publikasi</label>
+          <input
+            type="datetime-local"
+            name="publishedAt"
+            value={form.publishedAt || ""}
+            onChange={handleChange}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004282] text-sm"
+          />
+          <p className="text-xs text-gray-500 mt-1">Kosongkan untuk publish sekarang. Atau pilih tanggal untuk schedule.</p>
         </div>
 
         <hr className="border-gray-100" />

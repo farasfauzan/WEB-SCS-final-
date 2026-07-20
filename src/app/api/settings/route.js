@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET() {
   try {
@@ -13,6 +14,7 @@ export async function GET() {
     }
     return NextResponse.json({ settings, settingsMap });
   } catch (error) {
+    await saveApiError({ route: "/api/settings", method: "GET", error });
     console.error("API /api/settings GET error:", error);
     return NextResponse.json({ error: "Failed to fetch settings" }, { status: 500 });
   }
@@ -35,6 +37,7 @@ export async function POST(request) {
 
     return NextResponse.json({ setting }, { status: 201 });
   } catch (error) {
+    await saveApiError({ route: "/api/settings", method: "POST", error });
     console.error("API /api/settings POST error:", error);
     return NextResponse.json({ error: "Failed to save setting" }, { status: 500 });
   }

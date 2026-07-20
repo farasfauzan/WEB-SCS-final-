@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getTokenFromRequest, requireAdminRole, hashPassword } from "@/lib/auth";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET(request) {
   try {
@@ -14,6 +15,7 @@ export async function GET(request) {
     });
     return NextResponse.json({ admins });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "GET", error });
     console.error("API /api/admin GET error:", error);
     return NextResponse.json({ error: "Failed to fetch admins" }, { status: 500 });
   }
@@ -53,6 +55,7 @@ export async function POST(request) {
 
     return NextResponse.json({ admin }, { status: 201 });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "POST", error });
     console.error("API /api/admin POST error:", error);
     return NextResponse.json({ error: "Failed to create admin" }, { status: 500 });
   }

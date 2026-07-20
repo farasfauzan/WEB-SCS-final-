@@ -10,6 +10,7 @@ export default function NewsListPage() {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -21,7 +22,7 @@ export default function NewsListPage() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("/api/news");
+        const res = await fetch("/api/news?category=" + encodeURIComponent(categoryFilter));
         const data = await res.json();
         setNews(data.news || []);
       } catch (err) {
@@ -31,7 +32,7 @@ export default function NewsListPage() {
       }
     };
     fetchNews();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, categoryFilter]);
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this news article?")) return;
@@ -61,6 +62,8 @@ export default function NewsListPage() {
     );
   }
 
+  const categories = [...new Set(news.map(n => n.category).filter(Boolean))];
+
   return (
     <div className="space-y-4 lg:space-y-6">
       {/* Header */}
@@ -78,7 +81,16 @@ export default function NewsListPage() {
                 Manage news and announcements
               </p>
             </div>
-          </div>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004282] bg-white"
+          >
+            <option value="">Semua Kategori</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
         </div>
         <Link
           href="/admin/news/create"

@@ -1,19 +1,23 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
+    const category = searchParams.get("category");
 
-    const where = status ? { status } : {};
+    const where = { ...(status ? { status } : {}) };
+    if (category) where.category = category;
     const news = await prisma.news.findMany({
       where,
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json({ news });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "GET", error });
     console.error("API /api/news GET error:", error);
     return NextResponse.json({ error: "Failed to fetch news" }, { status: 500 });
   }
@@ -38,6 +42,7 @@ export async function POST(request) {
     const news = await prisma.news.create({ data: createData });
     return NextResponse.json({ news }, { status: 201 });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "POST", error });
     console.error("API /api/news POST error:", error);
     return NextResponse.json({ error: "Failed to create news" }, { status: 500 });
   }

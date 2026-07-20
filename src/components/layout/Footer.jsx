@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import NewsletterForm from "@/components/shared/NewsletterForm";
 // CldImg dicabut dari sini karena kita akan menggunakan tag <img> bawaan Next/React untuk SVG statis dari folder public agar lebih cepat.
 import Image from "next/image";
 
@@ -144,6 +147,15 @@ export default function Footer({ settings = {} }) {
           >
             {footerAddress}
           </a>
+          <div className="flex flex-col gap-3 max-w-xs">
+            <h4 className="text-white text-base font-bold font-['Plus_Jakarta_Sans']">
+              Newsletter
+            </h4>
+            <p className="text-white/80 text-[13px] font-['Plus_Jakarta_Sans'] leading-relaxed">
+              Dapatkan update proyek dan berita terbaru dari kami.
+            </p>
+            <NewsletterForm />
+          </div>
           <div className="mt-auto pt-4">
             <p className="text-white/60 text-[11px] font-['Plus_Jakarta_Sans']">
               {copyright}

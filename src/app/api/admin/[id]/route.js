@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminRole, hashPassword } from "@/lib/auth";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET(request, { params }) {
   try {
@@ -19,6 +20,7 @@ export async function GET(request, { params }) {
 
     return NextResponse.json({ admin });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "GET", error });
     console.error("API /api/admin/[id] GET error:", error);
     return NextResponse.json({ error: "Failed to fetch admin" }, { status: 500 });
   }
@@ -61,6 +63,7 @@ export async function PUT(request, { params }) {
 
     return NextResponse.json({ admin });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "PUT", error });
     console.error("API /api/admin/[id] PUT error:", error);
     return NextResponse.json({ error: "Failed to update admin" }, { status: 500 });
   }
@@ -89,6 +92,7 @@ export async function DELETE(request, { params }) {
     await prisma.admin.delete({ where: { id: Number(id) } });
     return NextResponse.json({ success: true });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "DELETE", error });
     console.error("API /api/admin/[id] DELETE error:", error);
     return NextResponse.json({ error: "Failed to delete admin" }, { status: 500 });
   }

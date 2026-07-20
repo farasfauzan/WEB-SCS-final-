@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminRole } from "@/lib/auth";
 import { handleImageChange, deleteCloudinaryImage } from "@/lib/cloudinary-server";
 import { decodeId } from "@/lib/encode-id";
+import { saveApiError } from "@/lib/api-error-log";
 
 export async function GET(request, { params }) {
   try {
@@ -13,6 +14,7 @@ export async function GET(request, { params }) {
     if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ project });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "GET", error });
     console.error("API /api/projects/[id] GET error:", error);
     return NextResponse.json({ error: "Failed to fetch project" }, { status: 500 });
   }
@@ -53,6 +55,7 @@ export async function PUT(request, { params }) {
     });
     return NextResponse.json({ project });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "PUT", error });
     console.error("API /api/projects/[id] PUT error:", error);
     return NextResponse.json({ error: "Failed to update project" }, { status: 500 });
   }
@@ -77,6 +80,7 @@ export async function DELETE(request, { params }) {
     await prisma.project.delete({ where: { id: Number(realId) } });
     return NextResponse.json({ success: true });
   } catch (error) {
+    await saveApiError({ route: new URL(request.url).pathname, method: "DELETE", error });
     console.error("API /api/projects/[id] DELETE error:", error);
     return NextResponse.json({ error: "Failed to delete project" }, { status: 500 });
   }

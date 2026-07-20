@@ -40,6 +40,19 @@ model AdminLog {
   admin Admin? @relation(fields: [adminId], references: [id])
 }
 
+model ApiErrorLog {
+  id          Int      @id @default(autoincrement())
+  route       String   // e.g. "/api/news"
+  method      String   // GET, POST, PUT, DELETE
+  errorMessage String  // error message or stack trace
+  userAgent   String?
+  ip          String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([route])
+}
+
 model Hero {
   id          Int      @id @default(autoincrement())
   page        String   @default("home")
@@ -72,6 +85,8 @@ model Project {
   category      String   @default("Lainnya")
   location      String?
   mapsUrl       String?
+  lat           Float?
+  lng           Float?
   client        String?
   imageUrl      String?
   galleryImages String[]
@@ -89,10 +104,13 @@ model News {
   content       String
   imageUrl      String?
   galleryImages String[]
+  category      String?
+  tags          String[]
   status        NewsStatus @default(DRAFT)
   publishedAt   DateTime?
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  comments      Comment[]
 }
 
 model Partner {
@@ -159,4 +177,38 @@ model ChatbotEvaluation {
   detail    String   // the emoji or the user's text suggestion
   ip        String?
   createdAt DateTime @default(now())
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  newsId     Int
+  name       String
+  email      String
+  content    String
+  isApproved Boolean @default(false)
+  createdAt  DateTime @default(now())
+
+  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@index([newsId])
+  @@index([createdAt])
+}
+
+model Subscriber {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  subscribedAt DateTime @default(now())
+  isActive    Boolean  @default(true)
+}
+
+model ContentRevision {
+  id        Int      @id @default(autoincrement())
+  model     String   // "News", "Project", "About", "Hero", etc.
+  modelId   Int
+  data      String   // JSON string of the previous content
+  changedBy String?
+  createdAt DateTime @default(now())
+
+  @@index([model, modelId])
+  @@index([createdAt])
 }
