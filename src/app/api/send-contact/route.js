@@ -83,9 +83,12 @@ async function sendViaNodemailer({ name, email, phone, subject, message, contact
 
   const transporter = createNodemailerTransporter();
 
-  // Nodemailer via Gmail SMTP harus pakai email Gmail sebagai pengirim,
-  // bukan __REDACTED__@__REDACTED__.dev (karena Gmail akan menolaknya)
-  const nodemailerFrom = process.env.SMTP_USER || "__REDACTED__@__REDACTED__.com";
+  // Nodemailer via Gmail SMTP harus pakai email Gmail sebagai pengirim.
+  // SMTP_USER WAJIB dikonfigurasi di .env.local — tidak ada fallback hardcode.
+  if (!process.env.SMTP_USER) {
+    throw new Error("SMTP_USER tidak dikonfigurasi — Nodemailer tidak dapat mengirim email.");
+  }
+  const nodemailerFrom = process.env.SMTP_USER;
 
   const info = await transporter.sendMail({
     from: `${fromName} <${nodemailerFrom}>`,
@@ -139,8 +142,22 @@ export async function POST(request) {
     const emailSubject = `[Pesan dari Website] ${escapeHtml(subject || "Tidak ada subjek")} - dari ${escapeHtml(name)}`;
 
     // Ambil settings dari database
-    const contactEmail = (await getSetting("contact_email")) || process.env.CONTACT_EMAIL || "__REDACTED__@__REDACTED__.com";
-    const fromEmail = (await getSetting("contact_from_email")) || process.env.CONTACT_FROM_EMAIL || "__REDACTED__@__REDACTED__.dev";
+    const contactEmail = (await getSetting("contact_email")) || process.env.CONTACT_EMAIL;
+    const fromEmail = (await getSetting("contact_from_email")) || process.env.CONTACT_FROM_EMAIL;
+
+    // Jika alamat email tujuan/pengirim tidak dikonfigurasi, return error
+    if (!contactEmail) {
+      return NextResponse.json(
+        { error: "Email tujuan tidak dikonfigurasi. Silakan hubungi administrator." },
+        { status: 500 }
+      );
+    }
+    if (!fromEmail) {
+      return NextResponse.json(
+        { error: "Email pengirim tidak dikonfigurasi. Silakan hubungi administrator." },
+        { status: 500 }
+      );
+    }
     const fromName = "Hubungi Kami";
 
     const emailPayload = { name, email, phone, subject, message, contactEmail, fromEmail, fromName, emailSubject };

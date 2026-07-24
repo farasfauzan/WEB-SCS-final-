@@ -28,17 +28,28 @@ async function main() {
   console.log("✅ Cleaned existing data");
 
   // 1. Create Admin Account
-  const hashedPassword = await bcrypt.hash("__REDACTED__", 12);
-  await prisma.admin.upsert({
-    where: { username: "admin" },
-    update: {},
-    create: {
-      username: "admin",
-      password: hashedPassword,
-      role: "ADMIN",
-    },
-  });
-  console.log("✅ Admin account created: admin / __REDACTED__");
+  // Credentials diambil dari environment variable — jangan hardcode!
+  const adminUsername = process.env.ADMIN_USERNAME || "admin";
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminPassword) {
+    console.warn(
+      "⚠️  ADMIN_PASSWORD tidak dikonfigurasi! " +
+      "Set ADMIN_PASSWORD di .env Lewati pembuatan admin..."
+    );
+  } else {
+    const hashedPassword = await bcrypt.hash(adminPassword, 12);
+    await prisma.admin.upsert({
+      where: { username: adminUsername },
+      update: {},
+      create: {
+        username: adminUsername,
+        password: hashedPassword,
+        role: "ADMIN",
+      },
+    });
+    console.log(`✅ Admin account "${adminUsername}" created`);
+  }
 
   // 2. Seed Heroes (per page)
   const heroes = [
@@ -181,7 +192,7 @@ async function main() {
   console.log("✅ Settings seeded");
 
   console.log("\n\uD83C\uDF89 Seeding complete!");
-  console.log("Admin login: admin / __REDACTED__");
+  console.log("Admin login credentials: lihat di file .env.local atau dokumentasi internal");
 }
 
 main()

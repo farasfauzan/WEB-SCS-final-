@@ -2,9 +2,22 @@ import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "__REDACTED__"
-);
+/**
+ * Mendapatkan JWT_SECRET yang sudah di-encode.
+ * Validasi dilakukan lazy (saat dipakai) agar tidak crash saat modul di-load
+ * oleh Next.js build tanpa environment variable.
+ */
+function getJwtSecret() {
+  if (!process.env.JWT_SECRET) {
+    throw new Error(
+      "JWT_SECRET tidak dikonfigurasi! " +
+      "Salin .env.example ke .env.local dan isi JWT_SECRET " +
+      "dengan nilai random yang kuat.\n" +
+      "Contoh: openssl rand -base64 32"
+    );
+  }
+  return new TextEncoder().encode(process.env.JWT_SECRET);
+}
 const JWT_EXPIRES_IN = "24h";
 const COOKIE_NAME = "scs_admin_token";
 
@@ -90,12 +103,12 @@ export async function createToken(payload) {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(JWT_EXPIRES_IN)
-    .sign(JWT_SECRET);
+    .sign(getJwtSecret());
 }
 
 export async function verifyToken(token) {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, getJwtSecret());
     return payload;
   } catch {
     return null;
@@ -131,7 +144,7 @@ export async function getCurrentAdmin() {
   const token = await getAuthToken();
   if (!token) return null;
 
-  const decoded = verifyToken(token);
+  const decoded = await verifyToken(token);
   if (!decoded) return null;
 
   return decoded;

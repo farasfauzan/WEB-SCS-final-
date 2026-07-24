@@ -37,7 +37,23 @@ yarn-error.log*
 .env.production
 .env.development.local
 .env.production.local
+.env.staging
+.env.test
 # .env.example is intentionally NOT ignored — commit it as a template
+
+# secrets & credentials — catch-all for any stray credential files
+*.key
+*.p12
+*.pfx
+*.cert
+*.keystore
+secrets.*
+credential*
+*.cred
+
+# docker (may contain env vars)
+/docker-compose.override.yml
+/docker-compose.override.yaml
 
 # local editor / OS
 /.vscode
@@ -63,6 +79,10 @@ next-env.d.ts
 /src/generated/prisma
 
 /public/uploads
+
+# audit / dependency lock file backups
+package-lock.json.bak
+yarn.lock.bak
 
 AGENTS.md
 CLAUDE.md
