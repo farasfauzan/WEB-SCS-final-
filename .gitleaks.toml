@@ -33,20 +33,4 @@
     '''DATABASE_URL.*env''',         # Referensi env var, bukan nilai
   ]
 
-# ────────────────────────────────────────────────────────────────────────────
-# Aturan Kustom — pola spesifik project + bypass bawaan yang terlalu ketat
-# ────────────────────────────────────────────────────────────────────────────
 
-# Aturan: Next.js public env vars (aman untuk di-commit)
-[[rules]]
-  id = "nextjs-public-env"
-  description = "Next.js public environment variable (NEXT_PUBLIC_)"
-  regex = '''NEXT_PUBLIC_'''
-  allowlist = { paths = ['''\.(js|jsx|ts|tsx|env\.example)$'''] }
-
-# Aturan: Cloudinary asset URL (bukan credential)
-[[rules]]
-  id = "cloudinary-asset-url"
-  description = "Cloudinary asset URL di source code"
-  regex = '''res\.cloudinary\.com/'''
-  allowlist = { paths = ['''\.(js|jsx|ts|tsx|json)$'''] }
